@@ -50,4 +50,6 @@ Eventually this should be expanded to allow users to view other users' compositi
 * Allow export of army lists to be imported directly into Total War: Warhammer III (needs further investigation).
 * Allow authors to add replays of the army list (files or YouTube video links) in the description of the list.
 
+### Entity Relationship Diagram:
+
 [![](https://mermaid.ink/img/pako:eNqN0s2KwyAQAOBXkTmXPoA3N0oRkhiiaVnwIo27Ld0ki00OJebd65alZPuz1dOIH-PMMCNsu9oCBuvo3nw60-gWXQ9JElHlCnm_XHYjSkRWCMkVFznCaGeOz6z3iGWEpy9VQaTciJK-hJVkZU4ydg_nRU3dBZM1UaSMom8VXTH1P7107xFlMil58bj7Wx9ScxpVQfqw_VsYpp8KKaMyRs9JvRcs6usq50pGyQ2_Dmcu_8bzG0KwgMa6xuzrsIbjz5uGfmcbqwGHsDbuoEG3U3Bm6Dt5areAezfYBQzftent7-IC_jBfRzudAUIOwlA?type=png)](https://mermaid.live/edit#pako:eNqN0s2KwyAQAOBXkTmXPoA3N0oRkhiiaVnwIo27Ld0ki00OJebd65alZPuz1dOIH-PMMCNsu9oCBuvo3nw60-gWXQ9JElHlCnm_XHYjSkRWCMkVFznCaGeOz6z3iGWEpy9VQaTciJK-hJVkZU4ydg_nRU3dBZM1UaSMom8VXTH1P7107xFlMil58bj7Wx9ScxpVQfqw_VsYpp8KKaMyRs9JvRcs6usq50pGyQ2_Dmcu_8bzG0KwgMa6xuzrsIbjz5uGfmcbqwGHsDbuoEG3U3Bm6Dt5areAezfYBQzftent7-IC_jBfRzudAUIOwlA) 
