@@ -19,15 +19,14 @@ A user will need to go through an account creation process which will record par
 ### For making both Land Battles and Domination compositions the user needs:
 * To select a faction to build from.
 * To select the gold budget, by default this will use the values found in Quick Battles.
-* To provide a name for the army list, e.g Khorne Rush.
-* To provide an avatar for the army list from a curated selection of in-game unit cards.
-* Optionally provide optimal opponent factions.
-* Optionally provide a brief description on how to play the army list.
+* To provide a name for the army composition, e.g Khorne Rush.
+* To provide an avatar for the army composition from a curated selection of in-game unit cards..
+* Optionally provide a brief description on how to play the army composition, such as optimal opponent factions.
 
-### For making a Land Battles list:
+### For making a Land Battles composition:
 * Create a composition following the Land Battles ruleset.
 
-### For making a Domination list:
+### For making a Domination composition:
 * Create a composition following the Domination ruleset, including a starting army and a reinforcement pool.
 
 After a user creates an army composition, they will see it amongst any other army compositions they have made stored within their profile. The user will be able to search this repository of army composition using keyword matching as well as by using various filters (Game Mode, Faction, Battle Count, Wins, Losses, Win/Loss Ratio, Gold Budget etc.) The repository should be displayed in a list format whereby the thumbnail will be present on the left hand side with some of the most pertinent army list details adjacent. Selecting an item will load the army list and allow the user to modify parameters. The user will also be able to delete lists from the list view without a bin icon present on the right. Some visualisation for the win/loss statistics should be provided for each composition.
