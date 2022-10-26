@@ -31,7 +31,11 @@ A user will need to go through an account creation process which will record par
 
 After a user creates an army composition, they will see it amongst any other army compositions they have made stored within their profile. The user will be able to search this repository of army composition using keyword matching as well as by using various filters (Game Mode, Faction, Battle Count, Wins, Losses, Win/Loss Ratio, Gold Budget etc.) The repository should be displayed in a list format whereby the thumbnail will be present on the left hand side with some of the most pertinent army list details adjacent. Selecting an item will load the army list and allow the user to modify parameters. The user will also be able to delete lists from the list view without a bin icon present on the right. Some visualisation for the win/loss statistics should be provided for each composition.
 
-Eventually this should be expanded to allow users to view other users' compositions, with a possible rating system and the ability to leave comments. Authors of multiple highly-rated compositions may get leaderboard of their own.
+Eventually this should be expanded to allow users to view other users' compositions, with a possible rating system and the ability to leave comments. Authors of multiple highly-rated compositions may get a leaderboard of their own.
+
+### Entity Relationship Diagram:
+
+[![](https://mermaid.ink/img/pako:eNqN0s2KwyAQAOBXkTmXPoA3N0oRkhiiaVnwIo27Ld0ki00OJebd65alZPuz1dOIH-PMMCNsu9oCBuvo3nw60-gWXQ9JElHlCnm_XHYjSkRWCMkVFznCaGeOz6z3iGWEpy9VQaTciJK-hJVkZU4ydg_nRU3dBZM1UaSMom8VXTH1P7107xFlMil58bj7Wx9ScxpVQfqw_VsYpp8KKaMyRs9JvRcs6usq50pGyQ2_Dmcu_8bzG0KwgMa6xuzrsIbjz5uGfmcbqwGHsDbuoEG3U3Bm6Dt5areAezfYBQzftent7-IC_jBfRzudAUIOwlA?type=png)](https://mermaid.live/edit#pako:eNqN0s2KwyAQAOBXkTmXPoA3N0oRkhiiaVnwIo27Ld0ki00OJebd65alZPuz1dOIH-PMMCNsu9oCBuvo3nw60-gWXQ9JElHlCnm_XHYjSkRWCMkVFznCaGeOz6z3iGWEpy9VQaTciJK-hJVkZU4ydg_nRU3dBZM1UaSMom8VXTH1P7107xFlMil58bj7Wx9ScxpVQfqw_VsYpp8KKaMyRs9JvRcs6usq50pGyQ2_Dmcu_8bzG0KwgMa6xuzrsIbjz5uGfmcbqwGHsDbuoEG3U3Bm6Dt5areAezfYBQzftent7-IC_jBfRzudAUIOwlA) 
 
 ### MVP (Minimum-Viable Product)
 * User account creation/login system.
@@ -50,6 +54,4 @@ Eventually this should be expanded to allow users to view other users' compositi
 * Allow export of army lists to be imported directly into Total War: Warhammer III (needs further investigation).
 * Allow authors to add replays of the army list (files or YouTube video links) in the description of the list.
 
-### Entity Relationship Diagram:
 
-[![](https://mermaid.ink/img/pako:eNqN0s2KwyAQAOBXkTmXPoA3N0oRkhiiaVnwIo27Ld0ki00OJebd65alZPuz1dOIH-PMMCNsu9oCBuvo3nw60-gWXQ9JElHlCnm_XHYjSkRWCMkVFznCaGeOz6z3iGWEpy9VQaTciJK-hJVkZU4ydg_nRU3dBZM1UaSMom8VXTH1P7107xFlMil58bj7Wx9ScxpVQfqw_VsYpp8KKaMyRs9JvRcs6usq50pGyQ2_Dmcu_8bzG0KwgMa6xuzrsIbjz5uGfmcbqwGHsDbuoEG3U3Bm6Dt5areAezfYBQzftent7-IC_jBfRzudAUIOwlA?type=png)](https://mermaid.live/edit#pako:eNqN0s2KwyAQAOBXkTmXPoA3N0oRkhiiaVnwIo27Ld0ki00OJebd65alZPuz1dOIH-PMMCNsu9oCBuvo3nw60-gWXQ9JElHlCnm_XHYjSkRWCMkVFznCaGeOz6z3iGWEpy9VQaTciJK-hJVkZU4ydg_nRU3dBZM1UaSMom8VXTH1P7107xFlMil58bj7Wx9ScxpVQfqw_VsYpp8KKaMyRs9JvRcs6usq50pGyQ2_Dmcu_8bzG0KwgMa6xuzrsIbjz5uGfmcbqwGHsDbuoEG3U3Bm6Dt5areAezfYBQzftent7-IC_jBfRzudAUIOwlA) 
