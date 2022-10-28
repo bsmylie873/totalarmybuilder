@@ -25,7 +25,6 @@ INSERT INTO factions(name) values ('Wood Elves');
 INSERT INTO avatars(id, url) values (0, 'null');
 INSERT INTO avatars(id, url) values (1, 'null1');
 
-/*
 INSERT INTO units(name, cost, avatar_id) values ('Boyar', 1550, 1);
 INSERT INTO units(name, cost, avatar_id) values ('Ice Witch (Ice)', 2062, 1);
 INSERT INTO units(name, cost, avatar_id) values ('Ice Witch (Tempest)', 2062, 1);
@@ -54,7 +53,7 @@ INSERT into units(name, cost, avatar_id) values ('Snow Leopard', 650, 1);
 INSERT into units(name, cost, avatar_id) values ('Elemental Bear', 1900, 1);
 INSERT into units(name, cost, avatar_id) values ('Little Grom', 650, 1);
 
-INSERT into units_factions(unit_id, faction_id) values (0,10);
+/* INSERT into units_factions(unit_id, faction_id) values (0,10);
 INSERT into units_factions(unit_id, faction_id) values (1,10);
 INSERT into units_factions(unit_id, faction_id) values (2,10);
 INSERT into units_factions(unit_id, faction_id) values (3,10);
@@ -90,4 +89,4 @@ INSERT into lords(unit_id) values (4);
 
 INSERT into heroes(unit_id) values (5);
 INSERT into heroes(unit_id) values (6);
-INSERT into heroes(unit_id) values (7); */
+INSERT into heroes(unit_id) values (7); */ 
