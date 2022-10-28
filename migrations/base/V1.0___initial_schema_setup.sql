@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS avatar(
 
 CREATE TABLE IF NOT EXISTS compositions(
     id serial PRIMARY KEY,
-    NAME VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) UNIQUE NOT NULL,
   	battle_type INT not NULL,
   	faction_id INT NOT NULL,
   	avatar_id INT NOT NULL,
