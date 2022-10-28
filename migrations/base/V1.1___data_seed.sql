@@ -53,7 +53,7 @@ INSERT into units(name, cost, avatar_id) values ('Snow Leopard', 650, 1);
 INSERT into units(name, cost, avatar_id) values ('Elemental Bear', 1900, 1);
 INSERT into units(name, cost, avatar_id) values ('Little Grom', 650, 1);
 
-/* INSERT into units_factions(unit_id, faction_id) values (0,10);
+INSERT into units_factions(unit_id, faction_id) values (0,10);
 INSERT into units_factions(unit_id, faction_id) values (1,10);
 INSERT into units_factions(unit_id, faction_id) values (2,10);
 INSERT into units_factions(unit_id, faction_id) values (3,10);
@@ -81,6 +81,7 @@ INSERT into units_factions(unit_id, faction_id) values (24,10);
 INSERT into units_factions(unit_id, faction_id) values (25,10);
 INSERT into units_factions(unit_id, faction_id) values (26,10);
 
+/*
 INSERT into lords(unit_id) values (0);
 INSERT into lords(unit_id) values (1);
 INSERT into lords(unit_id) values (2);
