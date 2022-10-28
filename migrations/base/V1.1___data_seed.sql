@@ -22,7 +22,7 @@ INSERT INTO factions(name) values ('Vampire Counts');
 INSERT INTO factions(name) values ('Warriors of Chaos');
 INSERT INTO factions(name) values ('Wood Elves');
 
-INSERT INTO avatar(id, url) values (0, 'null');
+/* INSERT INTO avatar(id, url) values (0, 'null');
 INSERT INTO avatar(id, url) values (1, 'null1');
 
 INSERT INTO units(name, cost, avatar_id) values ('Boyar', 1550, 1);
@@ -89,4 +89,4 @@ INSERT into lords(unit_id) values (4);
 
 INSERT into heroes(unit_id) values (5);
 INSERT into heroes(unit_id) values (6);
-INSERT into heroes(unit_id) values (7);
+INSERT into heroes(unit_id) values (7); */
