@@ -22,12 +22,13 @@ INSERT INTO factions(name) values ('Vampire Counts');
 INSERT INTO factions(name) values ('Warriors of Chaos');
 INSERT INTO factions(name) values ('Wood Elves');
 
-INSERT into avatar(url) values ('https://warhammer3.totalwar.com/static/a6487c12dcd022546d7cf8935c691367/a3804/WHIII.webp')
+INSERT INTO avatar(id, url) values (0, 'null');
+INSERT INTO avatar(id, url) values (1, 'null1');
 
-INSERT into units(name, cost, avatar_id) values ('Boyar', 1550, 1);
-INSERT into units(name, cost, avatar_id) values ('Ice Witch (Ice)', 2062, 1);
-INSERT into units(name, cost, avatar_id) values ('Ice Witch (Tempest)', 2062, 1);
-INSERT into units(name, cost, avatar_id) values ('Kotaltyn', 2100, 1);
+INSERT INTO units(name, cost, avatar_id) values ('Boyar', 1550, 1);
+INSERT INTO units(name, cost, avatar_id) values ('Ice Witch (Ice)', 2062, 1);
+INSERT INTO units(name, cost, avatar_id) values ('Ice Witch (Tempest)', 2062, 1);
+INSERT INTO units(name, cost, avatar_id) values ('Kotaltyn', 2100, 1);
 INSERT into units(name, cost, avatar_id) values ('Tzarina Katarin', 2312, 1);
 INSERT into units(name, cost, avatar_id) values ('Patriarch', 1500, 1);
 INSERT into units(name, cost, avatar_id) values ('Frost Maiden (Ice)', 1712, 1);
