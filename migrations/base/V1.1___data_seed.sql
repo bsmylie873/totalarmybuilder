@@ -83,7 +83,6 @@ INSERT into units_factions(unit_id, faction_id) values (24,10);
 INSERT into units_factions(unit_id, faction_id) values (25,10);
 INSERT into units_factions(unit_id, faction_id) values (26,10);
 
-/*
 INSERT into lords(unit_id) values (0);
 INSERT into lords(unit_id) values (1);
 INSERT into lords(unit_id) values (2);
@@ -92,6 +91,6 @@ INSERT into lords(unit_id) values (4);
 
 INSERT into heroes(unit_id) values (5);
 INSERT into heroes(unit_id) values (6);
-INSERT into heroes(unit_id) values (7); */ 
+INSERT into heroes(unit_id) values (7);
 
 SET session_replication_role = 'origin';
