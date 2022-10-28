@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS factions(
   	name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS avatar(
+CREATE TABLE IF NOT EXISTS avatars(
     id serial PRIMARY KEY,
   	url VARCHAR(255) NOT NULL
 );
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS compositions(
   	FOREIGN KEY (faction_id)
       REFERENCES factions (id),
   	FOREIGN KEY (avatar_id)
-      REFERENCES avatar (id)
+      REFERENCES avatars (id)
 );
 
 CREATE TABLE IF NOT EXISTS units(
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS units(
   	cost INT NOT NULL,
   	avatar_id INT NOT NULL,
   	FOREIGN KEY (avatar_id)
-      REFERENCES avatar (id)
+      REFERENCES avatars (id)
 );
 
 CREATE TABLE IF NOT EXISTS lords(
