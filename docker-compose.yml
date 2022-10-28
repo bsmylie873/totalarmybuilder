@@ -1,0 +1,29 @@
+version: '3.4'
+services:
+  db:
+    image: postgres:14-bullseye
+    container_name: tw-army-builder_postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: tw-army-builder
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:6
+    container_name: tw-army-builder_pgadmin
+    ports:
+      - '8000:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@tw-army-builder.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+volumes:
+  db:
+    name: tw-army-builder_postgres
+  pgadmin:
+    name: tw-army-builder_pgadmin
