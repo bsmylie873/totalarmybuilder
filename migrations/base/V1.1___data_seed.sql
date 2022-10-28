@@ -1,3 +1,5 @@
+SET session_replication_role = 'replica';
+
 INSERT INTO factions(name) values ('Beastmen');
 INSERT INTO factions(name) values ('Bretonnia');
 INSERT INTO factions(name) values ('Daemons of Chaos');
@@ -91,3 +93,5 @@ INSERT into lords(unit_id) values (4);
 INSERT into heroes(unit_id) values (5);
 INSERT into heroes(unit_id) values (6);
 INSERT into heroes(unit_id) values (7); */ 
+
+SET session_replication_role = 'origin';
