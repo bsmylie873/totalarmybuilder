@@ -1,9 +1,10 @@
 # API Specification
 
 ## FACTIONS
-`GET /factions` Return a list of all factions.
+### Return a list of all factions.
+`GET /factions` 
 
-Response \
+Response: \
 `[
   {
     "id": 1,
@@ -16,9 +17,10 @@ Response \
 etc...
 ]`
 
-`GET /factions/{id}` Return a specific faction by id.
+### Return a specific faction by id.
+`GET /factions/{id}`
 
-Response \
+Response: \
 `[
   {
     "id": 13,
@@ -27,9 +29,10 @@ Response \
 ]`
 
 ## UNITS
-`GET /units` Return a list of all units.
+### Return a list of all units.
+`GET /units` 
 
-Response \
+Response: \
 `[
   {
     "id": 1,
@@ -46,9 +49,10 @@ Response \
 etc...
 ]`
 
-`GET /units/{id}` Return a specific unit by id.
+### Return a specific unit by id.
+`GET /units/{id}`
 
-Response \
+Response: \
 `[
   {
     "id": 11,
@@ -58,8 +62,11 @@ Response \
   }
 ]`
 
-`GET /units/{factionId}` Return all units which belong to a faction.
+### Return all units which belong to a faction.
+`GET /units/{factionId}` 
 
+
+Response: \
 `[
   {
     "id": 28,
@@ -76,9 +83,10 @@ Response \
 etc...
 ]`
 
-`GET /units/{compositionId}` Return units associated with a composition.
+### Return units associated with a composition.
+`GET /units/{compositionId}` 
 
-Response \
+Response: \
 `[
   {
     "id": 11,
@@ -96,9 +104,10 @@ etc...
 ]`
 
 ## COMPOSITIONS
-`GET /compositions` Return a list of all compositions.
+### Return a list of all compositions.
+`GET /compositions` 
 
-Response \
+Response: \
 `[
   {
     "id": 1,
@@ -117,9 +126,10 @@ Response \
 etc...
 ]`
 
-`GET /compositions/{id}` Return a specific composition by id.
+### Return a specific composition by id.
+`GET /compositions/{id}` 
 
-Response \
+Response: \
 `[
   {
     "id": 66,
@@ -130,9 +140,10 @@ Response \
   }
 ]`
 
-`GET /compositions/{accountId}` Return compositions made by a specific account.
+### Return compositions made by a specific account.
+`GET /compositions/{accountId}` 
 
-Response \
+Response: \
 `[
   {
     "id": 756,
@@ -144,9 +155,10 @@ Response \
 etc...
 ]`
 
-`POST /compositions/{accountId}` Create a new composition tied to an account.
+### Create a new composition tied to an account.
+`POST /compositions/{accountId}` 
 
-Request \
+Request: \
 `[
   {
     "id": 999,
@@ -157,10 +169,12 @@ Request \
   }
 ]`
 
-Response - `201 Created`
+Response: 
+`201 Created`
+### Return all compositions which belong to a faction.
+`GET /compositions/{factionId}` 
 
-`GET /compositions/{factionId}` Return all compositions which belong to a faction.
-
+Response: \
 `[
   {
     "id": 66,
@@ -179,12 +193,11 @@ Response - `201 Created`
 etc...
 ]`
 
-
-
 ## ACCOUNT
-`GET /account/{id}` Return a account by id.
+### Return a account by id.
+`GET /account/{id}` 
 
-Response \
+Response: \
 `[
   {
     "id": 12345,
@@ -192,9 +205,10 @@ Response \
   }
 ]`
 
-`POST /account` Create a new account.
+### Create a new account.
+`POST /account` 
 
-Request \
+Request: \
 `[
   {
     "username": "new_user",
@@ -202,11 +216,13 @@ Request \
   }
 ]`
 
-Response - `201 Created`
+Response:
+`201 Created`
 
-`PUT /account/{id}` Update an account by id.
+### Update an account by id.
+`PUT /account/{id}` 
 
-Request \
+Request: \
 `[
   {
     "username": "updated_username",
@@ -214,6 +230,7 @@ Request \
   }
 ]`
 
-`DELETE /users/{id}` Delete an account by id. \
+### Delete an account by id.
+`DELETE /users/{id}` 
 
 Response - `204 No Content`
