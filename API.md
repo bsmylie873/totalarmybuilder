@@ -23,7 +23,8 @@ etc...
 `GET /factions/{id}`
 
 Response:
-```[
+```
+[
   {
     "id": 13,
     "name": "Norsca"
@@ -95,7 +96,8 @@ etc...
 `GET /units/{compositionId}` 
 
 Response:
-```[
+```
+[
   {
     "id": 11,
     "name": "Tzar Guard",
