@@ -27,6 +27,7 @@ INSERT INTO factions(name) VALUES ('Wood Elves');
 INSERT INTO avatars(id, url) VALUES (0, 'null');
 INSERT INTO avatars(id, url) VALUES (1, 'null1');
 
+/* Kislev */
 INSERT INTO units(name, cost, avatar_id) VALUES ('Boyar', 1550, 1);
 INSERT INTO units(name, cost, avatar_id) VALUES ('Ice Witch (Ice)', 2062, 1);
 INSERT INTO units(name, cost, avatar_id) VALUES ('Ice Witch (Tempest)', 2062, 1);
@@ -92,5 +93,71 @@ INSERT INTO lords(unit_id) VALUES (4);
 INSERT INTO heroes(unit_id) VALUES (5);
 INSERT INTO heroes(unit_id) VALUES (6);
 INSERT INTO heroes(unit_id) VALUES (7);
+
+/*Grand Cathay*/
+INSERT INTO units(name, cost, avatar_id) VALUES ('Lord Magistrate', 1300, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Dragon-blooded Shugengan Lord (Yin)', 2062, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Dragon-blooded Shugengan Lord (Yang)', 2062, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Zhao Ming, the Iron Dragon', 3112, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Mia Ying, the Storm Dragon', 3362, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Alchemist', 1512, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Astromancer', 1562, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Peasant Long Spearmen', 350, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Jade Warriors', 500, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Jade Warriors (Halberds)', 700, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Celestial Dragon Guard', 1050, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Peasant Archers', 400, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Iron Hail Gunners', 500, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Jade Warrior Crossbowmen', 600, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Jade Warrior Crossbowmen (Shields)', 700, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Crane Gunners', 1000, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Celestial Dragon Crossbowmen', 1050, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Peasant Horsemen', 400, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Jade Lancers', 800, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Great Longma Riders', 1400, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Terracotta Sentinel', 1600, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Sky Lantern', 800, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Sky-junk', 1500, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Grand Cannon', 900, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Wu Xing War Compass', 950, 1);
+INSERT INTO units(name, cost, avatar_id) VALUES ('Fire Rain Rocket', 1100, 1);
+
+INSERT INTO units_factions(unit_id, faction_id) VALUES (27,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (28,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (29,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (30,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (31,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (32,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (33,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (34,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (35,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (36,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (37,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (38,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (39,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (40,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (41,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (42,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (43,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (44,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (45,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (46,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (47,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (48,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (49,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (50,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (51,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (52,6);
+INSERT INTO units_factions(unit_id, faction_id) VALUES (53,6);
+
+INSERT INTO lords(unit_id) VALUES (27);
+INSERT INTO lords(unit_id) VALUES (28);
+INSERT INTO lords(unit_id) VALUES (29);
+INSERT INTO lords(unit_id) VALUES (30);
+INSERT INTO lords(unit_id) VALUES (31);
+
+INSERT INTO heroes(unit_id) VALUES (32);
+INSERT INTO heroes(unit_id) VALUES (33);
+INSERT INTO heroes(unit_id) VALUES (34);
 
 SET session_replication_role = 'origin';
