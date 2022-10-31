@@ -20,7 +20,7 @@ etc...
 ```
 
 ### Return a specific faction by id.
-`GET /factions/{id}`
+`GET /factions/{factionId}`
 
 Response:
 ```
@@ -56,7 +56,7 @@ etc...
 ```
 
 ### Return a specific unit by id.
-`GET /units/{id}`
+`GET /units/{unitId}`
 
 Response:
 ```
@@ -71,7 +71,7 @@ Response:
 ```
 
 ### Return all units which belong to a faction.
-`GET /units/{factionId}` 
+`GET /factions/{factionId}/units` 
 
 Response: 
 ```
@@ -93,7 +93,7 @@ etc...
 ```
 
 ### Return units associated with a composition.
-`GET /units/{compositionId}` 
+`GET compositions/{compositionId}/units` 
 
 Response:
 ```
@@ -140,7 +140,7 @@ etc...
 ```
 
 ### Return a specific composition by id.
-`GET /compositions/{id}` 
+`GET /compositions/{compositionId}` 
 
 Response:
 ```
@@ -156,7 +156,7 @@ Response:
 ```
 
 ### Return compositions made by a specific account.
-`GET /compositions/{accountId}` 
+`GET /accounts/{accountId}/compositions` 
 
 Response:
 ```
@@ -173,7 +173,7 @@ etc...
 ```
 
 ### Create a new composition tied to an account.
-`POST /compositions/{accountId}` 
+`POST /accounts/{accountId}/compositions` 
 
 Request:
 ```
@@ -191,32 +191,8 @@ Request:
 Response: 
 `201 Created`
 
-### Return all compositions which belong to a faction.
-`GET /compositions/{factionId}` 
-
-Response:
-```
-[
-  {
-    "id": 66,
-    "name": "Empire Wagons VS TK",
-    "battle_type": "Domination",
-    "faction_id": "6"
-    "avatar_id": "344"
-  },
-  {
-    "id": 653,
-    "name": "Demigryph Focus",
-    "battle_type": "Land Battle",
-    "faction_id": "6"
-    "avatar_id": "333"
-  }
-etc...
-]
-```
-
 ### Update a composition by id.
-`PUT /compositions/{id}` 
+`PATCH /compositions/{compositionId}` 
 
 Request:
 ```
@@ -229,6 +205,12 @@ Request:
   }
 ]
 ```
+
+### Delete an account by id.
+`DELETE /compositions/{compositionId}` 
+
+Response - `204 No Content`
+
 
 ## ACCOUNT
 ### Return a account by id.
@@ -261,7 +243,7 @@ Response:
 `201 Created`
 
 ### Update an account by id.
-`PUT /account/{id}` 
+`PUT /account/{accountId}` 
 
 Request:
 ```
@@ -274,6 +256,6 @@ Request:
 ```
 
 ### Delete an account by id.
-`DELETE /users/{id}` 
+`DELETE /account/{accountId}` 
 
 Response - `204 No Content`
