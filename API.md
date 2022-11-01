@@ -100,7 +100,7 @@ Response:
           "id": 11,
           "url": "https://imagebucket.com/11"
         }
-  },
+  }
 ]
 ```
 
@@ -160,18 +160,16 @@ Response:
         },
     "units": [
       {
-        {
-          "id": 11,
-          "name": "Tzar Guard",
-          "cost": 1000,
-          "avatar_id": 11
-        },
-        {   
-          "id": 11,
-          "name": "Tzar Guard",
-          "cost": 1000,
-          "avatar_id": 11
-        }
+        "id": 11,
+        "name": "Tzar Guard",
+        "cost": 1000,
+        "avatar_id": 11
+      },
+      {
+        "id": 11,
+        "name": "Tzar Guard",
+        "cost": 1000,
+        "avatar_id": 11
       }
     ]
   }
@@ -197,7 +195,6 @@ Response:
           "url": "https://imagebucket.com/532"
         },
     "units":[
-      {
         {   
           "id": 532,
           "name": "Malus Darkblade",
@@ -207,7 +204,6 @@ Response:
                 "url": "https://imagebucket.com/532"
                 }
         }
-      }
     ]
   }
 ]
@@ -290,7 +286,7 @@ Response:
 [
   {
     "id": 12345,
-    "username": "Joe Bloggs",
+    "username": "Joe Bloggs"
   }
 ]
 ```
