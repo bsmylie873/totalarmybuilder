@@ -54,4 +54,5 @@ Eventually this should be expanded to allow users to view other users' compositi
 * Allow export of army lists to be imported directly into Total War: Warhammer III (needs further investigation).
 * Allow authors to add replays of the army list (files or YouTube video links) in the description of the list.
 
-
+## Misc. Links
+ER Diagram: https://lucid.app/lucidchart/f1948f56-e07a-4611-a066-1d924d4d9c88/edit?viewport_loc=-267%2C-26%2C2460%2C1134%2C0_0&invitationId=inv_8920fb5c-98ba-4b28-b4b6-6f1213ef623c
