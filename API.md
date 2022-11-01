@@ -5,7 +5,7 @@
 `GET /factions` 
 
 Response:
-```
+```json
 [
   {
     "id": 1,
@@ -15,7 +15,6 @@ Response:
     "id": 2,
     "name": "Bretonnia"
   }
-etc...
 ]
 ```
 
@@ -23,7 +22,7 @@ etc...
 `GET /factions/{factionId}`
 
 Response:
-```
+```json
 [
   {
     "id": 13,
@@ -33,39 +32,20 @@ Response:
 ```
 
 ## UNITS
-### Return a list of all units.
-`GET /units` 
-
-Response:
-```
-[
-  {
-    "id": 1,
-    "name": "Boyar",
-    "cost": 1550,
-    "avatar_id:" "1"
-  },
-  {
-    "id": 2,
-    "name": "Ice Witch (Ice)",
-    "cost": 2062,
-    "avatar_id:" "2"
-  }
-etc...
-]
-```
-
 ### Return a specific unit by id.
 `GET /units/{unitId}`
 
 Response:
-```
+```json
 [
   {
     "id": 11,
     "name": "Tzar Guard",
     "cost": 1000,
-    "avatar_id:" "11"
+    "avatar": {   
+          "id": 11,
+          "url": "https://imagebucket.com/11"
+        }
   }
 ]
 ```
@@ -74,21 +54,26 @@ Response:
 `GET /factions/{factionId}/units` 
 
 Response: 
-```
+```json
 [
   {
     "id": 28,
     "name": "Lord Magistrate",
     "cost": 1300,
-    "avatar_id:" "28"
+    "avatar": {   
+          "id": 28,
+          "url": "https://imagebucket.com/28"
+        }
   },
   {
     "id": 29,
     "name": "Dragon-blooded Shugengan Lord (Yin)",
     "cost": 2062,
-    "avatar_id:" "29"
+    "avatar": {   
+          "id": 29,
+          "url": "https://imagebucket.com/29"
+        }
   }
-etc...
 ]
 ```
 
@@ -96,21 +81,26 @@ etc...
 `GET compositions/{compositionId}/units` 
 
 Response:
-```
+```json
 [
   {
     "id": 11,
     "name": "Tzar Guard",
     "cost": 1000,
-    "avatar_id:" "11"
+    "avatar": {   
+          "id": 11,
+          "url": "https://imagebucket.com/11"
+        }
   },
   {
     "id": 11,
     "name": "Tzar Guard",
     "cost": 1000,
-    "avatar_id:" "11"
+    "avatar": {   
+          "id": 11,
+          "url": "https://imagebucket.com/11"
+        }
   },
-etc...
 ]
 ```
 
@@ -119,23 +109,34 @@ etc...
 `GET /compositions` 
 
 Response:
-```
+```json
 [
   {
     "id": 1,
     "name": "Khorne Rush",
     "battle_type": "Land Battle",
-    "faction_id": "10"
-    "avatar_id": "145"
+    "faction": {
+          "id": 10,
+          "name": "Khorne"
+        },
+    "avatar": {   
+          "id": 145,
+          "url": "https://imagebucket.com/145"
+        }
   },
   {
     "id": 2,
     "name": "Wood Elf Skirmish",
     "battle_type": "Domination",
-    "faction_id": "23"
-    "avatar_id": "256"
+    "faction": {
+          "id": 23,
+          "name": "Wood Elves"
+        },
+    "avatar": {   
+          "id": 786,
+          "url": "https://imagebucket.com/786"
+        }
   }
-etc...
 ]
 ```
 
@@ -143,14 +144,36 @@ etc...
 `GET /compositions/{compositionId}` 
 
 Response:
-```
+```json
 [
   {
     "id": 66,
-    "name": "Empire Wagons VS TK",
+    "name": "Kislev VS TK",
     "battle_type": "Domination",
-    "faction_id": "6"
-    "avatar_id": "344"
+    "faction": {
+          "id": 11,
+          "name": "Kislev"
+        },
+    "avatar": {   
+          "id": 13,
+          "url": "https://imagebucket.com/13"
+        },
+    "units": [
+      {
+        {
+          "id": 11,
+          "name": "Tzar Guard",
+          "cost": 1000,
+          "avatar_id": 11
+        },
+        {   
+          "id": 11,
+          "name": "Tzar Guard",
+          "cost": 1000,
+          "avatar_id": 11
+        }
+      }
+    ]
   }
 ]
 ```
@@ -159,16 +182,34 @@ Response:
 `GET /accounts/{accountId}/compositions` 
 
 Response:
-```
+```json
 [
   {
     "id": 756,
     "name": "Dark Elves OP",
     "battle_type": "Land Battle",
-    "faction_id": "4"
-    "avatar_id": "744"
-  },
-etc...
+    "faction": {
+          "id": 4,
+          "name": "Dark Elves"
+        },
+    "avatar": {   
+          "id": 532,
+          "url": "https://imagebucket.com/532"
+        },
+    "units":[
+      {
+        {   
+          "id": 532,
+          "name": "Malus Darkblade",
+          "cost": 2316,
+          "avatar": {   
+                "id": 532,
+                "url": "https://imagebucket.com/532"
+                }
+        }
+      }
+    ]
+  }
 ]
 ```
 
@@ -176,14 +217,25 @@ etc...
 `POST /accounts/{accountId}/compositions` 
 
 Request:
-```
+```json
 [
   {
     "id": 999,
     "name": "New Composition",
     "battle_type": "Land Battle",
-    "faction_id": "1"
-    "avatar_id": "1"
+    "faction": {
+          "id": 1,
+          "name": "Beastmen"
+        },
+    "avatar": {   
+          "id": 1,
+          "url": "https://imagebucket.com/1"
+        },
+    "units": [
+      {
+
+      }
+    ]
   }
 ]
 ```
@@ -195,13 +247,30 @@ Response:
 `PATCH /compositions/{compositionId}` 
 
 Request:
-```
+```json
 [
   {
     "name": "updated_name",
-    "battle_type": "updated_battletype"
-    "faction_id": "updated_faction"
-    "avatar_id": "updated_avatar"
+    "battle_type": "updated_battletype",
+    "faction": {
+          "id": 0,
+          "name": "updated_faction"
+        },
+    "avatar": {   
+          "id": 0,
+          "url": "https://imagebucket.com/new_avatar"
+        },
+    "units": [
+      {   
+          "id": 9999,
+          "name": "New Unit",
+          "cost": 9999,
+          "avatar": {   
+                "id": 0,
+                "url": "https://imagebucket.com/new_avatar"
+        }
+      }
+    ]
   }
 ]
 ```
@@ -217,7 +286,7 @@ Response - `204 No Content`
 `GET /account/{id}` 
 
 Response:
-```
+```json
 [
   {
     "id": 12345,
@@ -230,7 +299,7 @@ Response:
 `POST /account` 
 
 Request:
-```
+```json
 [
   {
     "username": "new_user",
@@ -246,7 +315,7 @@ Response:
 `PUT /account/{accountId}` 
 
 Request:
-```
+```json
 [
   {
     "username": "updated_username",
@@ -259,3 +328,4 @@ Request:
 `DELETE /account/{accountId}` 
 
 Response - `204 No Content`
+
