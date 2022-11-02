@@ -1,5 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.ViewModels.Factions;
+using TotalArmyBuilder.Api.ViewModels.Units;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -10,29 +12,30 @@ public class FactionsController : Controller
     [HttpGet]
     public ActionResult GetFactions()
     {
-        var factions = new List<object>
+        List<FactionViewModel> Factions = new List<FactionViewModel>
         {
-            new { id = 1, name = "Beastmen"},
-            new { id = 2, name = "Bretonnia"},
+            new FactionViewModel{ Id = 1, Name = "Beastmen"},
+            new FactionViewModel{ Id = 2, Name = "Bretonnia"}
         };
         
-        return Ok(factions);
+        return Ok(Factions);
     }
     
     [HttpGet("{id}", Name = "GetFaction")]
-    public ActionResult GetFaction(int id)
+    public ActionResult<FactionViewModel> GetFaction(int id)
     {
         return Ok(new { id = 13, name = "Norsca"});
     }
     
     [HttpGet("{id}/Units/", Name = "GetFactionUnits")]
-    public ActionResult GetFactionUnits(int id)
+    public ActionResult<UnitViewModel> GetFactionUnits(int id)
     {
-        var factionUnits = new List<object>
+        List<UnitViewModel> factionUnits = new List<UnitViewModel>
         {
-            new { id = 28, name = "Lord Magistrate", cost = 1300, avatar = "avatar_details" },
-            new { id = 29, name = "Dragon-blooded Shugengan Lord (Yin)", cost = 2062, avatar = "avatar_details" }
+            new UnitViewModel{ Id = 28, Name = "Lord Magistrate", Cost = 1300, Avatar_Id = 28 },
+            new UnitViewModel{ Id = 29, Name = "Dragon-blooded Shugengan Lord (Yin)", Cost = 2062, Avatar_Id = 28 }
         };
         return Ok(factionUnits);
+        
     }
 }

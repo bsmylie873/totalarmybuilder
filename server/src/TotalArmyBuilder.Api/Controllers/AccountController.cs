@@ -1,5 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.ViewModels.Accounts;
+using TotalArmyBuilder.Api.ViewModels.Compositions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -7,17 +9,17 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class AccountsController : Controller
 {
-
+    
     [HttpGet("{id}", Name = "GetAccount")]
-    public ActionResult GetAccount(int id)
+    public ActionResult<AccountViewModel> GetAccount(int id)
     {
-        return Ok(new { Amount = 108, Message = "Hello" });
+        return Ok(new { Id = 108, Email = "user123@email.com", Username = "user123"});
     }
     
     [HttpGet("{id}/Compositions/", Name = "GetAccountCompositions")]
-    public ActionResult GetAccountCompositions(int id)
+    public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {
-        return Ok(new { Amount = 108, Message = "Hello" });
+        return Ok(new { Id = 1, Name  = "Khorne Rush", Battle_Type = 0, Faction_Id = 12, Avatar_Id = 76 });
     }
     
     [HttpPost]

@@ -1,5 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.ViewModels.Compositions;
+using TotalArmyBuilder.Api.ViewModels.Units;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -8,37 +10,35 @@ namespace TotalArmyBuilder.Api.Controllers;
 public class CompositionsController : Controller
 {
     [HttpGet]
-    public ActionResult GetCompositions()
+    public ActionResult<CompositionViewModel> GetCompositions()
     {
-        var compositions = new List<object>
+        List<CompositionViewModel> Compositions = new List<CompositionViewModel>
         {
-            new { id = 1, name = "Khorne Rush", battle_type = "Land Battle"},
-            new { id = 2, name = "Wood Elf Rush", battle_type = "Domination"},
+            new CompositionViewModel{Id = 1, Name = "Khorne Rush", Battle_Type = 0, Faction_Id = 12, Avatar_Id = 76},
+            new CompositionViewModel{Id = 2, Name = "Wood Elf Rush", Battle_Type = 1, Faction_Id = 23, Avatar_Id = 678}
         };
-        
-        return Ok(compositions);
+        return Ok(Compositions);
     }
     
     [HttpGet("{id}", Name = "GetComposition")]
-    public ActionResult GetComposition(int id)
+    public ActionResult<CompositionDetailViewModel> GetComposition(int id)
     {
-        return Ok(new { id = 1, name = "Khorne Rush", battle_type = "Land Battle"});
-    }
-    
-    /*[HttpGet("{id}", Name = "GetCompositionUnits")]
-    public ActionResult GetCompositionUnits(int id)
-    {
-        var compositionUnits = new List<object>
+        List<UnitDetailViewModel> Unit_List = new List<UnitDetailViewModel>
         {
-            new { id = 11, name = "Tzar Guard", cost = 1100, avatar = "avatar_details" },
-            new { id = 11, name = "Tzar Guard", cost = 1100, avatar = "avatar_details" }
+            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, Avatar_Id = 11 },
+            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, Avatar_Id = 11 }
         };
-        return Ok(compositionUnits);
-    }*/
+        CompositionDetailViewModel Composition = new CompositionDetailViewModel
+        {
+            Id = 44, Name = "Tzar Guard Rush", Battle_Type = 0,
+            Faction_Id = 12, Avatar_Id = 76, Unit_List = Unit_List
+        };
+        return Ok(Composition);
+    }
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccountComposition(object compositionDetails)
+    public ActionResult CreateAccountComposition(CompositionDetailViewModel compositionDetails)
     {
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -46,7 +46,7 @@ public class CompositionsController : Controller
     [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateComposition(int id, [FromBody] object compositionDetails)
+    public ActionResult UpdateComposition(int id, [FromBody] CompositionDetailViewModel compositionDetails)
     {
         return NoContent();
     }
