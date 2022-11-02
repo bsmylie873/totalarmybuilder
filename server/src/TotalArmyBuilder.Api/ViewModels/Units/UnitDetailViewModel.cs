@@ -1,6 +1,6 @@
 namespace TotalArmyBuilder.Api.ViewModels.Units;
 
-public class UnitDetailViewModel
+public class UnitDetailViewModel : UnitViewModel
 {
     
 }

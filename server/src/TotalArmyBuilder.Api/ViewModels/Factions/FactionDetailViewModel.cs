@@ -1,6 +1,6 @@
 namespace TotalArmyBuilder.Api.ViewModels.Factions;
 
-public class FactionDetailViewModel
+public class FactionDetailViewModel : FactionViewModel
 {
     
 }
