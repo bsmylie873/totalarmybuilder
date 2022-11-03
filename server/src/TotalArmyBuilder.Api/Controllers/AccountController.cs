@@ -24,7 +24,7 @@ public class AccountsController : Controller
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccount(object accountDetails)
+    public ActionResult CreateAccount(CreateAccountViewModel accountDetails)
     {
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -32,7 +32,7 @@ public class AccountsController : Controller
     [HttpPut]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateAccount(int id, [FromBody] object accountDetails)
+    public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
         return NoContent();
     }

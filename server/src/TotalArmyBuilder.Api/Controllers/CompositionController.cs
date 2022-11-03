@@ -38,7 +38,7 @@ public class CompositionsController : Controller
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccountComposition(CompositionDetailViewModel compositionDetails)
+    public ActionResult CreateAccountComposition(CreateCompositionViewModel compositionDetails)
     {
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -46,7 +46,7 @@ public class CompositionsController : Controller
     [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateComposition(int id, [FromBody] CompositionDetailViewModel compositionDetails)
+    public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
     {
         return NoContent();
     }

@@ -22,7 +22,7 @@ public class FactionsController : Controller
     }
     
     [HttpGet("{id}", Name = "GetFaction")]
-    public ActionResult<FactionViewModel> GetFaction(int id)
+    public ActionResult<FactionDetailViewModel> GetFaction(int id)
     {
         return Ok(new { id = 13, name = "Norsca"});
     }
