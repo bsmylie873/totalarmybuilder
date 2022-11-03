@@ -14,8 +14,8 @@ public class CompositionsController : Controller
     {
         List<CompositionViewModel> Compositions = new List<CompositionViewModel>
         {
-            new CompositionViewModel{Id = 1, Name = "Khorne Rush", Battle_Type = 0, Faction_Id = 12, Avatar_Id = 76},
-            new CompositionViewModel{Id = 2, Name = "Wood Elf Rush", Battle_Type = 1, Faction_Id = 23, Avatar_Id = 678}
+            new CompositionViewModel{Name = "Khorne Rush", Battle_Type = 0, Faction_Id = 12, Avatar_Id = 76},
+            new CompositionViewModel{Name = "Wood Elf Rush", Battle_Type = 1, Faction_Id = 23, Avatar_Id = 678}
         };
         return Ok(Compositions);
     }
