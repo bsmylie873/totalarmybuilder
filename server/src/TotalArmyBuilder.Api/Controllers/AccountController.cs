@@ -2,6 +2,8 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
+using TotalArmyBuilder.Dal.Interfaces;
+using TotalArmyBuilder.Dal.Models;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -9,11 +11,20 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class AccountsController : Controller
 {
+
+    private readonly ITotalArmyDatabase _database;
+    public AccountsController(ITotalArmyDatabase database) => _database = database;
     
     [HttpGet("{id}", Name = "GetAccount")]
     public ActionResult<AccountDetailViewModel> GetAccount(int id)
     {
-        return Ok(new { Id = 765, Username = "user123"});
+
+        var account = _database.Get<Account>().FirstOrDefault(x => x.Id == id);
+        if (account == null)
+        {
+            return NotFound();
+        }
+        return Ok(new { Id = account.Id, Username = account.Username});
     }
     
     [HttpGet("{id}/Compositions/", Name = "GetAccountCompositions")]

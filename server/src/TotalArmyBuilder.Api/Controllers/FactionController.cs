@@ -32,8 +32,8 @@ public class FactionsController : Controller
     {
         List<UnitViewModel> factionUnits = new List<UnitViewModel>
         {
-            new UnitViewModel{ Id = 28, Name = "Lord Magistrate", Cost = 1300, Avatar_Id = 28 },
-            new UnitViewModel{ Id = 29, Name = "Dragon-blooded Shugengan Lord (Yin)", Cost = 2062, Avatar_Id = 28 }
+            new UnitViewModel{ Id = 28, Name = "Lord Magistrate", Cost = 1300, AvatarId = 28 },
+            new UnitViewModel{ Id = 29, Name = "Dragon-blooded Shugengan Lord (Yin)", Cost = 2062, AvatarId = 28 }
         };
         return Ok(factionUnits);
         

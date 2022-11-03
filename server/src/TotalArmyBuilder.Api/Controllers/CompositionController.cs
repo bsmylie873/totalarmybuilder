@@ -25,8 +25,8 @@ public class CompositionsController : Controller
     {
         List<UnitDetailViewModel> Unit_List = new List<UnitDetailViewModel>
         {
-            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, Avatar_Id = 11 },
-            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, Avatar_Id = 11 }
+            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, AvatarId = 11 },
+            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, AvatarId = 11 }
         };
         CompositionDetailViewModel Composition = new CompositionDetailViewModel
         {
