@@ -2,29 +2,34 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Api.ViewModels.Units;
-
+using TotalArmyBuilder.Dal.Interfaces;
+using TotalArmyBuilder.Dal.Models;
 namespace TotalArmyBuilder.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class FactionsController : Controller
 {
-    [HttpGet]
-    public ActionResult GetFactions()
-    {
-        List<FactionViewModel> Factions = new List<FactionViewModel>
-        {
-            new FactionViewModel{ Id = 1, Name = "Beastmen"},
-            new FactionViewModel{ Id = 2, Name = "Bretonnia"}
-        };
+    private readonly ITotalArmyDatabase _database;
+    public FactionsController(ITotalArmyDatabase database) => _database = database;
         
-        return Ok(Factions);
+    [HttpGet]
+    public ActionResult<FactionDetailViewModel> GetAccounts(int id)
+    {
+        var factions = _database.Get<Faction>().ToList();
+        return Ok(new {factions});
     }
     
     [HttpGet("{id}", Name = "GetFaction")]
     public ActionResult<FactionDetailViewModel> GetFaction(int id)
     {
-        return Ok(new { id = 13, name = "Norsca"});
+
+        var faction = _database.Get<Faction>().FirstOrDefault(x => x.Id == id);
+        if (faction == null)
+        {
+            return NotFound();
+        }
+        return Ok(new { Id = faction.Id, Name = faction.Name});
     }
     
     [HttpGet("{id}/Units/", Name = "GetFactionUnits")]

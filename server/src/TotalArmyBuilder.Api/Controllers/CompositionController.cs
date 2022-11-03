@@ -2,6 +2,8 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
+using TotalArmyBuilder.Dal.Interfaces;
+using TotalArmyBuilder.Dal.Models;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -9,21 +11,20 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class CompositionsController : Controller
 {
-    [HttpGet]
-    public ActionResult<CompositionViewModel> GetCompositions()
-    {
-        List<CompositionViewModel> Compositions = new List<CompositionViewModel>
-        {
-            new CompositionViewModel{Name = "Khorne Rush", Battle_Type = 0, Faction_Id = 12, Avatar_Id = 76},
-            new CompositionViewModel{Name = "Wood Elf Rush", Battle_Type = 1, Faction_Id = 23, Avatar_Id = 678}
-        };
-        return Ok(Compositions);
-    }
+    private readonly ITotalArmyDatabase _database;
+    public CompositionsController(ITotalArmyDatabase database) => _database = database;
     
+    [HttpGet]
+    public ActionResult<CompositionViewModel> GetCompositions(int id)
+    {
+        var compositions = _database.Get<Composition>().ToList();
+        return Ok(new {compositions});
+    }
+
     [HttpGet("{id}", Name = "GetComposition")]
     public ActionResult<CompositionDetailViewModel> GetComposition(int id)
     {
-        List<UnitDetailViewModel> Unit_List = new List<UnitDetailViewModel>
+        /*List<UnitDetailViewModel> Unit_List = new List<UnitDetailViewModel>
         {
             new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, AvatarId = 11 },
             new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, AvatarId = 11 }
@@ -32,8 +33,18 @@ public class CompositionsController : Controller
         {
             Id = 44, Name = "Tzar Guard Rush", Battle_Type = 0,
             Faction_Id = 12, Avatar_Id = 76, Unit_List = Unit_List
-        };
-        return Ok(Composition);
+        };*/
+        
+        var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
+        if (composition == null)
+        {
+            return NotFound();
+        }
+        return Ok(new
+        {
+            Id = composition.Id, Name = composition.Name, BattleType = composition.BattleType, 
+            FactionId = composition.FactionId, AvatarId = composition.AvatarId
+        });
     }
     
     [HttpPost]
