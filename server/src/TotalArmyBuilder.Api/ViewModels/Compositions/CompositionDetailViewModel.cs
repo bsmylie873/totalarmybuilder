@@ -4,5 +4,5 @@ namespace TotalArmyBuilder.Api.ViewModels.Compositions;
 
 public class CompositionDetailViewModel : CompositionViewModel
 {
-    public List<UnitDetailViewModel>  Unit_List { get; set; }
+    public List<UnitDetailViewModel> Unit_List { get; set; }
 }

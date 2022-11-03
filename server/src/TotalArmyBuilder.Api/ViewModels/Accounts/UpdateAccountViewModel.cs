@@ -1,6 +1,6 @@
 namespace TotalArmyBuilder.Api.ViewModels.Accounts;
 
-public class UpdateAccountViewModel
+public class UpdateAccountViewModel : AccountViewModel
 {
     
 }

@@ -11,9 +11,9 @@ public class AccountsController : Controller
 {
     
     [HttpGet("{id}", Name = "GetAccount")]
-    public ActionResult<AccountViewModel> GetAccount(int id)
+    public ActionResult<AccountDetailViewModel> GetAccount(int id)
     {
-        return Ok(new { Id = 108, Email = "user123@email.com", Username = "user123"});
+        return Ok(new { Id = 765, Username = "user123"});
     }
     
     [HttpGet("{id}/Compositions/", Name = "GetAccountCompositions")]
