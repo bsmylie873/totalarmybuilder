@@ -42,8 +42,8 @@ public class CompositionsController : Controller
         }
         return Ok(new
         {
-            Id = composition.Id, Name = composition.Name, BattleType = composition.BattleType, 
-            FactionId = composition.FactionId, AvatarId = composition.AvatarId
+            composition.Id, composition.Name, composition.BattleType, 
+            composition.FactionId,composition.AvatarId
         });
     }
     
@@ -51,6 +51,9 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public ActionResult CreateAccountComposition(CreateCompositionViewModel compositionDetails)
     {
+        _database.Add(new Composition{Name = compositionDetails.Name, BattleType = compositionDetails.Battle_Type, 
+            FactionId = compositionDetails.Faction_Id, AvatarId = compositionDetails.Avatar_Id});
+        _database.SaveChanges();
         return StatusCode((int)HttpStatusCode.Created);
     }
     
@@ -59,6 +62,12 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
     {
+        var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
+        composition.Name = compositionDetails.Name;
+        composition.BattleType = compositionDetails.Battle_Type;
+        composition.FactionId = compositionDetails.Faction_Id;
+        composition.AvatarId = compositionDetails.Avatar_Id;
+        _database.SaveChanges();
         return NoContent();
     }
     
@@ -67,6 +76,9 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id)
     {
+        var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
+        _database.Delete(composition);
+        _database.SaveChanges();
         return NoContent();
     }
 }

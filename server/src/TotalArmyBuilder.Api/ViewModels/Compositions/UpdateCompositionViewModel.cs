@@ -1,6 +1,6 @@
 namespace TotalArmyBuilder.Api.ViewModels.Compositions;
 using FluentValidation;
-public class UpdateCompositionViewModel
+public class UpdateCompositionViewModel : CompositionDetailViewModel
 {
     
 }

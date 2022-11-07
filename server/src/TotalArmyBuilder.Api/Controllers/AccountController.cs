@@ -33,18 +33,21 @@ public class AccountsController : Controller
         return Ok(new { Id = account.Id, Username = account.Username});
     }
     
-    [HttpGet("{id}/Compositions/", Name = "GetAccountCompositions")]
+    [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {
-        var compositions = _database.Get<Account>().FirstOrDefault(x => x.Id == id);
+        var compositions = _database.Get<Account_Composition>().All
+            (x => x.AccountId == id);
         
-        return Ok(new { Id = 1, Name  = "Khorne Rush", Battle_Type = 0, Faction_Id = 12, Avatar_Id = 76 });
+        return Ok(new {compositions});
     }
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccount(CreateAccountViewModel accountDetails)
+    public ActionResult CreateAccount(CreateAccountViewModel AccountDetails)
     {
+        _database.Add(new Account{Email = AccountDetails.Email, Username = AccountDetails.Username});
+        _database.SaveChanges();
         return StatusCode((int)HttpStatusCode.Created);
     }
 
@@ -52,7 +55,10 @@ public class AccountsController : Controller
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
-    {
+    {   
+        var account = _database.Get<Account>().FirstOrDefault(x => x.Id == id);
+        account.Username = accountDetails.Username;
+        _database.SaveChanges();
         return NoContent();
     }
     
@@ -61,6 +67,9 @@ public class AccountsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id)
     {
+        var account = _database.Get<Account>().FirstOrDefault(x => x.Id == id);
+        _database.Delete(account);
+        _database.SaveChanges();
         return NoContent();
     }
 }

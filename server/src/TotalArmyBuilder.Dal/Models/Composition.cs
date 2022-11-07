@@ -15,11 +15,11 @@ public class Composition
     public string Name { get; set; }
     
     [Column("battle_type")]
-    public string BattleType { get; set; }
+    public int BattleType { get; set; }
     
     [Column("faction_id")]
-    public string FactionId { get; set; }
+    public int FactionId { get; set; }
     
     [Column("avatar_id")]
-    public string AvatarId { get; set; }
+    public int AvatarId { get; set; }
 }

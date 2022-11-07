@@ -3,6 +3,7 @@ using FluentValidation;
 
 public class CompositionViewModel
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public int Battle_Type { get; set; }
     public int Faction_Id { get; set; }
@@ -13,6 +14,7 @@ public class CompositionViewModelValidator : AbstractValidator<CompositionViewMo
 {
     public CompositionViewModelValidator() 
     {
+        RuleFor(x => x.Id).NotNull();
         RuleFor(x => x.Name).Length(0,50);
         RuleFor(x => x.Battle_Type).InclusiveBetween(0,1);
         RuleFor(x => x.Faction_Id).NotNull();
