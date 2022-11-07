@@ -5,7 +5,7 @@ using Npgsql.Replication.PgOutput.Messages;
 namespace TotalArmyBuilder.Dal.Models;
     
 [Table("units_factions")]
-public class Unit_Faction
+public class UnitFaction
 {
     [Key] [Column ("id")] public int Id { get; set; }
     

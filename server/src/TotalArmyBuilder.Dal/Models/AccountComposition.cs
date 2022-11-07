@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Npgsql.Replication.PgOutput.Messages;
 
 namespace TotalArmyBuilder.Dal.Models;
-    
-[Table("compositions_units")]
-public class Composition_Unit
+
+[Table("accounts_compositions")]
+public class AccountComposition
 {
     [Key] [Column ("id")] public int Id { get; set; }
     
+    public int AccountId { get; set; }
+    [ForeignKey(nameof(AccountId))] public Account Account { get; set; }
+    
     public int CompositionId { get; set; }
     [ForeignKey(nameof(CompositionId))] public Composition Composition { get; set; }
-    
-    public int UnitId { get; set; }
-    [ForeignKey(nameof(UnitId))] public Unit Unit { get; set; }
 }
