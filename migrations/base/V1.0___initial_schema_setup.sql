@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS heroes(
 );
 
 CREATE TABLE IF NOT EXISTS accounts_compositions (
+    id serial PRIMARY KEY,
     account_id INT NOT NULL,
     composition_id INT NOT NULL,
-  	PRIMARY KEY (account_id, composition_id),
   	FOREIGN KEY (account_id)
       REFERENCES accounts (id),
   	FOREIGN KEY (composition_id)
@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS accounts_compositions (
 );
 
 CREATE TABLE IF NOT EXISTS compositions_units(
+    id serial PRIMARY KEY,
     composition_id INT NOT NULL,
   	unit_id INT NOT NULL,
   	PRIMARY KEY (composition_id, unit_id),
@@ -71,6 +72,7 @@ CREATE TABLE IF NOT EXISTS compositions_units(
 );
 
 CREATE TABLE IF NOT EXISTS units_factions(
+    id serial PRIMARY KEY,
     unit_id INT NOT NULL,
   	faction_id INT NOT NULL,
   	PRIMARY KEY (unit_id, faction_id),
