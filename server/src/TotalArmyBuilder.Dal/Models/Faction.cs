@@ -8,9 +8,7 @@ namespace TotalArmyBuilder.Dal.Models;
 public class Faction
 {
     [Key]
-    [Column ("id")]
-    public int Id { get; set; }
+    [Column ("id")] public int Id { get; set; }
     
-    [Column("name")]
-    public string Name { get; set; }
+    [Column("name")] public string Name { get; set; }
 }

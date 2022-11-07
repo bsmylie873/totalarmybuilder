@@ -8,18 +8,13 @@ namespace TotalArmyBuilder.Dal.Models;
 public class Composition
 {
     [Key]
-    [Column ("id")]
-    public int Id { get; set; }
+    [Column ("id")] public int Id { get; set; }
     
-    [Column("name")]
-    public string Name { get; set; }
+    [Column("name")] public string Name { get; set; }
     
-    [Column("battle_type")]
-    public int BattleType { get; set; }
+    [Column("battle_type")] public int BattleType { get; set; }
     
-    [Column("faction_id")]
-    public int FactionId { get; set; }
+    [Column("faction_id")] public int FactionId { get; set; }
     
-    [Column("avatar_id")]
-    public int AvatarId { get; set; }
+    [Column("avatar_id")] public int AvatarId { get; set; }
 }

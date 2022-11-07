@@ -8,15 +8,11 @@ namespace TotalArmyBuilder.Dal.Models;
 public class Unit
 {
     [Key]
-    [Column ("id")]
-    public int Id { get; set; }
+    [Column ("id")] public int Id { get; set; }
     
-    [Column("name")]
-    public string Name { get; set; }
+    [Column("name")] public string Name { get; set; }
     
-    [Column("cost")]
-    public int Cost { get; set; }
+    [Column("cost")] public int Cost { get; set; }
 
-    [Column("avatar_id")]
-    public int AvatarId { get; set; }
+    [Column("avatar_id")] public int AvatarId { get; set; }
 }
