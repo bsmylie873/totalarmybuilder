@@ -15,4 +15,5 @@ public class Unit
     [Column("cost")] public int Cost { get; set; }
 
     [Column("avatar_id")] public int AvatarId { get; set; }
+    [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
 }

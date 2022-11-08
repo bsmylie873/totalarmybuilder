@@ -15,6 +15,8 @@ public class Composition
     [Column("battle_type")] public int BattleType { get; set; }
     
     [Column("faction_id")] public int FactionId { get; set; }
+    [ForeignKey(nameof(FactionId))] public Faction Faction { get; set; }
     
     [Column("avatar_id")] public int AvatarId { get; set; }
+    [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
 }
