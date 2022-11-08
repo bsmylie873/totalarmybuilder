@@ -4,6 +4,7 @@ using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
+using TotalArmyBuilder.Dal.Specifications.Accounts;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
@@ -25,7 +26,9 @@ public class AccountsController : Controller
     [HttpGet("{id}", Name = "GetAccount")]
     public ActionResult<AccountDetailViewModel> GetAccount(int id)
     {
-        var account = _database.Get<Account>().FirstOrDefault(x => x.Id == id);
+        var account = _database
+            .Get<Account>()
+            .FirstOrDefault(new AccountByIdSpec(id).Or(new AccountByEmailSpec("hello@email.com")));
         if (account == null)
         {
             return NotFound();
@@ -45,7 +48,7 @@ public class AccountsController : Controller
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccount([FromBody]CreateAccountViewModel accountDetails)
+    public ActionResult CreateAccount([FromForm]CreateAccountViewModel accountDetails)
     {
         _database.Add(new Account{Email = accountDetails.Email, Username = accountDetails.Username, 
             Password = accountDetails.Password});
@@ -56,7 +59,7 @@ public class AccountsController : Controller
     [HttpPut]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
+    public ActionResult UpdateAccount(int id, [FromForm] UpdateAccountViewModel accountDetails)
     {   
         var account = _database.Get<Account>().FirstOrDefault(x => x.Id == id);
         account.Username = accountDetails.Username;

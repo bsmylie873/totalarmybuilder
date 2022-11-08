@@ -45,7 +45,7 @@ public class CompositionsController : Controller
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccountComposition(CreateCompositionViewModel compositionDetails)
+    public ActionResult CreateAccountComposition([FromForm] CreateCompositionViewModel compositionDetails)
     {
         _database.Add(new Composition{Name = compositionDetails.Name, BattleType = compositionDetails.Battle_Type, 
             FactionId = compositionDetails.Faction_Id, AvatarId = compositionDetails.Avatar_Id});
@@ -56,7 +56,7 @@ public class CompositionsController : Controller
     [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
+    public ActionResult UpdateComposition(int id, [FromForm] UpdateCompositionViewModel compositionDetails)
     {
         var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
         composition.Name = compositionDetails.Name;
