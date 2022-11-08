@@ -4,10 +4,10 @@ using Unosquare.EntityFramework.Specification.Common.Primitive;
 
 namespace TotalArmyBuilder.Dal.Specifications.Factions;
 
-public class FactionByName : Specification<Faction>
+public class FactionByNameSpec : Specification<Faction>
 {
     private readonly string _name;
-    public FactionByName(string name) => _name = name;
+    public FactionByNameSpec(string name) => _name = name;
 
     public override Expression<Func<Faction, bool>> BuildExpression()
     {

@@ -4,6 +4,9 @@ using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
+using TotalArmyBuilder.Dal.Specifications.Factions;
+using Unosquare.EntityFramework.Specification.Common.Extensions;
+
 namespace TotalArmyBuilder.Api.Controllers;
 
 [ApiController]
@@ -14,22 +17,38 @@ public class FactionsController : Controller
     public FactionsController(ITotalArmyDatabase database) => _database = database;
         
     [HttpGet]
-    public ActionResult<FactionDetailViewModel> GetAccounts(int id)
+    public ActionResult<FactionDetailViewModel> GetFactions()
     {
         var factions = _database.Get<Faction>().ToList();
         return Ok(new {factions});
     }
     
-    [HttpGet("{id}", Name = "GetFaction")]
-    public ActionResult<FactionDetailViewModel> GetFaction(int id)
+    [HttpGet("{id}", Name = "GetFactionById")]
+    public ActionResult<FactionDetailViewModel> GetFactionById(int id)
     {
-
-        var faction = _database.Get<Faction>().FirstOrDefault(x => x.Id == id);
+        var faction = _database
+            .Get<Faction>()
+            .Where(new FactionByIdSpec(id))
+            .FirstOrDefault();
         if (faction == null)
         {
             return NotFound();
         }
-        return Ok(new { faction.Id, faction.Name});
+        return Ok(new { faction.Id, faction.Name });
+    }
+    
+    [HttpGet("{name}", Name = "GetFactionByName")]
+    public ActionResult<FactionDetailViewModel> GetFactionByName(string name)
+    {
+        var faction = _database
+            .Get<Faction>()
+            .Where(new FactionByNameSpec(name))
+            .FirstOrDefault();
+        if (faction == null)
+        {
+            return NotFound();
+        }
+        return Ok(new { faction.Id, faction.Name });
     }
     
     [HttpGet("{id}/Units/", Name = "GetFactionUnits")]

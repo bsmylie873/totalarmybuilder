@@ -4,6 +4,9 @@ using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
+using TotalArmyBuilder.Dal.Specifications.Compositions;
+using TotalArmyBuilder.Dal.Specifications.Units;
+using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -21,10 +24,13 @@ public class CompositionsController : Controller
         return Ok(new {compositions});
     }
 
-    [HttpGet("{id}", Name = "GetComposition")]
-    public ActionResult<CompositionDetailViewModel> GetComposition(int id)
+    [HttpGet("{id}", Name = "GetCompositionById")]
+    public ActionResult<CompositionDetailViewModel> GetCompositionById(int id)
     {
-        var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
+        var composition = _database
+            .Get<Composition>()
+            .Where(new CompositionByIdSpec(id))
+            .FirstOrDefault();
         if (composition == null)
         {
             return NotFound();
@@ -33,12 +39,54 @@ public class CompositionsController : Controller
         {composition.Id, composition.Name, composition.BattleType, composition.FactionId,composition.AvatarId });
     }
     
+    [HttpGet("{name}", Name = "GetCompositionByName")]
+    public ActionResult<CompositionDetailViewModel> GetCompositionByName(string name)
+    {
+        var composition = _database
+            .Get<Composition>()
+            .Where(new CompositionByNameSpec(name))
+            .ToList();
+        if (composition == null)
+        {
+            return NotFound();
+        }
+        return Ok(composition);
+    }
+    
+    [HttpGet("{faction}", Name = "GetCompositionByFaction")]
+    public ActionResult<CompositionDetailViewModel> GetCompositionByFaction(int faction)
+    {
+        var composition = _database
+            .Get<Composition>()
+            .Where(new CompositionByFactionSpec(faction))
+            .ToList();
+        if (composition == null)
+        {
+            return NotFound();
+        }
+        return Ok(composition);
+    }
+    
+    [HttpGet("{battleType}", Name = "GetCompositionByBattleType")]
+    public ActionResult<CompositionDetailViewModel> GetCompositionByBattleType(int battleType)
+    {
+        var composition = _database
+            .Get<Composition>()
+            .Where(new CompositionByBattleTypeSpec(battleType))
+            .ToList();
+        if (composition == null)
+        {
+            return NotFound();
+        }
+        return Ok(composition);
+    }
+    
     [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
     public ActionResult<CompositionDetailViewModel> GetCompositionUnits(int id)
     {
         var compositionUnits = _database
             .Get<Unit>()
-            .Where(x => x.Id == id)
+            .Where(new UnitByIdSpec(id))
             .ToList();
         return Ok(new {compositionUnits});
     }
@@ -58,7 +106,10 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id, [FromForm] UpdateCompositionViewModel compositionDetails)
     {
-        var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
+        var composition = _database
+            .Get<Composition>()
+            .Where(new CompositionByIdSpec(id))
+            .FirstOrDefault();
         composition.Name = compositionDetails.Name;
         composition.BattleType = compositionDetails.Battle_Type;
         composition.FactionId = compositionDetails.Faction_Id;
@@ -72,7 +123,10 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id)
     {
-        var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
+        var composition = _database
+            .Get<Composition>()
+            .Where(new CompositionByIdSpec(id))
+            .FirstOrDefault();
         _database.Delete(composition);
         _database.SaveChanges();
         return NoContent();
