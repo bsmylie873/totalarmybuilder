@@ -30,23 +30,25 @@ public class AccountsController : Controller
         {
             return NotFound();
         }
-        return Ok(new { Id = account.Id, Username = account.Username});
+        return Ok(new { account.Id, account.Username, account.Email});
     }
     
     [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {
-        var compositions = _database.Get<Account_Composition>().All
-            (x => x.AccountId == id);
-        
+        var compositions = _database
+            .Get<AccountComposition>()
+            .Where(x => x.AccountId == id)
+            .ToList();
         return Ok(new {compositions});
     }
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccount(CreateAccountViewModel AccountDetails)
+    public ActionResult CreateAccount([FromBody]CreateAccountViewModel accountDetails)
     {
-        _database.Add(new Account{Email = AccountDetails.Email, Username = AccountDetails.Username});
+        _database.Add(new Account{Email = accountDetails.Email, Username = accountDetails.Username, 
+            Password = accountDetails.Password});
         _database.SaveChanges();
         return StatusCode((int)HttpStatusCode.Created);
     }

@@ -21,7 +21,7 @@ public class UnitsController : Controller
         {
             return NotFound();
         }
-        return Ok(new { Id = unit.Id, Name = unit.Name, Cost = unit.Cost, AvatarId = unit.AvatarId});
+        return Ok(new { unit.Id, unit.Name, unit.Cost, unit.AvatarId});
     }
     
 }

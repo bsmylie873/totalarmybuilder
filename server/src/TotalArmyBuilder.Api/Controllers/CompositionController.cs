@@ -15,7 +15,7 @@ public class CompositionsController : Controller
     public CompositionsController(ITotalArmyDatabase database) => _database = database;
     
     [HttpGet]
-    public ActionResult<CompositionViewModel> GetCompositions(int id)
+    public ActionResult<CompositionViewModel> GetCompositions()
     {
         var compositions = _database.Get<Composition>().ToList();
         return Ok(new {compositions});
@@ -24,27 +24,23 @@ public class CompositionsController : Controller
     [HttpGet("{id}", Name = "GetComposition")]
     public ActionResult<CompositionDetailViewModel> GetComposition(int id)
     {
-        /*List<UnitDetailViewModel> Unit_List = new List<UnitDetailViewModel>
-        {
-            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, AvatarId = 11 },
-            new UnitDetailViewModel { Id = 11, Name = "Tzar Guard", Cost = 1100, AvatarId = 11 }
-        };
-        CompositionDetailViewModel Composition = new CompositionDetailViewModel
-        {
-            Id = 44, Name = "Tzar Guard Rush", Battle_Type = 0,
-            Faction_Id = 12, Avatar_Id = 76, Unit_List = Unit_List
-        };*/
-        
         var composition = _database.Get<Composition>().FirstOrDefault(x => x.Id == id);
         if (composition == null)
         {
             return NotFound();
         }
         return Ok(new
-        {
-            composition.Id, composition.Name, composition.BattleType, 
-            composition.FactionId,composition.AvatarId
-        });
+        {composition.Id, composition.Name, composition.BattleType, composition.FactionId,composition.AvatarId });
+    }
+    
+    [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
+    public ActionResult<CompositionDetailViewModel> GetCompositionUnits(int id)
+    {
+        var compositionUnits = _database
+            .Get<Unit>()
+            .Where(x => x.Id == id)
+            .ToList();
+        return Ok(new {compositionUnits});
     }
     
     [HttpPost]

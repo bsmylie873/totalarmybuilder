@@ -29,18 +29,16 @@ public class FactionsController : Controller
         {
             return NotFound();
         }
-        return Ok(new { Id = faction.Id, Name = faction.Name});
+        return Ok(new { faction.Id, faction.Name});
     }
     
     [HttpGet("{id}/Units/", Name = "GetFactionUnits")]
     public ActionResult<UnitViewModel> GetFactionUnits(int id)
     {
-        List<UnitViewModel> factionUnits = new List<UnitViewModel>
-        {
-            new UnitViewModel{ Id = 28, Name = "Lord Magistrate", Cost = 1300, AvatarId = 28 },
-            new UnitViewModel{ Id = 29, Name = "Dragon-blooded Shugengan Lord (Yin)", Cost = 2062, AvatarId = 28 }
-        };
+        var factionUnits = _database
+            .Get<Unit>()
+            .Where(x => x.Id == id)
+            .ToList();
         return Ok(factionUnits);
-        
     }
 }

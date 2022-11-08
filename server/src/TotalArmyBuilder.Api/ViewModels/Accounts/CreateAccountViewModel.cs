@@ -3,12 +3,14 @@ using FluentValidation;
 public class CreateAccountViewModel : AccountDetailViewModel
 {
     public string Email { get; set; }
+    public string Password { get; set; }
 }
 
 public class CreateAccountViewModelValidator : AbstractValidator<CreateAccountViewModel> 
 {
-    public CreateAccountViewModelValidator() 
+    public CreateAccountViewModelValidator()
     {
-        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Email);
+        RuleFor(x => x.Password).Length(0, 50);
     }
 }
