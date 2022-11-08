@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS compositions_units(
     id serial PRIMARY KEY,
     composition_id INT NOT NULL,
   	unit_id INT NOT NULL,
-  	PRIMARY KEY (composition_id, unit_id),
   	FOREIGN KEY (composition_id)
       REFERENCES compositions (id),
   	FOREIGN KEY (unit_id)
@@ -75,7 +74,6 @@ CREATE TABLE IF NOT EXISTS units_factions(
     id serial PRIMARY KEY,
     unit_id INT NOT NULL,
   	faction_id INT NOT NULL,
-  	PRIMARY KEY (unit_id, faction_id),
   	FOREIGN KEY (unit_id)
       REFERENCES units (id),
   	FOREIGN KEY (faction_id)
