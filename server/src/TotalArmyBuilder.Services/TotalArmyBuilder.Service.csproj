@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TotalArmyBuilder.Dal\TotalArmyBuilder.Dal.csproj" />
+  </ItemGroup>
+
 </Project>

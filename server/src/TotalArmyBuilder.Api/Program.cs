@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddFluentValidation(s => s.RegisterValidatorsFromAssemblyContaining<Program>());
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<ITotalArmyDatabase, TotalArmyContext>(_ => new TotalArmyContext("Server=localhost;Port=5432;Database=tw-army-builder;User Id=admin;Password=password;"));
+builder.Services.AddAutoMapper(config => config.AllowNullCollections = true, typeof(Program).Assembly);
 
 var app = builder.Build();
 
