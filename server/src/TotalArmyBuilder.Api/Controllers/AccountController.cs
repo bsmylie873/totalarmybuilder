@@ -6,6 +6,7 @@ using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
+using TotalArmyBuilder.Service.Interfaces;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
@@ -14,13 +15,13 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class AccountsController : Controller
 {
-    private readonly ITotalArmyDatabase _database;
-    public AccountsController(ITotalArmyDatabase database) => _database = database;
+    private readonly IAccountService _service;
+    public AccountsController(IAccountService service) => _service = service;
     
     [HttpGet]
     public ActionResult<AccountDetailViewModel> GetAccounts()
     {
-        var accounts = _database.Get<Account>().ToList();
+        var accounts = _service.GetAccounts();
         return Ok(new {accounts});
     }
     

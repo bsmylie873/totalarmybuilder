@@ -10,4 +10,8 @@
     <ProjectReference Include="..\TotalArmyBuilder.Dal\TotalArmyBuilder.Dal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Profiles" />
+  </ItemGroup>
+
 </Project>
