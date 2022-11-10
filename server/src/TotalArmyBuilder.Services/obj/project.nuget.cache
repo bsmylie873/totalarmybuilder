@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "9l4kKwh/hVA8rKTyeHKN3+3trzE9Uq5o3hNB3Ej+1QGyp27h9CLsvNuN/9+Wg3GuF5cAsFyDPPSwuKA9KZoCLg==",
+  "dgSpecHash": "dAnXBFy9qxCv/mm1vltpovaSFfl1u1lP4FBt7tyYQI/7CBVbI+hDM/KATgT76aDAX60aNVmAUO+eQP2b7Skxpg==",
   "success": true,
   "projectFilePath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj",
   "expectedPackageFiles": [
+    "/Users/brandon.smylie/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
+    "/Users/brandon.smylie/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/brandon.smylie/.nuget/packages/microsoft.entityframeworkcore/6.0.7/microsoft.entityframeworkcore.6.0.7.nupkg.sha512",
     "/Users/brandon.smylie/.nuget/packages/microsoft.entityframeworkcore.abstractions/6.0.7/microsoft.entityframeworkcore.abstractions.6.0.7.nupkg.sha512",
     "/Users/brandon.smylie/.nuget/packages/microsoft.entityframeworkcore.analyzers/6.0.7/microsoft.entityframeworkcore.analyzers.6.0.7.nupkg.sha512",

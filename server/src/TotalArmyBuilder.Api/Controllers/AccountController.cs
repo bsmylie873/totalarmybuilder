@@ -28,15 +28,13 @@ public class AccountsController : Controller
     [HttpGet("{id}", Name = "GetAccountById")]
     public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
-        var account = _database
-            .Get<Account>()
-            .Where(new AccountByIdSpec(id))
-            .FirstOrDefault();
+        var account = _service.GetAccounts();
         if (account == null)
         {
             return NotFound();
         }
-        return Ok(new { account.Id, account.Username, account.Email});
+        
+        return Ok(new {account});
     }
     
     [HttpGet("{username}", Name = "GetAccountByUsername")]
