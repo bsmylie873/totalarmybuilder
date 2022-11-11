@@ -28,10 +28,32 @@ public class AccountService : IAccountService
             .ProjectTo<AccountDto>(accountQuery)
             .ToList(); ;
     }
+
+    public IList<AccountDto> GetAccountById(int id)
+    {
+        var accountQuery = _database
+            .Get<Account>()
+            .Where(new AccountByIdSpec(id));
+
+        return _mapper
+            .ProjectTo<AccountDto>(accountQuery)
+            .ToList(); ;
+    }
     
+    public void CreateAccount(Account account)
+    {
+        _database.Add(new Account
+        {
+            Email = account.Email, Username = account.Username,
+            Password = account.Password
+        });
+
+        _database.SaveChanges();
+    }
+
+
     public void UpdateAccount(int id, AccountDto account)
     {
-
         var currentAccount = _database
             .Get<Account>()
             .FirstOrDefault(new AccountByIdSpec(id));
@@ -40,6 +62,18 @@ public class AccountService : IAccountService
 
         _mapper.Map(account, currentAccount);
 
+        _database.SaveChanges();
+    }
+    
+    public void DeleteAccount(int id)
+    {
+        var currentAccount = _database
+            .Get<Account>()
+            .FirstOrDefault(new AccountByIdSpec(id));
+
+        if (currentAccount == null) throw new Exception("Not Found");
+        
+        _database.Delete(currentAccount);
         _database.SaveChanges();
     }
 }

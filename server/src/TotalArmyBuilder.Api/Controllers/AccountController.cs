@@ -7,6 +7,7 @@ using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
+using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
@@ -30,9 +31,9 @@ public class AccountsController : Controller
     }
     
     [HttpGet("{id}", Name = "GetAccountById")]
-    public ActionResult<AccountDetailViewModel> GetAccountById([FromQuery] string username, [FromQuery] string email)
+    public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
-        var account = _service.GetAccounts(username, email);
+        var account = _service.GetAccountById(id);
 
         return Ok(new {account});
     }
@@ -61,14 +62,10 @@ public class AccountsController : Controller
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromForm] UpdateAccountViewModel accountDetails)
-    {   
-        var account = _database
-            .Get<Account>()
-            .Where(new AccountByIdSpec(id))
-            .FirstOrDefault();
-        account.Username = accountDetails.Username;
-        _database.SaveChanges();
-        return NoContent();
+    {
+        var account = _mapper.Map<AccountDto>(accountDetails);
+        _service.UpdateAccount(id, account);
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
     
     [HttpDelete]
@@ -76,12 +73,7 @@ public class AccountsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id)
     {
-        var account = _database
-            .Get<Account>()
-            .Where(new AccountByIdSpec(id))
-            .FirstOrDefault();
-        _database.Delete(account);
-        _database.SaveChanges();
-        return NoContent();
+        _service.DeleteAccount(id);
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
 }
