@@ -52,9 +52,8 @@ public class AccountsController : Controller
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public ActionResult CreateAccount([FromForm]CreateAccountViewModel accountDetails)
     {
-        _database.Add(new Account{Email = accountDetails.Email, Username = accountDetails.Username, 
-            Password = accountDetails.Password});
-        _database.SaveChanges();
+        var account = _mapper.Map<Account>(accountDetails);
+        _service.CreateAccount(account);
         return StatusCode((int)HttpStatusCode.Created);
     }
 
