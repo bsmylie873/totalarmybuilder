@@ -14,8 +14,8 @@ public class CompositionSearchSpec : Specification<Composition>
     public CompositionSearchSpec(string? name, int? battleType, int? factionId)
     {
         _spec = new CompositionByNameSpec(name)
-            .Or(new CompositionByBattleTypeSpec((int)battleType))
-            .Or(new CompositionByFactionSpec((int)factionId));
+            .Or(new CompositionByBattleTypeSpec(battleType)
+                .Or(new CompositionByFactionSpec(factionId)));
     }
 
     public override Expression<Func<Composition, bool>> BuildExpression() => _spec.BuildExpression();

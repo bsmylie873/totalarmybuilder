@@ -6,8 +6,8 @@ namespace TotalArmyBuilder.Dal.Specifications.Compositions;
 
 public class CompositionByFactionSpec : Specification<Composition>
 {
-    private readonly int _factionId;
-    public CompositionByFactionSpec(int factionId) => _factionId = factionId;
+    private readonly int? _factionId;
+    public CompositionByFactionSpec(int? factionId) => _factionId = factionId;
 
     public override Expression<Func<Composition, bool>> BuildExpression() =>
         x => x.FactionId == _factionId;

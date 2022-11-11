@@ -6,8 +6,8 @@ namespace TotalArmyBuilder.Dal.Specifications.Compositions;
 
 public class CompositionByBattleTypeSpec : Specification<Composition>
 {
-    private readonly int _battleType;
-    public CompositionByBattleTypeSpec(int battleType) => _battleType = battleType;
+    private readonly int? _battleType;
+    public CompositionByBattleTypeSpec(int? battleType) => _battleType = battleType;
 
     public override Expression<Func<Composition, bool>> BuildExpression() =>
         x => x.BattleType == _battleType;

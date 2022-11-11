@@ -1,6 +1,11 @@
+using TotalArmyBuilder.Dal.Models;
+using TotalArmyBuilder.Service.DTOs;
+
 namespace TotalArmyBuilder.Service.Interfaces;
 
-public class IUnitService
+public interface IUnitService
 {
+    IList<UnitDto> GetUnits(string? name = null, int? cost = null);
+    IList<UnitDto> GetUnitById(int id);
     
 }

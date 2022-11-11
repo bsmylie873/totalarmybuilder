@@ -42,12 +42,7 @@ public class AccountService : IAccountService
     
     public void CreateAccount(Account account)
     {
-        _database.Add(new Account
-        {
-            Email = account.Email, Username = account.Username,
-            Password = account.Password
-        });
-
+        _database.Add(account);
         _database.SaveChanges();
     }
 

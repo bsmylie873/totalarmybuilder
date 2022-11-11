@@ -39,7 +39,7 @@ public class CompositionService : ICompositionService
             .ToList(); ;
     }
     
-    public void CreateComposition(CompositionDto composition)
+    public void CreateComposition(Composition composition)
     {
         _database.Add(composition);
         _database.SaveChanges();

@@ -7,7 +7,7 @@ public interface ICompositionService
 {
     IList<CompositionDto> GetCompositions(string? name = null, int? battleType = null, int? factionId = null);
     IList<CompositionDto> GetCompositionById(int id);
-    void CreateComposition(CompositionDto composition);
+    void CreateComposition(Composition composition);
     void UpdateComposition(int id, CompositionDto compositionDto);
     void DeleteComposition(int id);
 }

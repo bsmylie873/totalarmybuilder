@@ -1,11 +1,15 @@
 using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
 using TotalArmyBuilder.Dal.Specifications.Units;
+using TotalArmyBuilder.Service.DTOs;
+using TotalArmyBuilder.Service.Interfaces;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
@@ -15,72 +19,26 @@ namespace TotalArmyBuilder.Api.Controllers;
 public class CompositionsController : Controller
 {
     private readonly ITotalArmyDatabase _database;
-    public CompositionsController(ITotalArmyDatabase database) => _database = database;
+    private readonly ICompositionService _service;
+    private readonly IMapper _mapper;
+    public CompositionsController(ITotalArmyDatabase database, IMapper mapper, ICompositionService service) => 
+        (_database, _mapper, _service) = (database, mapper, service);
     
     [HttpGet]
-    public ActionResult<CompositionViewModel> GetCompositions()
+    public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string name, [FromQuery] int factionId, [FromQuery] int avatarId)
     {
-        var compositions = _database.Get<Composition>().ToList();
-        return Ok(new {compositions});
+        var compositions = _service.GetCompositions(name, factionId, avatarId);
+        return Ok(_mapper.Map<IList<CompositionViewModel>>(compositions));
     }
 
     [HttpGet("{id}", Name = "GetCompositionById")]
     public ActionResult<CompositionDetailViewModel> GetCompositionById(int id)
     {
-        var composition = _database
-            .Get<Composition>()
-            .Where(new CompositionByIdSpec(id))
-            .FirstOrDefault();
-        if (composition == null)
-        {
-            return NotFound();
-        }
-        return Ok(new
-        {composition.Id, composition.Name, composition.BattleType, composition.FactionId,composition.AvatarId });
+        var composition = _service.GetCompositionById(id);
+
+        return Ok(new {composition});
     }
-    
-    [HttpGet("{name}", Name = "GetCompositionByName")]
-    public ActionResult<CompositionDetailViewModel> GetCompositionByName(string name)
-    {
-        var composition = _database
-            .Get<Composition>()
-            .Where(new CompositionByNameSpec(name))
-            .ToList();
-        if (composition == null)
-        {
-            return NotFound();
-        }
-        return Ok(composition);
-    }
-    
-    [HttpGet("{faction}", Name = "GetCompositionByFaction")]
-    public ActionResult<CompositionDetailViewModel> GetCompositionByFaction(int faction)
-    {
-        var composition = _database
-            .Get<Composition>()
-            .Where(new CompositionByFactionSpec(faction))
-            .ToList();
-        if (composition == null)
-        {
-            return NotFound();
-        }
-        return Ok(composition);
-    }
-    
-    [HttpGet("{battleType}", Name = "GetCompositionByBattleType")]
-    public ActionResult<CompositionDetailViewModel> GetCompositionByBattleType(int battleType)
-    {
-        var composition = _database
-            .Get<Composition>()
-            .Where(new CompositionByBattleTypeSpec(battleType))
-            .ToList();
-        if (composition == null)
-        {
-            return NotFound();
-        }
-        return Ok(composition);
-    }
-    
+
     [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
     public ActionResult<CompositionDetailViewModel> GetCompositionUnits(int id)
     {
@@ -95,9 +53,8 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public ActionResult CreateAccountComposition([FromForm] CreateCompositionViewModel compositionDetails)
     {
-        _database.Add(new Composition{Name = compositionDetails.Name, BattleType = compositionDetails.Battle_Type, 
-            FactionId = compositionDetails.Faction_Id, AvatarId = compositionDetails.Avatar_Id});
-        _database.SaveChanges();
+        var composition = _mapper.Map<Composition>(compositionDetails);
+        _service.CreateComposition(composition);
         return StatusCode((int)HttpStatusCode.Created);
     }
     
@@ -106,16 +63,9 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id, [FromForm] UpdateCompositionViewModel compositionDetails)
     {
-        var composition = _database
-            .Get<Composition>()
-            .Where(new CompositionByIdSpec(id))
-            .FirstOrDefault();
-        composition.Name = compositionDetails.Name;
-        composition.BattleType = compositionDetails.Battle_Type;
-        composition.FactionId = compositionDetails.Faction_Id;
-        composition.AvatarId = compositionDetails.Avatar_Id;
-        _database.SaveChanges();
-        return NoContent();
+        var composition = _mapper.Map<CompositionDto>(compositionDetails);
+        _service.UpdateComposition(id, composition);
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
     
     [HttpDelete]
@@ -123,13 +73,8 @@ public class CompositionsController : Controller
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id)
     {
-        var composition = _database
-            .Get<Composition>()
-            .Where(new CompositionByIdSpec(id))
-            .FirstOrDefault();
-        _database.Delete(composition);
-        _database.SaveChanges();
-        return NoContent();
+        _service.DeleteComposition(id);
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
 }
 

@@ -1,9 +1,12 @@
 using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
+using TotalArmyBuilder.Service.Interfaces;
+
 namespace TotalArmyBuilder.Api.Controllers;
 
 [ApiController]
@@ -11,17 +14,24 @@ namespace TotalArmyBuilder.Api.Controllers;
 public class UnitsController : Controller
 {
     private readonly ITotalArmyDatabase _database;
-    public UnitsController(ITotalArmyDatabase database) => _database = database;
-    
-    [HttpGet("{id}", Name = "GetUnit")]
-    public ActionResult<UnitDetailViewModel> GetUnit(int id)
+    private readonly IUnitService _service;
+    private readonly IMapper _mapper;
+    public UnitsController(ITotalArmyDatabase database, IMapper mapper, IUnitService service) => 
+        (_database, _mapper, _service) = (database, mapper, service);
+        
+    [HttpGet]
+    public ActionResult<IList<UnitViewModel>> GetUnits([FromQuery] string name, [FromQuery] int cost)
     {
-        var unit = _database.Get<Unit>().FirstOrDefault(x => x.Id == id);
-        if (unit == null)
-        {
-            return NotFound();
-        }
-        return Ok(new { unit.Id, unit.Name, unit.Cost, unit.AvatarId});
+        var units = _service.GetUnits(name, cost);
+        return Ok(_mapper.Map<IList<UnitViewModel>>(units));
+    }
+    
+    [HttpGet("{id}", Name = "GetUnitById")]
+    public ActionResult<UnitDetailViewModel> GetUnitById(int id)
+    {
+        var unit = _service.GetUnitById(id);
+
+        return Ok(new {unit});
     }
     
 }
