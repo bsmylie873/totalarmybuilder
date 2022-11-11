@@ -4,5 +4,6 @@ namespace TotalArmyBuilder.Service.Interfaces;
 
 public interface IAccountService
 {
-    IList<AccountDTO> GetAccounts();
+    IList<AccountDto> GetAccounts(string? username = null, string? email = null);
+    void UpdateAccount(int id, AccountDto accountDto);
 }

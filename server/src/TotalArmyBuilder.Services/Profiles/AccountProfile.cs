@@ -9,12 +9,19 @@ public class AccountProfile : Profile
 {
     public AccountProfile()
     {
-        ConfigureDomainToViewModel();
+        ConfigureDomainToDtoModel();
+        ConfigureDtoToDomainModel();
     }
 
-    private void ConfigureDomainToViewModel()
+    private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Account, AccountDTO>()
-            .ForMember(d => d.Id, o => o.Ignore());
+        CreateMap<Account, AccountDto>();
+    }
+    
+    private void ConfigureDtoToDomainModel()
+    {
+        CreateMap<AccountDto, Account>()
+            .ForMember(d => d.Id, o => o.Ignore())
+            .ForMember(d => d.Password, o => o.Ignore());
     }
 }

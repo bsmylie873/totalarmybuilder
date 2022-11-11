@@ -10,7 +10,7 @@ public class UnitService : IUnitService
     private readonly ITotalArmyDatabase _database;
     public UnitService(ITotalArmyDatabase database) => _database = database;
 
-    public IList<UnitDTO> GetUnits()
+    public IList<UnitDto> GetUnits()
     {
         var units = _database.Get<Unit>().ToList();
         //TODO: Use automapper to map to DTOs

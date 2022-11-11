@@ -9,12 +9,18 @@ public class FactionProfile : Profile
 {
     public FactionProfile()
     {
-        ConfigureDomainToViewModel();
+        ConfigureDomainToDtoModel();
+        ConfigureDtoToDomainModel();
     }
 
-    private void ConfigureDomainToViewModel()
+    private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Faction, FactionDTO>()
+        CreateMap<Faction, FactionDto>();
+    }
+    
+    private void ConfigureDtoToDomainModel()
+    {
+        CreateMap<FactionDto, Faction>()
             .ForMember(d => d.Id, o => o.Ignore());
     }
 }

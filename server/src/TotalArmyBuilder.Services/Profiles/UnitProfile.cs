@@ -9,12 +9,18 @@ public class UnitProfile : Profile
 {
     public UnitProfile()
     {
-        ConfigureDomainToViewModel();
+        ConfigureDomainToDtoModel();
+        ConfigureDtoToDomainModel();
     }
 
-    private void ConfigureDomainToViewModel()
+    private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Unit, UnitDTO>()
+        CreateMap<Unit, UnitDto>();
+    }
+    
+    private void ConfigureDtoToDomainModel()
+    {
+        CreateMap<UnitDto, Unit>()
             .ForMember(d => d.Id, o => o.Ignore());
     }
 }

@@ -1,4 +1,5 @@
 using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
@@ -15,57 +16,27 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class AccountsController : Controller
 {
+    private readonly ITotalArmyDatabase _database;
     private readonly IAccountService _service;
-    public AccountsController(IAccountService service) => _service = service;
+    private readonly IMapper _mapper;
+    public AccountsController(ITotalArmyDatabase database, IMapper mapper, IAccountService service) => 
+        (_database, _mapper, _service) = (database, mapper, service);
     
     [HttpGet]
-    public ActionResult<AccountDetailViewModel> GetAccounts()
+    public ActionResult<IList<AccountViewModel>> GetAccounts([FromQuery] string username, [FromQuery] string email)
     {
-        var accounts = _service.GetAccounts();
-        return Ok(new {accounts});
+        var accounts = _service.GetAccounts(username, email);
+        return Ok(_mapper.Map<IList<AccountViewModel>>(accounts));
     }
     
     [HttpGet("{id}", Name = "GetAccountById")]
-    public ActionResult<AccountDetailViewModel> GetAccountById(int id)
+    public ActionResult<AccountDetailViewModel> GetAccountById([FromQuery] string username, [FromQuery] string email)
     {
-        var account = _service.GetAccounts();
-        if (account == null)
-        {
-            return NotFound();
-        }
-        
+        var account = _service.GetAccounts(username, email);
+
         return Ok(new {account});
     }
-    
-    [HttpGet("{username}", Name = "GetAccountByUsername")]
-    public ActionResult<AccountDetailViewModel> GetAccountByUsername(string username)
-    {
-        var account = _database
-            .Get<Account>()
-            .Where(new AccountByUsernameSpec(username))
-            .FirstOrDefault();
-        if (account == null)
-        {
-            return NotFound();
-        }
-        return Ok(new { account.Id, account.Username, account.Email});
-    }
-    
-    [HttpGet("{email}", Name = "GetAccountByEmail")]
-    public ActionResult<AccountDetailViewModel> GetAccountByEmail(string email)
-    {
-        var account = _database
-            .Get<Account>()
-            .Where(new AccountByEmailSpec(email))
-            .FirstOrDefault();
-        if (account == null)
-        {
-            return NotFound();
-        }
-        return Ok(new { account.Id, account.Username, account.Email});
-    }
-    
-    
+
     [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {

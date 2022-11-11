@@ -9,12 +9,18 @@ public class CompositionProfile : Profile
 {
     public CompositionProfile()
     {
-        ConfigureDomainToViewModel();
+        ConfigureDomainToDtoModel();
+        ConfigureDtoToDomainModel();
     }
 
-    private void ConfigureDomainToViewModel()
+    private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Composition, CompositionDTO>()
+        CreateMap<Composition, CompositionDto>();
+    }
+    
+    private void ConfigureDtoToDomainModel()
+    {
+        CreateMap<CompositionDto, Composition>()
             .ForMember(d => d.Id, o => o.Ignore());
     }
 }

@@ -10,7 +10,7 @@ public class CompositionService : ICompositionService
     private readonly ITotalArmyDatabase _database;
     public CompositionService(ITotalArmyDatabase database) => _database = database;
 
-    public IList<CompositionDTO> GetCompositions()
+    public IList<CompositionDto> GetCompositions()
     {
         var compositions = _database.Get<Composition>().ToList();
         //TODO: Use automapper to map to DTOs

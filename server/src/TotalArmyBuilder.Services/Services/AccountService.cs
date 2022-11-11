@@ -18,29 +18,29 @@ public class AccountService : IAccountService
     public AccountService(ITotalArmyDatabase database, IMapper mapper) => 
         (_database, _mapper) = (database, mapper);
 
-    public IList<AccountDTO> GetAccounts()
+    public IList<AccountDto> GetAccounts(string? username, string? email)
     {
-        var accounts = _mapper.ProjectTo<AccountDTO>(
-            _database.Get<Account>()
-        ).ToList();
+        var accountQuery = _database
+            .Get<Account>()
+            .Where(new AccountSearchSpec(username, email));
 
-        return (accounts);
+        return _mapper
+            .ProjectTo<AccountDto>(accountQuery)
+            .ToList(); ;
     }
-
-    public IList<AccountDTO> GetAccountById(int id)
+    
+    public void UpdateAccount(int id, AccountDto account)
     {
-        var account = _mapper.ProjectTo<AccountDTO>(
-            _database
-                .Get<Account>()
-                .Where(new AccountByIdSpec(id))
-        );
-        return(account);
-    }
 
-    public IList<AccountDTO> TestMethod
-    {
-        get { throw new NotImplementedException(); }
-        set { throw new NotImplementedException(); }
+        var currentAccount = _database
+            .Get<Account>()
+            .FirstOrDefault(new AccountByIdSpec(id));
+
+        if (currentAccount == null) throw new Exception("Not Found");
+
+        _mapper.Map(account, currentAccount);
+
+        _database.SaveChanges();
     }
 }
 
