@@ -19,4 +19,6 @@ public class Composition
     
     [Column("avatar_id")] public int AvatarId { get; set; }
     [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
+    
+    public ICollection<AccountComposition> AccountCompositions { get; set; }
 }

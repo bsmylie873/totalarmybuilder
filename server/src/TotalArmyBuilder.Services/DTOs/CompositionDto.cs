@@ -7,4 +7,6 @@ public class CompositionDto
     public int? BattleType { get; set; }
     public int? FactionId { get; set; }
     public int? AvatarId { get; set; }
+    
+    public IList<AccountDto> Accounts { get; set; }
 }

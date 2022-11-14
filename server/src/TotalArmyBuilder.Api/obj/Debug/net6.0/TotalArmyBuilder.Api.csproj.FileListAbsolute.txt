@@ -40,3 +40,5 @@
 /Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/bin/Debug/net6.0/TotalArmyBuilder.Service.dll
 /Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/bin/Debug/net6.0/TotalArmyBuilder.Service.pdb
 /Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/bin/Debug/net6.0/TotalArmyBuilder.Dal.pdb
+/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/bin/Debug/net6.0/AutoMapper.dll
+/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

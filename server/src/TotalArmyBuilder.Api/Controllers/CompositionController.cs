@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
@@ -14,9 +15,8 @@ using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class CompositionsController : Controller
+public class CompositionsController : TotalArmyBaseController
 {
     private readonly ITotalArmyDatabase _database;
     private readonly ICompositionService _service;
@@ -36,15 +36,15 @@ public class CompositionsController : Controller
     {
         var composition = _service.GetCompositionById(id);
 
-        return Ok(new {composition});
+        return OkOrNoContent(_mapper.Map<CompositionDetailViewModel>(composition));
     }
 
-    [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
+    /*[HttpGet("{id}/units/", Name = "GetCompositionUnits")]
     public ActionResult<CompositionDetailViewModel> GetCompositionUnits(int id)
     {
         var compositionUnits = _service.GetUnitsByComposition(id);
         return Ok(new {compositionUnits});
-    }
+    }*/
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]

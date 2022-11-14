@@ -1,5 +1,3 @@
-
-
 using FluentValidation.AspNetCore;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Interfaces;
@@ -18,6 +16,9 @@ builder.Services.AddFluentValidation(s => s.RegisterValidatorsFromAssemblyContai
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<ITotalArmyDatabase, TotalArmyContext>(_ => new TotalArmyContext("Server=localhost;Port=5432;Database=tw-army-builder;User Id=admin;Password=password;"));
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICompositionService, CompositionService>();
+builder.Services.AddScoped<IFactionService, FactionService>();
+builder.Services.AddScoped<IUnitService, UnitService>();
 
 builder.Services.AddAutoMapper(config => config.AllowNullCollections = true, typeof(Program).Assembly,
     typeof(AccountService).Assembly);

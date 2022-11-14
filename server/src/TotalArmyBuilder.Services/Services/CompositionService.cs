@@ -29,7 +29,7 @@ public class CompositionService : ICompositionService
             .ToList();
     }
     
-    public IList<CompositionDto> GetCompositionById(int id)
+    public CompositionDto GetCompositionById(int id)
     {
         var compositionQuery = _database
             .Get<Composition>()
@@ -37,10 +37,10 @@ public class CompositionService : ICompositionService
 
         return _mapper
             .ProjectTo<CompositionDto>(compositionQuery)
-            .ToList(); ;
+            .SingleOrDefault();
     }
     
-    public IList<CompositionUnit> GetUnitsByComposition(int id)
+    /*public IList<CompositionUnit> GetUnitsByComposition(int id)
     {
         var unitQuery = _database
             .Get<CompositionUnit>()
@@ -49,7 +49,7 @@ public class CompositionService : ICompositionService
         return _mapper
             .ProjectTo<CompositionUnit>(unitQuery)
             .ToList(); ;
-    }
+    }*/
     
     public void CreateComposition(Composition composition)
     {
