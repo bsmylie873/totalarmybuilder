@@ -26,7 +26,7 @@ public class UnitService : IUnitService
             .ToList();
     }
     
-    public IList<UnitDto> GetUnitById(int id)
+    public UnitDto GetUnitById(int id)
     {
         var unitQuery = _database
             .Get<Unit>()
@@ -34,6 +34,6 @@ public class UnitService : IUnitService
 
         return _mapper
             .ProjectTo<UnitDto>(unitQuery)
-            .ToList(); ;
+            .SingleOrDefault(); ;
     }
 }

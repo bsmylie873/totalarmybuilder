@@ -6,5 +6,5 @@ namespace TotalArmyBuilder.Service.Interfaces;
 public interface IFactionService
 {
     IList<FactionDto> GetFactions(string? name = null);
-    IList<FactionDto> GetFactionById(int id);
+    FactionDto GetFactionById(int id);
 }

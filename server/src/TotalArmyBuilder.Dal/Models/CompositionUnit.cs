@@ -9,9 +9,9 @@ public class CompositionUnit
 {
     [Key] [Column ("id")] public int Id { get; set; }
     
-    public int CompositionId { get; set; }
+    [Column ("composition_id")] public int CompositionId { get; set; }
     [ForeignKey(nameof(CompositionId))] public Composition Composition { get; set; }
     
-    public int UnitId { get; set; }
+    [Column ("unit_id")] public int UnitId { get; set; }
     [ForeignKey(nameof(UnitId))] public Unit Unit { get; set; }
 }

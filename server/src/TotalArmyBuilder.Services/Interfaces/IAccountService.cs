@@ -6,8 +6,8 @@ namespace TotalArmyBuilder.Service.Interfaces;
 public interface IAccountService
 {
     IList<AccountDto> GetAccounts(string? username = null, string? email = null);
-    IList<AccountDto> GetAccountById(int id);
-    IList<AccountComposition> GetCompositionsByAccount(int id);
+    AccountDto GetAccountById(int id);
+    //IList<CompositionDto> GetCompositionsByAccount(int id);
     void CreateAccount(Account account);
     void UpdateAccount(int id, AccountDto accountDto);
     void DeleteAccount(int id);

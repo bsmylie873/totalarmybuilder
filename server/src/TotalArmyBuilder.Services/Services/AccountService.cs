@@ -29,7 +29,7 @@ public class AccountService : IAccountService
             .ToList(); ;
     }
 
-    public IList<AccountDto> GetAccountById(int id)
+    public AccountDto GetAccountById(int id)
     {
         var accountQuery = _database
             .Get<Account>()
@@ -37,19 +37,19 @@ public class AccountService : IAccountService
 
         return _mapper
             .ProjectTo<AccountDto>(accountQuery)
-            .ToList(); ;
+            .SingleOrDefault(); ;
     }
     
-    public IList<AccountComposition> GetCompositionsByAccount(int id)
+    /*public IList<CompositionDto> GetCompositionsByAccount(int id)
     {
         var compositionsQuery = _database
-            .Get<AccountComposition>()
+            .Get<Composition>()
             .Where(new CompositionByAccountSpec(id));
 
         return _mapper
-            .ProjectTo<AccountComposition>(compositionsQuery)
+            .ProjectTo<Composition>(compositionsQuery)
             .ToList(); ;
-    }
+    }*/
     
     public void CreateAccount(Account account)
     {

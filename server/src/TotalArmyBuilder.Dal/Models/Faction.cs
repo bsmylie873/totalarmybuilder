@@ -11,4 +11,6 @@ public class Faction
     [Column ("id")] public int Id { get; set; }
     
     [Column("name")] public string Name { get; set; }
+    
+    public ICollection<UnitFaction> UnitFactions { get; set; }
 }

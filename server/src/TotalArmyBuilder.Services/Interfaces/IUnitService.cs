@@ -6,6 +6,6 @@ namespace TotalArmyBuilder.Service.Interfaces;
 public interface IUnitService
 {
     IList<UnitDto> GetUnits(string? name = null, int? cost = null);
-    IList<UnitDto> GetUnitById(int id);
+    UnitDto GetUnitById(int id);
     
 }

@@ -15,7 +15,10 @@ public class AccountProfile : Profile
 
     private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Account, AccountDto>();
+        CreateMap<Account, AccountDto>()
+            .ForMember(d => d.Compositions, 
+                o=> o
+                    .MapFrom(x => x.AccountCompositions.Select(y => y.Account)));
     }
     
     private void ConfigureDtoToDomainModel()

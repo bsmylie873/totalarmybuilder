@@ -26,7 +26,7 @@ public class FactionService : IFactionService
             .ToList();
     }
     
-    public IList<FactionDto> GetFactionById(int id)
+    public FactionDto GetFactionById(int id)
     {
         var factionQuery = _database
             .Get<Faction>()
@@ -34,6 +34,6 @@ public class FactionService : IFactionService
 
         return _mapper
             .ProjectTo<FactionDto>(factionQuery)
-            .ToList(); ;
+            .SingleOrDefault(); ;
     }
 }

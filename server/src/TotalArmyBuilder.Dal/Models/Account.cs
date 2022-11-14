@@ -16,4 +16,5 @@ public class Account
     
     [Column("password")] public string Password { get; set; }
     
+    public ICollection<AccountComposition> AccountCompositions { get; set; }
 }

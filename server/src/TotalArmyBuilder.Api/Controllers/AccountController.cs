@@ -38,12 +38,13 @@ public class AccountsController : Controller
         return Ok(new {account});
     }
 
-    [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
+    /*[HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {
         var accountCompositions = _service.GetCompositionsByAccount(id);
         return Ok(new {accountCompositions});
-    }
+    
+    }*/
 
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
