@@ -41,16 +41,13 @@ public class AccountsController : Controller
     [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {
-        var compositions = _database
-            .Get<AccountComposition>()
-            .Where(new CompositionByAccountSpec(id))
-            .ToList();
-        return Ok(new {compositions});
+        var accountCompositions = _service.GetCompositionsByAccount(id);
+        return Ok(new {accountCompositions});
     }
 
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccount([FromForm]CreateAccountViewModel accountDetails)
+    public ActionResult CreateAccount([FromForm] CreateAccountViewModel accountDetails)
     {
         var account = _mapper.Map<Account>(accountDetails);
         _service.CreateAccount(account);

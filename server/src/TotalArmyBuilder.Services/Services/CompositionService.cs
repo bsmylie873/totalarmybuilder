@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
+using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
@@ -36,6 +37,17 @@ public class CompositionService : ICompositionService
 
         return _mapper
             .ProjectTo<CompositionDto>(compositionQuery)
+            .ToList(); ;
+    }
+    
+    public IList<CompositionUnit> GetUnitsByComposition(int id)
+    {
+        var unitQuery = _database
+            .Get<CompositionUnit>()
+            .Where(new UnitByCompositionSpec(id));
+
+        return _mapper
+            .ProjectTo<CompositionUnit>(unitQuery)
             .ToList(); ;
     }
     

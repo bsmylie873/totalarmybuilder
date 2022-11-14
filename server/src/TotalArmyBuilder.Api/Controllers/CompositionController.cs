@@ -42,10 +42,7 @@ public class CompositionsController : Controller
     [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
     public ActionResult<CompositionDetailViewModel> GetCompositionUnits(int id)
     {
-        var compositionUnits = _database
-            .Get<Unit>()
-            .Where(new UnitByIdSpec(id))
-            .ToList();
+        var compositionUnits = _service.GetUnitsByComposition(id);
         return Ok(new {compositionUnits});
     }
     

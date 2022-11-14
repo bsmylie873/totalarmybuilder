@@ -40,6 +40,17 @@ public class AccountService : IAccountService
             .ToList(); ;
     }
     
+    public IList<AccountComposition> GetCompositionsByAccount(int id)
+    {
+        var compositionsQuery = _database
+            .Get<AccountComposition>()
+            .Where(new CompositionByAccountSpec(id));
+
+        return _mapper
+            .ProjectTo<AccountComposition>(compositionsQuery)
+            .ToList(); ;
+    }
+    
     public void CreateAccount(Account account)
     {
         _database.Add(account);

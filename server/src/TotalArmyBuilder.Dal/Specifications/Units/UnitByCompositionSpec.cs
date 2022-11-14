@@ -7,9 +7,11 @@ namespace TotalArmyBuilder.Dal.Specifications.Units;
 
 public class UnitByCompositionSpec : Specification<CompositionUnit>
 {
-    private readonly int _unitId;
-    public UnitByCompositionSpec(int unitId) => _unitId = unitId;
+    private readonly int _compositionId;
+    public UnitByCompositionSpec(int compositionId) => _compositionId = compositionId;
 
     public override Expression<Func<CompositionUnit, bool>> BuildExpression() =>
-        x => x.UnitId == _unitId;
+        //x => x.Id == _unitId;
+
+        y => y.CompositionId == _compositionId;
 }
