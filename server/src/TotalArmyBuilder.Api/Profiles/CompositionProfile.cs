@@ -8,18 +8,25 @@ public class CompositionProfile : Profile
 {
     public CompositionProfile()
     {
-        ConfigureDTOToViewModel();
+        ConfigureDtoToViewModel();
+        ConfigureCreateModelToDto();
     }
 
-    private void ConfigureDTOToViewModel()
+    private void ConfigureDtoToViewModel()
     {
-        CreateMap<CompositionDto, CompositionViewModel>();
+        CreateMap<CompositionDto, CompositionViewModel>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
 
     }
 
-    private void ConfigureCreateModelToDTO()
+    private void ConfigureCreateModelToDto()
     {
-        CreateMap<CreateCompositionViewModel, CompositionDto>();
-        CreateMap<UpdateCompositionViewModel, CompositionDto>();
+        CreateMap<CreateCompositionViewModel, CompositionDto>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<UpdateCompositionViewModel, CompositionDto>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     } 
 }

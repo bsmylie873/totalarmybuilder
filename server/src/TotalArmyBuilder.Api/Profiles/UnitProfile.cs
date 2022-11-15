@@ -13,7 +13,9 @@ public class UnitProfile : Profile
 
     private void ConfigureDTOToViewModel()
     {
-        CreateMap<UnitDto, UnitViewModel>();
+        CreateMap<UnitDto, UnitViewModel>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
     private void ConfigureCreateModelToDTO()

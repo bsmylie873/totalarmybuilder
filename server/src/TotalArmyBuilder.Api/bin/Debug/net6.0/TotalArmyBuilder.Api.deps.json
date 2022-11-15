@@ -12,7 +12,7 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
           "FluentValidation.AspNetCore": "11.2.2",
           "Swashbuckle.AspNetCore": "6.2.3",
-          "TotalArmyBuilder.Service": "1.0.0"
+          "TotalArmyBuilder.Services": "1.0.0"
         },
         "runtime": {
           "TotalArmyBuilder.Api.dll": {}
@@ -273,13 +273,13 @@
           "TotalArmyBuilder.Dal.dll": {}
         }
       },
-      "TotalArmyBuilder.Service/1.0.0": {
+      "TotalArmyBuilder.Services/1.0.0": {
         "dependencies": {
           "AutoMapper": "12.0.0",
           "TotalArmyBuilder.Dal": "1.0.0"
         },
         "runtime": {
-          "TotalArmyBuilder.Service.dll": {}
+          "TotalArmyBuilder.Services.dll": {}
         }
       }
     }
@@ -512,7 +512,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "TotalArmyBuilder.Service/1.0.0": {
+    "TotalArmyBuilder.Services/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -19,6 +19,10 @@ public class AccountProfile : Profile
             .ForMember(d => d.Compositions, 
                 o=> o
                     .MapFrom(x => x.AccountCompositions.Select(y => y.Composition)));
+        
+        CreateMap<Account,AccountDto>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
     
     private void ConfigureDtoToDomainModel()
@@ -26,5 +30,9 @@ public class AccountProfile : Profile
         CreateMap<AccountDto, Account>()
             .ForMember(d => d.Id, o => o.Ignore());
             //.ForMember(d => d.Password, o => o.Ignore());
+            
+        CreateMap<AccountDto, Account>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

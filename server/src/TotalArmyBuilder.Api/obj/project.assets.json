@@ -519,7 +519,7 @@
           "bin/placeholder/TotalArmyBuilder.Dal.dll": {}
         }
       },
-      "TotalArmyBuilder.Service/1.0.0": {
+      "TotalArmyBuilder.Services/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -527,10 +527,10 @@
           "TotalArmyBuilder.Dal": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/TotalArmyBuilder.Service.dll": {}
+          "bin/placeholder/TotalArmyBuilder.Services.dll": {}
         },
         "runtime": {
-          "bin/placeholder/TotalArmyBuilder.Service.dll": {}
+          "bin/placeholder/TotalArmyBuilder.Services.dll": {}
         }
       }
     }
@@ -1228,10 +1228,10 @@
       "path": "../TotalArmyBuilder.Dal/TotalArmyBuilder.Dal.csproj",
       "msbuildProject": "../TotalArmyBuilder.Dal/TotalArmyBuilder.Dal.csproj"
     },
-    "TotalArmyBuilder.Service/1.0.0": {
+    "TotalArmyBuilder.Services/1.0.0": {
       "type": "project",
-      "path": "../TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj",
-      "msbuildProject": "../TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj"
+      "path": "../TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj",
+      "msbuildProject": "../TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1240,7 +1240,7 @@
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.0",
       "FluentValidation.AspNetCore >= 11.2.2",
       "Swashbuckle.AspNetCore >= 6.2.3",
-      "TotalArmyBuilder.Service >= 1.0.0"
+      "TotalArmyBuilder.Services >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1268,8 +1268,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj": {
-              "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj"
+            "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj": {
+              "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj"
             }
           }
         }

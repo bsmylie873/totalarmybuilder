@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kqHsy6RP36+OjL9Ja4p6TAIdQ//oFLAgOKNq6BLL7dd5zxVwlKytisbdyBevBheOC7ay5ExdT+TPnfKEIdphvQ==",
+  "dgSpecHash": "Dr2dDnxhHCY6rbkb1LGQ3NrC7j32DcfN6TKQPkhiEW2hQOB+eI1js6I0DZOQo0zhtzOTJGON69vW+aLDWRECiw==",
   "success": true,
   "projectFilePath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj",
   "expectedPackageFiles": [

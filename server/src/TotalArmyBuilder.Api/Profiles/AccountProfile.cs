@@ -9,18 +9,26 @@ public class AccountProfile : Profile
 {
     public AccountProfile()
     {
-        ConfigureDTOToViewModel();
+        ConfigureDtoToViewModel();
+        ConfigureCreateModelToDto();
     }
 
-    private void ConfigureDTOToViewModel()
+    private void ConfigureDtoToViewModel()
     {
-        CreateMap<AccountDto, AccountViewModel>();
+        CreateMap<AccountDto, AccountViewModel>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
 
     }
 
-    private void ConfigureCreateModelToDTO()
+    private void ConfigureCreateModelToDto()
     {
-        CreateMap<CreateAccountViewModel, AccountDto>();
-        CreateMap<UpdateAccountViewModel, AccountDto>();
+        CreateMap<CreateAccountViewModel, AccountDto>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
+        
+        CreateMap<UpdateAccountViewModel, AccountDto>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

@@ -17,12 +17,11 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class AccountsController : TotalArmyBaseController
 {
-    private readonly ITotalArmyDatabase _database;
     private readonly IAccountService _service;
     private IMapper _mapper;
     
-    public AccountsController(ITotalArmyDatabase database, IMapper mapper, IAccountService service) => 
-        (_database, _mapper, _service) = (database, mapper, service);
+    public AccountsController(IMapper mapper, IAccountService service) => 
+        (_mapper, _service) = (mapper, service);
     
     [HttpGet]
     public ActionResult<IList<AccountViewModel>> GetAccounts([FromQuery] string username, [FromQuery] string email)
@@ -51,7 +50,8 @@ public class AccountsController : TotalArmyBaseController
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public ActionResult CreateAccount([FromBody] CreateAccountViewModel accountDetails)
     {
-        _service.CreateAccount(_mapper.Map<AccountDto> (accountDetails));
+        var account = _mapper.Map<AccountDto>(accountDetails);
+        _service.CreateAccount(account);
         return StatusCode((int)HttpStatusCode.Created);
     }
 
@@ -60,10 +60,7 @@ public class AccountsController : TotalArmyBaseController
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
-        var account = new Account
-        {
-            Username = accountDetails.Username,
-        };
+        var account = _mapper.Map<AccountDto>(accountDetails);
         _service.UpdateAccount(id, _mapper.Map<AccountDto>(account));
         return StatusCode((int)HttpStatusCode.NoContent);
     }
@@ -71,7 +68,7 @@ public class AccountsController : TotalArmyBaseController
     [HttpDelete]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateAccount(int id)
+    public ActionResult DeleteAccount(int id)
     {
         _service.DeleteAccount(id);
         return StatusCode((int)HttpStatusCode.NoContent);

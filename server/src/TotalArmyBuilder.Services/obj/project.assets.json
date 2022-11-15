@@ -881,9 +881,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj",
-      "projectName": "TotalArmyBuilder.Service",
-      "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj",
+      "projectUniqueName": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj",
+      "projectName": "TotalArmyBuilder.Services",
+      "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj",
       "packagesPath": "/Users/brandon.smylie/.nuget/packages/",
       "outputPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/obj/",
       "projectStyle": "PackageReference",

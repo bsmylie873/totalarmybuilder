@@ -48,9 +48,9 @@ public class CompositionsController : TotalArmyBaseController
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccountComposition([FromForm] CreateCompositionViewModel compositionDetails)
+    public ActionResult CreateAccountComposition([FromBody] CreateCompositionViewModel compositionDetails)
     {
-        var composition = _mapper.Map<Composition>(compositionDetails);
+        var composition = _mapper.Map<CompositionDto>(compositionDetails);
         _service.CreateComposition(composition);
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -58,7 +58,7 @@ public class CompositionsController : TotalArmyBaseController
     [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateComposition(int id, [FromForm] UpdateCompositionViewModel compositionDetails)
+    public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
     {
         var composition = _mapper.Map<CompositionDto>(compositionDetails);
         _service.UpdateComposition(id, composition);

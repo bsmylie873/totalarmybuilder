@@ -13,7 +13,9 @@ public class FactionProfile : Profile
 
     private void ConfigureDTOToViewModel()
     {
-        CreateMap<FactionDto, FactionViewModel>();
+        CreateMap<FactionDto, FactionViewModel>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
     private void ConfigureCreateModelToDTO()

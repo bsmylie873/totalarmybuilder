@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dAnXBFy9qxCv/mm1vltpovaSFfl1u1lP4FBt7tyYQI/7CBVbI+hDM/KATgT76aDAX60aNVmAUO+eQP2b7Skxpg==",
+  "dgSpecHash": "vKWdD4BWOQR8VbqIrG4kbmoGWxxS4LyKd/PkB2Jrn61u1GgGkQfcl5gH56fhvYVK20TatrAIcHPZpBCRu+W4MQ==",
   "success": true,
-  "projectFilePath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Service.csproj",
+  "projectFilePath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj",
   "expectedPackageFiles": [
     "/Users/brandon.smylie/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
     "/Users/brandon.smylie/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",

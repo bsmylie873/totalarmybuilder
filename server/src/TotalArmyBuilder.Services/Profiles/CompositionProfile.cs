@@ -19,11 +19,19 @@ public class CompositionProfile : Profile
             .ForMember(d => d.Accounts, 
                 o=> o
                     .MapFrom(x => x.AccountCompositions.Select(y => y.Account)));
+        
+        CreateMap<Composition,CompositionDto>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
     
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<CompositionDto, Composition>()
             .ForMember(d => d.Id, o => o.Ignore());
+        
+        CreateMap<CompositionDto, Composition>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
