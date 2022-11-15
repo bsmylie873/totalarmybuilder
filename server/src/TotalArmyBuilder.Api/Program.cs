@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Service.Interfaces;
+using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IUnitService, UnitService>();
 
 builder.Services.AddAutoMapper(config => config.AllowNullCollections = true, typeof(Program).Assembly,
     typeof(AccountService).Assembly);
+builder.Services.AddAutoMapper(typeof(AccountProfile));
 
 var app = builder.Build();
 

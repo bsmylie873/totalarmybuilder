@@ -51,9 +51,11 @@ public class AccountService : IAccountService
             .ToList(); ;
     }*/
     
-    public void CreateAccount(Account account)
+    public void CreateAccount(AccountDto account)
     {
-        _database.Add(account);
+        var newAccount = new Account(); 
+        _mapper.Map(account, newAccount);
+        _database.Add(newAccount);
         _database.SaveChanges();
     }
 

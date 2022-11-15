@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
@@ -9,9 +10,8 @@ using TotalArmyBuilder.Service.Interfaces;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class UnitsController : Controller
+public class UnitsController : TotalArmyBaseController
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IUnitService _service;

@@ -18,13 +18,13 @@ public class AccountProfile : Profile
         CreateMap<Account, AccountDto>()
             .ForMember(d => d.Compositions, 
                 o=> o
-                    .MapFrom(x => x.AccountCompositions.Select(y => y.Account)));
+                    .MapFrom(x => x.AccountCompositions.Select(y => y.Composition)));
     }
     
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<AccountDto, Account>()
-            .ForMember(d => d.Id, o => o.Ignore())
-            .ForMember(d => d.Password, o => o.Ignore());
+            .ForMember(d => d.Id, o => o.Ignore());
+            //.ForMember(d => d.Password, o => o.Ignore());
     }
 }

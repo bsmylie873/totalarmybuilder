@@ -8,7 +8,7 @@ public interface IAccountService
     IList<AccountDto> GetAccounts(string? username = null, string? email = null);
     AccountDto GetAccountById(int id);
     //IList<CompositionDto> GetCompositionsByAccount(int id);
-    void CreateAccount(Account account);
+    void CreateAccount(AccountDto account);
     void UpdateAccount(int id, AccountDto accountDto);
     void DeleteAccount(int id);
 }

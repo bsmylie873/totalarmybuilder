@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Api.ViewModels.Units;
@@ -12,9 +13,8 @@ using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class FactionsController : Controller
+public class FactionsController : TotalArmyBaseController
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IFactionService _service;

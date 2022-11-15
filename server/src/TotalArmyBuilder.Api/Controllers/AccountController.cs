@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Dal.Interfaces;
@@ -13,13 +14,13 @@ using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class AccountsController : Controller
+public class AccountsController : TotalArmyBaseController
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IAccountService _service;
-    private readonly IMapper _mapper;
+    private IMapper _mapper;
+    
     public AccountsController(ITotalArmyDatabase database, IMapper mapper, IAccountService service) => 
         (_database, _mapper, _service) = (database, mapper, service);
     
@@ -48,20 +49,22 @@ public class AccountsController : Controller
 
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public ActionResult CreateAccount([FromForm] CreateAccountViewModel accountDetails)
+    public ActionResult CreateAccount([FromBody] CreateAccountViewModel accountDetails)
     {
-        var account = _mapper.Map<Account>(accountDetails);
-        _service.CreateAccount(account);
+        _service.CreateAccount(_mapper.Map<AccountDto> (accountDetails));
         return StatusCode((int)HttpStatusCode.Created);
     }
 
-    [HttpPut]
+    [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    public ActionResult UpdateAccount(int id, [FromForm] UpdateAccountViewModel accountDetails)
+    public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
-        var account = _mapper.Map<AccountDto>(accountDetails);
-        _service.UpdateAccount(id, account);
+        var account = new Account
+        {
+            Username = accountDetails.Username,
+        };
+        _service.UpdateAccount(id, _mapper.Map<AccountDto>(account));
         return StatusCode((int)HttpStatusCode.NoContent);
     }
     
