@@ -40,16 +40,16 @@ public class CompositionService : ICompositionService
             .SingleOrDefault();
     }
     
-    /*public IList<CompositionUnit> GetUnitsByComposition(int id)
+    public IList<UnitDto> GetUnitsByComposition(int id)
     {
         var unitQuery = _database
-            .Get<CompositionUnit>()
+            .Get<Unit>()
             .Where(new UnitByCompositionSpec(id));
 
         return _mapper
-            .ProjectTo<CompositionUnit>(unitQuery)
+            .ProjectTo<UnitDto>(unitQuery)
             .ToList(); ;
-    }*/
+    }
     
     public void CreateComposition(CompositionDto composition)
     {

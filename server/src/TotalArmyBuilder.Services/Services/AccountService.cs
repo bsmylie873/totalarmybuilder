@@ -40,16 +40,16 @@ public class AccountService : IAccountService
             .SingleOrDefault(); ;
     }
     
-    /*public IList<CompositionDto> GetCompositionsByAccount(int id)
+    public IList<CompositionDto> GetCompositionsByAccount(int id)
     {
         var compositionsQuery = _database
             .Get<Composition>()
             .Where(new CompositionByAccountSpec(id));
 
         return _mapper
-            .ProjectTo<Composition>(compositionsQuery)
+            .ProjectTo<CompositionDto>(compositionsQuery)
             .ToList(); ;
-    }*/
+    }
     
     public void CreateAccount(AccountDto account)
     {

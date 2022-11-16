@@ -21,4 +21,6 @@ public class Composition
     [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
     
     public ICollection<AccountComposition> AccountCompositions { get; set; }
+    
+    public ICollection<CompositionUnit> CompositionUnits { get; set; }
 }

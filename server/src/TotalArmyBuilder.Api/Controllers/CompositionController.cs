@@ -39,12 +39,12 @@ public class CompositionsController : TotalArmyBaseController
         return OkOrNoContent(_mapper.Map<CompositionDetailViewModel>(composition));
     }
 
-    /*[HttpGet("{id}/units/", Name = "GetCompositionUnits")]
-    public ActionResult<CompositionDetailViewModel> GetCompositionUnits(int id)
+    [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
+    public ActionResult<IList<UnitViewModel>> GetCompositionUnits(int id)
     {
         var compositionUnits = _service.GetUnitsByComposition(id);
         return Ok(new {compositionUnits});
-    }*/
+    }
     
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]

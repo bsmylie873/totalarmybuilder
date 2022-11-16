@@ -38,13 +38,13 @@ public class AccountsController : TotalArmyBaseController
         return Ok(model);
     }
 
-    /*[HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
+    [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
     {
         var accountCompositions = _service.GetCompositionsByAccount(id);
-        return Ok(new {accountCompositions});
-    
-    }*/
+        
+        return Ok(_mapper.Map<IList<CompositionViewModel>>(accountCompositions));
+    }
 
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -61,8 +61,8 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
         var account = _mapper.Map<AccountDto>(accountDetails);
-        _service.UpdateAccount(id, _mapper.Map<AccountDto>(account));
-        return StatusCode((int)HttpStatusCode.NoContent);
+        _service.UpdateAccount(id, account);
+        return NoContent();
     }
     
     [HttpDelete]
@@ -71,6 +71,6 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult DeleteAccount(int id)
     {
         _service.DeleteAccount(id);
-        return StatusCode((int)HttpStatusCode.NoContent);
+        return NoContent();
     }
 }
