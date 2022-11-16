@@ -11,7 +11,7 @@ public class AccountViewModelValidator : AbstractValidator<AccountViewModel>
 {
     public AccountViewModelValidator() 
     {
-        RuleFor(x => x.Username).Length(0, 50);
-        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Username).Length(0, 50).NotNull();
+        RuleFor(x => x.Email).EmailAddress().NotNull();
     }
 }

@@ -7,6 +7,7 @@ using TotalArmyBuilder.Api.Controllers;
 using TotalArmyBuilder.Api.Test.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Dal.Interfaces;
+using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 
@@ -24,54 +25,6 @@ public class AccountControllerTests
         _service = Substitute.For<IAccountService>();
     }
 
-    [Fact]
-    public void GetAccounts_WhenAccountFound_MappedAndReturned()
-    {
-        // Arrange
-        const int id = 1;
-        const string username = "username";
-        const string email = "example@email.com";
-        var account = new AccountDto
-        {
-            Id = id,
-            Username = username,
-            Email = email
-        };
-        
-        const int id2 = 2;
-        const string username2 = "username2";
-        const string email2 = "example2@email.com";
-        var account2 = new AccountDto
-        {
-            Id = id2,
-            Username = username2,
-            Email = email2
-        };
-
-        IList<AccountDto> accountList = new List<AccountDto>();
-        accountList.Add(account);
-        accountList.Add(account2);
-
-        var accountViewModel = new AccountViewModel();
-
-        _service.GetAccounts().Returns(accountList);
-
-        var controller = RetrieveController();
-        _mapper.Map<AccountViewModel>(accountList[0]).Returns(accountViewModel);
-        _mapper.Map<AccountViewModel>(accountList[1]).Returns(accountViewModel);
-        
-        // Act
-        var actionResult = controller.GetAccounts(null,null);
-        
-        // Assert
-        var result = actionResult.AssertObjectResult<IList<AccountViewModel>, OkObjectResult>();
-        
-       // result.Should().BeSameAs(accountViewModel);
-
-        _service.Received(1).GetAccountById(id);
-        _mapper.Received(1).Map<AccountViewModel>(account);
-    }
-    
     [Fact]
     public void GetAccountById_WhenAccountFound_MappedAndReturned()
     {
@@ -100,8 +53,53 @@ public class AccountControllerTests
         _service.Received(1).GetAccountById(id);
         _mapper.Received(1).Map<AccountDetailViewModel>(account);
     }
+    
+    [Theory]
+    [InlineData("username", "email")]
+    [InlineData(null, null)]
+    public void GetAccounts_MappedAndReturned(string username, string email)
+    {
+        // Arrange
+        const int id = 1;
+        var account = new AccountDto
+        {
+            Id = id,
+            Username = username,
+            Email = email
+        };
+        
+        const int id2 = 2;
+        var account2 = new AccountDto
+        {
+            Id = id2,
+            Username = username,
+            Email = email
+        };
 
+        var accountList = new List<AccountDto>
+        {
+            account, account2
+        };
 
+        var accountViewModels = new List<AccountViewModel>();
+
+        _service.GetAccounts(username, email).Returns(accountList);
+        _mapper.Map<IList<AccountViewModel>>(accountList).Returns(accountViewModels);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetAccounts(username, email);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<IList<AccountViewModel>, OkObjectResult>();
+        
+        result.Should().BeSameAs(accountViewModels);
+
+        _service.Received(1).GetAccounts(username, email);
+        _mapper.Received(1).Map<IList<AccountViewModel>>(accountList);
+    }
+    
     private AccountsController RetrieveController()
     {
         return new AccountsController(_mapper, _service);

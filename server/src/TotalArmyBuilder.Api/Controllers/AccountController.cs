@@ -34,8 +34,8 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
         var account = _service.GetAccountById(id);
-
-        return Ok(new {account});
+        var model = _mapper.Map<AccountDetailViewModel>(account);
+        return Ok(model);
     }
 
     /*[HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]

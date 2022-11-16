@@ -20,7 +20,7 @@ public class AccountProfile : Profile
                 o=> o
                     .MapFrom(x => x.AccountCompositions.Select(y => y.Composition)));
         
-        CreateMap<Account,AccountDto>().ForAllMembers(
+        CreateMap<Account, AccountDto>().ForAllMembers(
             opts => 
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
