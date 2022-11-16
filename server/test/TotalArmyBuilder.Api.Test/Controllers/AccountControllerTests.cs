@@ -1,3 +1,4 @@
+using System.Collections;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,55 @@ public class AccountControllerTests
     }
 
     [Fact]
-    public void GetAccountById_WhenAccountFound_MapsAndReturned()
+    public void GetAccounts_WhenAccountFound_MappedAndReturned()
+    {
+        // Arrange
+        const int id = 1;
+        const string username = "username";
+        const string email = "example@email.com";
+        var account = new AccountDto
+        {
+            Id = id,
+            Username = username,
+            Email = email
+        };
+        
+        const int id2 = 2;
+        const string username2 = "username2";
+        const string email2 = "example2@email.com";
+        var account2 = new AccountDto
+        {
+            Id = id2,
+            Username = username2,
+            Email = email2
+        };
+
+        IList<AccountDto> accountList = new List<AccountDto>();
+        accountList.Add(account);
+        accountList.Add(account2);
+
+        var accountViewModel = new AccountViewModel();
+
+        _service.GetAccounts().Returns(accountList);
+
+        var controller = RetrieveController();
+        _mapper.Map<AccountViewModel>(accountList[0]).Returns(accountViewModel);
+        _mapper.Map<AccountViewModel>(accountList[1]).Returns(accountViewModel);
+        
+        // Act
+        var actionResult = controller.GetAccounts(null,null);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<IList<AccountViewModel>, OkObjectResult>();
+        
+       // result.Should().BeSameAs(accountViewModel);
+
+        _service.Received(1).GetAccountById(id);
+        _mapper.Received(1).Map<AccountViewModel>(account);
+    }
+    
+    [Fact]
+    public void GetAccountById_WhenAccountFound_MappedAndReturned()
     {
         // Arrange
         const int id = 1;
@@ -46,7 +95,7 @@ public class AccountControllerTests
         // Assert
         var result = actionResult.AssertObjectResult<AccountDetailViewModel, OkObjectResult>();
 
-        result.Should().BeSameAs(AccountDetailViewModel);
+        result.Should().BeSameAs(accountDetailViewModel);
 
         _service.Received(1).GetAccountById(id);
         _mapper.Received(1).Map<AccountDetailViewModel>(account);

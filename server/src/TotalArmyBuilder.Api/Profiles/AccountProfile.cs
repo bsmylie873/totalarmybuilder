@@ -18,7 +18,9 @@ public class AccountProfile : Profile
         CreateMap<AccountDto, AccountViewModel>().ForAllMembers(
             opts => 
                 opts.Condition((src, dest, srcMember) => srcMember != null));
-
+        CreateMap<AccountDto, AccountDetailViewModel>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
     private void ConfigureCreateModelToDto()
