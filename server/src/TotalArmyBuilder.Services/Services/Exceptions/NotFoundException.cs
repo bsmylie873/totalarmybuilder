@@ -1,6 +1,6 @@
 namespace TotalArmyBuilder.Service.Services.Exceptions;
 
-public class NotFoundException
+public class NotFoundException : Exception
 {
     
 }
