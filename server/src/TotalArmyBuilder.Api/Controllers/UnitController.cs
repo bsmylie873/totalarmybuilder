@@ -13,11 +13,10 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class UnitsController : TotalArmyBaseController
 {
-    private readonly ITotalArmyDatabase _database;
     private readonly IUnitService _service;
     private readonly IMapper _mapper;
-    public UnitsController(ITotalArmyDatabase database, IMapper mapper, IUnitService service) => 
-        (_database, _mapper, _service) = (database, mapper, service);
+    public UnitsController(IMapper mapper, IUnitService service) => 
+        (_mapper, _service) = (mapper, service);
         
     [HttpGet]
     public ActionResult<IList<UnitViewModel>> GetUnits([FromQuery] string name, [FromQuery] int cost)
@@ -31,7 +30,7 @@ public class UnitsController : TotalArmyBaseController
     {
         var unit = _service.GetUnitById(id);
 
-        return Ok(new {unit});
+        return OkOrNoContent(_mapper.Map<UnitDetailViewModel>(unit));
     }
 
 }

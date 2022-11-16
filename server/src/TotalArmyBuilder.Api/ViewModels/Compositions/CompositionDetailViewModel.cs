@@ -5,6 +5,7 @@ namespace TotalArmyBuilder.Api.ViewModels.Compositions;
 
 public class CompositionDetailViewModel : CompositionViewModel
 {
+    public int Id { get; set; }
     public List<UnitDetailViewModel> Unit_List { get; set; }
 }
 
@@ -12,6 +13,7 @@ public class CompositionDetailViewModelValidator : AbstractValidator<Composition
 {
     public CompositionDetailViewModelValidator() 
     {
-        RuleFor(x => x.Unit_List).NotNull();
+        RuleFor(x => x.Id).NotNull();
+        RuleFor(x => x.Unit_List).NotEmpty();
     }
 }

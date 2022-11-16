@@ -18,11 +18,10 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class CompositionsController : TotalArmyBaseController
 {
-    private readonly ITotalArmyDatabase _database;
     private readonly ICompositionService _service;
     private readonly IMapper _mapper;
-    public CompositionsController(ITotalArmyDatabase database, IMapper mapper, ICompositionService service) => 
-        (_database, _mapper, _service) = (database, mapper, service);
+    public CompositionsController(IMapper mapper, ICompositionService service) => 
+        (_mapper, _service) = (mapper, service);
     
     [HttpGet]
     public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string name, [FromQuery] int factionId, [FromQuery] int avatarId)
@@ -62,7 +61,7 @@ public class CompositionsController : TotalArmyBaseController
     {
         var composition = _mapper.Map<CompositionDto>(compositionDetails);
         _service.UpdateComposition(id, composition);
-        return StatusCode((int)HttpStatusCode.NoContent);
+        return NoContent();
     }
     
     [HttpDelete]
@@ -71,7 +70,7 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult UpdateComposition(int id)
     {
         _service.DeleteComposition(id);
-        return StatusCode((int)HttpStatusCode.NoContent);
+        return NoContent();
     }
 }
 

@@ -6,8 +6,9 @@ using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
-using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Factions;
+using TotalArmyBuilder.Dal.Specifications.Units;
+using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
@@ -16,11 +17,10 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class FactionsController : TotalArmyBaseController
 {
-    private readonly ITotalArmyDatabase _database;
     private readonly IFactionService _service;
     private readonly IMapper _mapper;
-    public FactionsController(ITotalArmyDatabase database, IMapper mapper, IFactionService service) => 
-        (_database, _mapper, _service) = (database, mapper, service);
+    public FactionsController(IMapper mapper, IFactionService service) => 
+        (_mapper, _service) = (mapper, service);
         
     [HttpGet]
     public ActionResult<IList<FactionViewModel>> GetFactions([FromQuery] string name)
@@ -34,6 +34,13 @@ public class FactionsController : TotalArmyBaseController
     {
         var faction = _service.GetFactionById(id);
 
-        return Ok(new {faction});
+        return OkOrNoContent(_mapper.Map<FactionDetailViewModel>(faction));
+    }
+    
+    [HttpGet("{id}/units/", Name = "GetFactionUnits")]
+    public ActionResult<IList<UnitViewModel>> GetFactionUnits(int id)
+    {
+        var factionUnits = _service.GetUnitsByFaction(id);
+        return Ok(new {factionUnits});
     }
 }

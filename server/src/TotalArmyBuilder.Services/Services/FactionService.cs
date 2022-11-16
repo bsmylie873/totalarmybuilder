@@ -2,6 +2,7 @@ using AutoMapper;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Factions;
+using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
@@ -35,5 +36,16 @@ public class FactionService : IFactionService
         return _mapper
             .ProjectTo<FactionDto>(factionQuery)
             .SingleOrDefault(); ;
+    }
+    
+    public IList<UnitDto> GetUnitsByFaction(int id)
+    {
+        var unitQuery = _database
+            .Get<Unit>()
+            .Where(new UnitByFactionSpec(id));
+
+        return _mapper
+            .ProjectTo<UnitDto>(unitQuery)
+            .ToList(); ;
     }
 }
