@@ -1,3 +1,4 @@
+using System.Net;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ public class AccountControllerTests
 {
     private readonly IMapper _mapper;
     private readonly IAccountService _service;
-    
+
     private AccountsController RetrieveController()
     {
         return new AccountsController(_mapper, _service);
@@ -40,7 +41,7 @@ public class AccountControllerTests
             Username = username,
             Email = email
         };
-        
+
         const int id2 = 2;
         var account2 = new AccountDto
         {
@@ -60,13 +61,13 @@ public class AccountControllerTests
         _mapper.Map<IList<AccountViewModel>>(accountList).Returns(accountViewModels);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetAccounts(username, email);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<IList<AccountViewModel>, OkObjectResult>();
-        
+
         result.Should().BeSameAs(accountViewModels);
 
         _service.Received(1).GetAccounts(username, email);
@@ -89,10 +90,10 @@ public class AccountControllerTests
         _mapper.Map<AccountDetailViewModel>(account).Returns(accountDetailViewModel);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetAccountById(id);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<AccountDetailViewModel, OkObjectResult>();
 
@@ -101,29 +102,29 @@ public class AccountControllerTests
         _service.Received(1).GetAccountById(id);
         _mapper.Received(1).Map<AccountDetailViewModel>(account);
     }
- 
+
     [Fact]
     public void GetAccountCompositions_MappedAndReturned()
     {
         // Arrange
         const int id = 1;
-        
+
         var composition = new CompositionDto
         {
             Id = id
         };
-        
+
         const int id2 = 2;
         var composition2 = new CompositionDto
         {
             Id = id2
         };
-        
+
         var compositionList = new List<CompositionDto>
         {
             composition, composition2
         };
-        
+
         var account = new AccountDto
         {
             Id = id,
@@ -137,10 +138,10 @@ public class AccountControllerTests
         _mapper.Map<IList<CompositionViewModel>>(account.Compositions).Returns(compositionViewModels);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetAccountCompositions(account.Id);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<IList<CompositionViewModel>, OkObjectResult>();
 
@@ -149,7 +150,7 @@ public class AccountControllerTests
         _service.Received(1).GetAccountCompositions(account.Id);
         _mapper.Received(1).Map<IList<CompositionViewModel>>(account.Compositions);
     }
-    
+
     [Theory]
     [InlineData("username", "email", "password")]
     [InlineData(null, null, null)]
@@ -167,19 +168,64 @@ public class AccountControllerTests
 
         var createAccountViewModel = new CreateAccountViewModel();
 
-        _service.CreateAccount(account);
-        _mapper.Map<AccountDetailViewModel>(account).Returns(accountDetailViewModel);
+        _mapper.Map<AccountDto>(createAccountViewModel).Returns(account);
 
         var controller = RetrieveController();
-        
+
         // Act
-        var actionResult = controller.GetAccountById(id);
-        
+        var actionResult = controller.CreateAccount(createAccountViewModel);
+
         // Assert
-        var result = actionResult.AssertObjectResult<AccountDetailViewModel, OkObjectResult>();
+        actionResult.AssertResult<StatusCodeResult>(HttpStatusCode.Created);
 
-        result.Should().BeSameAs(accountDetailViewModel);
+        _service.Received(1).CreateAccount(account);
+        _mapper.Received(1).Map<AccountDto>(createAccountViewModel);
+    }
+    
+    [Theory]
+    [InlineData("username", "email")]
+    [InlineData(null, null)]
+    public void UpdateAccount_WhenCalledWithValidViewModel_MappedAndSaved(string username, string email)
+    {
+        // Arrange
+        const int id = 1;
+        var account = new AccountDto
+        {
+            Id = id,
+            Username = username,
+            Email = email,
+        };
 
-        _service.Received(1).GetAccountById(id);
-        _mapper.Received(1).Map<AccountDetailViewModel>(account);
+        var updateAccountViewModel = new UpdateAccountViewModel();
+
+        _mapper.Map<AccountDto>(updateAccountViewModel).Returns(account);
+
+        var controller = RetrieveController();
+
+        // Act
+        var actionResult = controller.UpdateAccount(id, updateAccountViewModel);
+
+        // Assert
+        actionResult.AssertResult<NoContentResult>();
+
+        _service.Received(1).UpdateAccount(id, account);
+        _mapper.Received(1).Map<AccountDto>(updateAccountViewModel);
+    }
+    
+    [Fact]
+    public void DeleteAccount_WhenCalledWithValidId_DeletedAndSaved()
+    {
+        // Arrange
+        const int id = 1;
+
+        var controller = RetrieveController();
+
+        // Act
+        var actionResult = controller.DeleteAccount(id);
+
+        // Assert
+        actionResult.AssertResult<NoContentResult>();
+
+        _service.Received(1).DeleteAccount(id);
+    }
 }

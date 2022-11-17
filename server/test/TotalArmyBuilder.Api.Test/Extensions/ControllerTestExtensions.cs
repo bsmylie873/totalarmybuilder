@@ -1,3 +1,4 @@
+using System.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,13 @@ public static class ControllerTestExtensions
         @this.Result.Should().NotBeAssignableTo<ObjectResult>();
     }
 
-    public static void AssertResult<T>(this ActionResult @this) 
+    public static void AssertResult<T>(this ActionResult @this, HttpStatusCode? statusCode = null) 
     {
         @this.Should().BeOfType<T>();
         @this.Should().NotBeAssignableTo<ObjectResult>();
+        if (statusCode.HasValue && @this is StatusCodeResult result)
+        {
+            result.StatusCode.Should().Be((int)statusCode);
+        }
     }
 }
