@@ -9,4 +9,6 @@ public class UnitDto
     
     public IList<CompositionDto> Compositions { get; set; }
     public IList<FactionDto> Factions { get; set; }
+    public IList<UnitDto> Lords { get; set; }
+    public IList<UnitDto> Heroes { get; set; }
 }

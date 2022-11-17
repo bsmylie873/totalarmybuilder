@@ -48,4 +48,26 @@ public class UnitService : IUnitService
             .ProjectTo<FactionDto>(factionQuery)
             .ToList(); ;
     }
+    
+    public IList<UnitDto> GetUnitLords(int id)
+    {
+        var lordQuery = _database
+            .Get<Unit>()
+            .Where(new UnitByLordSpec(id));
+
+        return _mapper
+            .ProjectTo<UnitDto>(lordQuery)
+            .ToList(); ;
+    }
+    
+    public IList<UnitDto> GetUnitHeroes(int id)
+    {
+        var heroQuery = _database
+            .Get<Unit>()
+            .Where(new UnitByHeroSpec(id));
+
+        return _mapper
+            .ProjectTo<UnitDto>(heroQuery)
+            .ToList(); ;
+    }
 }

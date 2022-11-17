@@ -16,8 +16,11 @@ public class Unit
 
     [Column("avatar_id")] public int AvatarId { get; set; }
     [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
-    
+
     public ICollection<CompositionUnit> CompositionUnits { get; set; }
     
     public ICollection<UnitFaction> UnitFactions { get; set; }
+    
+    public ICollection<LordUnit> LordUnits { get; set; }
+    public ICollection<HeroUnit> HeroUnits { get; set; }
 }

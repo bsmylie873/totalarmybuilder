@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS compositions(
   	battle_type INT not NULL,
   	faction_id INT NOT NULL,
   	avatar_id INT NOT NULL,
+    date_created TIMESTAMP NOT NULL,
   	FOREIGN KEY (faction_id)
       REFERENCES factions (id),
   	FOREIGN KEY (avatar_id)

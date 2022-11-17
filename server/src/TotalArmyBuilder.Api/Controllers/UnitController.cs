@@ -39,5 +39,19 @@ public class UnitsController : TotalArmyBaseController
         var unitFactions = _service.GetUnitFactions(id);
         return Ok(_mapper.Map<IList<FactionViewModel>>(unitFactions));
     }
+    
+    [HttpGet("{id}/lords/", Name = "GetUnitLords")]
+    public ActionResult<IList<UnitViewModel>> GetUnitLords(int id)
+    {
+        var unitLords = _service.GetUnitLords(id);
+        return Ok(_mapper.Map<IList<UnitViewModel>>(unitLords));
+    }
+    
+    [HttpGet("{id}/heroes/", Name = "GetUnitHeroes")]
+    public ActionResult<IList<UnitViewModel>> GetUnitHeroes(int id)
+    {
+        var unitHeroes = _service.GetUnitHeroes(id);
+        return Ok(_mapper.Map<IList<UnitViewModel>>(unitHeroes));
+    }
 
 }

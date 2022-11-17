@@ -149,4 +149,100 @@ public class UnitControllerTests
         _service.Received(1).GetUnitFactions(unit.Id);
         _mapper.Received(1).Map<IList<FactionViewModel>>(unit.Factions);
     }
+    
+    [Fact]
+    public void GetUnitLords_WhenUnitFound_MappedAndReturned()
+    {
+        // Arrange
+        const int id = 1;
+        
+        var lord = new UnitDto
+        {
+            Id = id
+        };
+        
+        const int id2 = 2;
+        var lord2 = new UnitDto
+        {
+            Id = id2
+        };
+        
+        var lordList = new List<UnitDto>
+        {
+            lord, lord2
+        };
+        
+        var unit = new UnitDto()
+        {
+            Id = id,
+            Lords = lordList
+        };
+
+
+        var lordViewModels = new List<UnitViewModel>();
+
+        _service.GetUnitLords(unit.Id).Returns(unit.Lords);
+        _mapper.Map<IList<UnitViewModel>>(unit.Lords).Returns(lordViewModels);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetUnitLords(unit.Id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<IList<UnitViewModel>, OkObjectResult>();
+
+        result.Should().BeSameAs(lordViewModels);
+
+        _service.Received(1).GetUnitLords(unit.Id);
+        _mapper.Received(1).Map<IList<UnitViewModel>>(unit.Lords);
+    }
+    
+    [Fact]
+    public void GetUnitHeroes_WhenUnitFound_MappedAndReturned()
+    {
+        // Arrange
+        const int id = 1;
+        
+        var hero = new UnitDto
+        {
+            Id = id
+        };
+        
+        const int id2 = 2;
+        var hero2 = new UnitDto
+        {
+            Id = id2
+        };
+        
+        var heroList = new List<UnitDto>
+        {
+            hero, hero2
+        };
+        
+        var unit = new UnitDto()
+        {
+            Id = id,
+            Heroes = heroList
+        };
+
+
+        var heroViewModels = new List<UnitViewModel>();
+
+        _service.GetUnitHeroes(unit.Id).Returns(unit.Heroes);
+        _mapper.Map<IList<UnitViewModel>>(unit.Heroes).Returns(heroViewModels);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetUnitHeroes(unit.Id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<IList<UnitViewModel>, OkObjectResult>();
+
+        result.Should().BeSameAs(heroViewModels);
+
+        _service.Received(1).GetUnitHeroes(unit.Id);
+        _mapper.Received(1).Map<IList<UnitViewModel>>(unit.Heroes);
+    }
 }

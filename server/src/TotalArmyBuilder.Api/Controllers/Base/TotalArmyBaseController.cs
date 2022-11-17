@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TotalArmyBuilder.Api.Controllers.Base;
 
+[ExcludeFromCodeCoverage]
 [ApiController]
 public class TotalArmyBaseController : ControllerBase
 {
