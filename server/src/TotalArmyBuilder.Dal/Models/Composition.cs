@@ -20,6 +20,8 @@ public class Composition
     [Column("avatar_id")] public int AvatarId { get; set; }
     [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
     
+    [Column("date_created")] public DateTime DateCreated { get; set; }
+
     public ICollection<AccountComposition> AccountCompositions { get; set; }
     
     public ICollection<CompositionUnit> CompositionUnits { get; set; }
