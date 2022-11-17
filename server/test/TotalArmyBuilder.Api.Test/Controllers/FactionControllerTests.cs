@@ -101,7 +101,7 @@ public class FactionControllerTests
     }
     
     [Fact]
-    public void GetFactionUnits_MappedAndReturned()
+    public void GetFactionUnits_WhenFactionFound_MappedAndReturned()
     {
         // Arrange
         const int id = 1;

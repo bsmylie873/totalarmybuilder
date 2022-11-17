@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Net;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -156,5 +157,84 @@ public class CompositionControllerTests
 
         _service.Received(1).GetCompositionUnits(composition.Id);
         _mapper.Received(1).Map<IList<UnitViewModel>>(composition.Units);
+    }
+    
+    [Theory]
+    [InlineData("name", 0, 0, 0)]
+    public void CreateComposition_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
+    {
+        // Arrange
+        const int id = 1;
+        var composition = new CompositionDto
+        {
+            Id = id,
+            Name = name,
+            BattleType = battleType,
+            FactionId = factionId,
+            AvatarId = avatarId,
+        };
+
+        var createCompositionViewModel = new CreateCompositionViewModel();
+
+        _mapper.Map<CompositionDto>(createCompositionViewModel).Returns(composition);
+
+        var controller = RetrieveController();
+
+        // Act
+        var actionResult = controller.CreateComposition(createCompositionViewModel);
+
+        // Assert
+        actionResult.AssertResult<StatusCodeResult>(HttpStatusCode.Created);
+
+        _service.Received(1).CreateComposition(composition);
+        _mapper.Received(1).Map<CompositionDto>(createCompositionViewModel);
+    }
+    
+    [Theory]
+    [InlineData("name", 0, 0, 0)]
+    public void UpdateComposition_WhenCalledWithValidViewModel_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
+    {
+        // Arrange
+        const int id = 1;
+        var composition = new CompositionDto
+        {
+            Id = id,
+            Name = name,
+            BattleType = battleType,
+            FactionId = factionId,
+            AvatarId = avatarId,
+        };
+
+        var updateCompositionViewModel = new UpdateCompositionViewModel();
+
+        _mapper.Map<CompositionDto>(updateCompositionViewModel).Returns(composition);
+
+        var controller = RetrieveController();
+
+        // Act
+        var actionResult = controller.UpdateComposition(id, updateCompositionViewModel);
+
+        // Assert
+        actionResult.AssertResult<NoContentResult>();
+
+        _service.Received(1).UpdateComposition(id, composition);
+        _mapper.Received(1).Map<CompositionDto>(updateCompositionViewModel);
+    }
+    
+    [Fact]
+    public void DeleteComposition_WhenCalledWithValidId_DeletedAndSaved()
+    {
+        // Arrange
+        const int id = 1;
+
+        var controller = RetrieveController();
+
+        // Act
+        var actionResult = controller.DeleteComposition(id);
+
+        // Assert
+        actionResult.AssertResult<NoContentResult>();
+
+        _service.Received(1).DeleteComposition(id);
     }
 }

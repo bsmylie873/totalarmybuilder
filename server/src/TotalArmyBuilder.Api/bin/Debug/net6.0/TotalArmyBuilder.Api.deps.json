@@ -11,6 +11,7 @@
           "AutoMapper": "12.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.0",
           "FluentValidation.AspNetCore": "11.2.2",
+          "Microsoft.CodeCoverage": "17.4.0",
           "Swashbuckle.AspNetCore": "6.2.3",
           "TotalArmyBuilder.Services": "1.0.0"
         },
@@ -70,6 +71,14 @@
           "lib/netstandard2.1/FluentValidation.DependencyInjectionExtensions.dll": {
             "assemblyVersion": "11.0.0.0",
             "fileVersion": "11.2.1.0"
+          }
+        }
+      },
+      "Microsoft.CodeCoverage/17.4.0": {
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.VisualStudio.CodeCoverage.Shim.dll": {
+            "assemblyVersion": "15.0.0.0",
+            "fileVersion": "17.400.422.47203"
           }
         }
       },
@@ -265,6 +274,7 @@
       },
       "TotalArmyBuilder.Dal/1.0.0": {
         "dependencies": {
+          "Microsoft.CodeCoverage": "17.4.0",
           "Microsoft.EntityFrameworkCore": "6.0.7",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "6.0.7",
           "Unosquare.EntityFramework.Specification.EFCore": "1.0.7"
@@ -276,6 +286,7 @@
       "TotalArmyBuilder.Services/1.0.0": {
         "dependencies": {
           "AutoMapper": "12.0.0",
+          "Microsoft.CodeCoverage": "17.4.0",
           "TotalArmyBuilder.Dal": "1.0.0"
         },
         "runtime": {
@@ -324,6 +335,13 @@
       "sha512": "sha512-WqR2kt0OidUCg9xS+YOoiDmdCu7EnYLLgQb/bX+5fTTVor+90dWmr1OdJaWlLZvg2nbwV9EfxA9FZp91+JmQtg==",
       "path": "fluentvalidation.dependencyinjectionextensions/11.2.1",
       "hashPath": "fluentvalidation.dependencyinjectionextensions.11.2.1.nupkg.sha512"
+    },
+    "Microsoft.CodeCoverage/17.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2oZbSVTC2nAvQ2DnbXLlXS+c25ZyZdWeNd+znWwAxwGaPh9dwQ5NBsYyqQB7sKmJKIUdkKGmN3rzFzjVC81Dtg==",
+      "path": "microsoft.codecoverage/17.4.0",
+      "hashPath": "microsoft.codecoverage.17.4.0.nupkg.sha512"
     },
     "Microsoft.CSharp/4.7.0": {
       "type": "package",

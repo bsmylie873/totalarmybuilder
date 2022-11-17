@@ -56,7 +56,7 @@ public class UnitControllerTests
 
         var unitViewModels = new List<UnitViewModel>();
 
-        _service.GetUnits(name).Returns(unitList);
+        _service.GetUnits(name, cost).Returns(unitList);
         _mapper.Map<IList<UnitViewModel>>(unitList).Returns(unitViewModels);
 
         var controller = RetrieveController();
@@ -103,7 +103,7 @@ public class UnitControllerTests
     }
     
     [Fact]
-    public void GetUnitFactions_MappedAndReturned()
+    public void GetUnitFactions_WhenUnitFound_MappedAndReturned()
     {
         // Arrange
         const int id = 1;

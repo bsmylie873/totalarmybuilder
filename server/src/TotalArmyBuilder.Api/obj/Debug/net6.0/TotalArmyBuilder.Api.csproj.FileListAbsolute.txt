@@ -86,3 +86,4 @@ C:\Users\Brandon\RiderProjects\totalarmybuilder\server\src\TotalArmyBuilder.Api\
 C:\Users\Brandon\RiderProjects\totalarmybuilder\server\src\TotalArmyBuilder.Api\obj\Debug\net6.0\TotalArmyBuilder.Api.pdb
 C:\Users\Brandon\RiderProjects\totalarmybuilder\server\src\TotalArmyBuilder.Api\obj\Debug\net6.0\TotalArmyBuilder.Api.genruntimeconfig.cache
 C:\Users\Brandon\RiderProjects\totalarmybuilder\server\src\TotalArmyBuilder.Api\obj\Debug\net6.0\ref\TotalArmyBuilder.Api.dll
+C:\Users\Brandon\RiderProjects\totalarmybuilder\server\src\TotalArmyBuilder.Api\bin\Debug\net6.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
