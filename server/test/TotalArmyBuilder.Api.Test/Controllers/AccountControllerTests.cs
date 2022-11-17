@@ -149,4 +149,37 @@ public class AccountControllerTests
         _service.Received(1).GetAccountCompositions(account.Id);
         _mapper.Received(1).Map<IList<CompositionViewModel>>(account.Compositions);
     }
+    
+    [Theory]
+    [InlineData("username", "email", "password")]
+    [InlineData(null, null, null)]
+    public void CreateAccount_MappedAndSaved(string username, string email, string password)
+    {
+        // Arrange
+        const int id = 1;
+        var account = new AccountDto
+        {
+            Id = id,
+            Username = username,
+            Email = email,
+            Password = password
+        };
+
+        var createAccountViewModel = new CreateAccountViewModel();
+
+        _service.CreateAccount(account);
+        _mapper.Map<AccountDetailViewModel>(account).Returns(accountDetailViewModel);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetAccountById(id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<AccountDetailViewModel, OkObjectResult>();
+
+        result.Should().BeSameAs(accountDetailViewModel);
+
+        _service.Received(1).GetAccountById(id);
+        _mapper.Received(1).Map<AccountDetailViewModel>(account);
 }
