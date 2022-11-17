@@ -9,7 +9,8 @@ public class UnitByNameSpec : Specification<Unit>
     private readonly string _name;
     public UnitByNameSpec(string name) => _name = name;
     
-    public override Expression<Func<Unit, bool>> BuildExpression(){
+    public override Expression<Func<Unit, bool>> BuildExpression()
+    {
         if (string.IsNullOrWhiteSpace(_name)) return ShowAll;
         
         return x => x.Name.StartsWith(_name);

@@ -1,4 +1,3 @@
-using System.Collections;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -6,11 +5,9 @@ using NSubstitute;
 using TotalArmyBuilder.Api.Controllers;
 using TotalArmyBuilder.Api.Test.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
-using TotalArmyBuilder.Dal.Interfaces;
-using TotalArmyBuilder.Dal.Specifications.Accounts;
+using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
-
 
 namespace TotalArmyBuilder.Api.Test.Controllers;
 
@@ -18,6 +15,11 @@ public class AccountControllerTests
 {
     private readonly IMapper _mapper;
     private readonly IAccountService _service;
+    
+    private AccountsController RetrieveController()
+    {
+        return new AccountsController(_mapper, _service);
+    }
 
     public AccountControllerTests()
     {
@@ -25,35 +27,6 @@ public class AccountControllerTests
         _service = Substitute.For<IAccountService>();
     }
 
-    [Fact]
-    public void GetAccountById_WhenAccountFound_MappedAndReturned()
-    {
-        // Arrange
-        const int id = 1;
-        var account = new AccountDto
-        {
-            Id = id
-        };
-
-        var accountDetailViewModel = new AccountDetailViewModel();
-
-        _service.GetAccountById(id).Returns(account);
-        _mapper.Map<AccountDetailViewModel>(account).Returns(accountDetailViewModel);
-
-        var controller = RetrieveController();
-        
-        // Act
-        var actionResult = controller.GetAccountById(id);
-        
-        // Assert
-        var result = actionResult.AssertObjectResult<AccountDetailViewModel, OkObjectResult>();
-
-        result.Should().BeSameAs(accountDetailViewModel);
-
-        _service.Received(1).GetAccountById(id);
-        _mapper.Received(1).Map<AccountDetailViewModel>(account);
-    }
-    
     [Theory]
     [InlineData("username", "email")]
     [InlineData(null, null)]
@@ -99,9 +72,81 @@ public class AccountControllerTests
         _service.Received(1).GetAccounts(username, email);
         _mapper.Received(1).Map<IList<AccountViewModel>>(accountList);
     }
-    
-    private AccountsController RetrieveController()
+
+    [Fact]
+    public void GetAccountById_WhenAccountFound_MappedAndReturned()
     {
-        return new AccountsController(_mapper, _service);
+        // Arrange
+        const int id = 1;
+        var account = new AccountDto
+        {
+            Id = id
+        };
+
+        var accountDetailViewModel = new AccountDetailViewModel();
+
+        _service.GetAccountById(id).Returns(account);
+        _mapper.Map<AccountDetailViewModel>(account).Returns(accountDetailViewModel);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetAccountById(id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<AccountDetailViewModel, OkObjectResult>();
+
+        result.Should().BeSameAs(accountDetailViewModel);
+
+        _service.Received(1).GetAccountById(id);
+        _mapper.Received(1).Map<AccountDetailViewModel>(account);
+    }
+ 
+    [Fact]
+    public void GetAccountCompositions_MappedAndReturned()
+    {
+        // Arrange
+        const int id = 1;
+        
+        var composition = new CompositionDto
+        {
+            Id = id
+        };
+        
+        const int id2 = 2;
+        var composition2 = new CompositionDto
+        {
+            Id = id2
+        };
+        
+        var compositionList = new List<CompositionDto>
+        {
+            composition, composition2
+        };
+        
+        var account = new AccountDto
+        {
+            Id = id,
+            Compositions = compositionList
+        };
+
+
+        var compositionViewModels = new List<CompositionViewModel>();
+
+        _service.GetAccountCompositions(account.Id).Returns(account.Compositions);
+        _mapper.Map<IList<CompositionViewModel>>(account.Compositions).Returns(compositionViewModels);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetAccountCompositions(account.Id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<IList<CompositionViewModel>, OkObjectResult>();
+
+        result.Should().BeSameAs(compositionViewModels);
+
+        _service.Received(1).GetAccountCompositions(account.Id);
+        _mapper.Received(1).Map<IList<CompositionViewModel>>(account.Compositions);
     }
 }

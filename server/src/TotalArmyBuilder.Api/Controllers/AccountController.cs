@@ -39,9 +39,9 @@ public class AccountsController : TotalArmyBaseController
     }
 
     [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
-    public ActionResult<CompositionViewModel> GetAccountCompositions(int id)
+    public ActionResult<IList<CompositionViewModel>> GetAccountCompositions(int id)
     {
-        var accountCompositions = _service.GetCompositionsByAccount(id);
+        var accountCompositions = _service.GetAccountCompositions(id);
         
         return Ok(_mapper.Map<IList<CompositionViewModel>>(accountCompositions));
     }

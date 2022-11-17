@@ -40,7 +40,7 @@ public class CompositionService : ICompositionService
             .SingleOrDefault();
     }
     
-    public IList<UnitDto> GetUnitsByComposition(int id)
+    public IList<UnitDto> GetCompositionUnits(int id)
     {
         var unitQuery = _database
             .Get<Unit>()

@@ -8,10 +8,10 @@ public class UnitProfile : Profile
 {
     public UnitProfile()
     {
-        ConfigureDTOToViewModel();
+        ConfigureDtoToViewModel();
     }
 
-    private void ConfigureDTOToViewModel()
+    private void ConfigureDtoToViewModel()
     {
         CreateMap<UnitDto, UnitViewModel>().ForAllMembers(
             opts => 
@@ -21,7 +21,7 @@ public class UnitProfile : Profile
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
-    private void ConfigureCreateModelToDTO()
+    private void ConfigureCreateModelToDto()
     {
     } 
 }

@@ -7,5 +7,5 @@ public interface IFactionService
 {
     IList<FactionDto> GetFactions(string? name = null);
     FactionDto GetFactionById(int id);
-    IList<UnitDto> GetUnitsByFaction(int id);
+    IList<UnitDto> GetFactionUnits(int id);
 }

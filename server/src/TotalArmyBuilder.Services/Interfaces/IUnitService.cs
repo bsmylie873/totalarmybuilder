@@ -7,5 +7,5 @@ public interface IUnitService
 {
     IList<UnitDto> GetUnits(string? name = null, int? cost = null);
     UnitDto GetUnitById(int id);
-    
+    IList<FactionDto> GetUnitFactions(int id);
 }

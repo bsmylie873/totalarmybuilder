@@ -32,5 +32,12 @@ public class UnitsController : TotalArmyBaseController
 
         return OkOrNoContent(_mapper.Map<UnitDetailViewModel>(unit));
     }
+    
+    [HttpGet("{id}/factions/", Name = "GetUnitFactions")]
+    public ActionResult<IList<FactionViewModel>> GetUnitFactions(int id)
+    {
+        var unitFactions = _service.GetUnitFactions(id);
+        return Ok(_mapper.Map<IList<FactionViewModel>>(unitFactions));
+    }
 
 }

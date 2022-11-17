@@ -40,7 +40,7 @@ public class AccountService : IAccountService
             .SingleOrDefault(); ;
     }
     
-    public IList<CompositionDto> GetCompositionsByAccount(int id)
+    public IList<CompositionDto> GetAccountCompositions(int id)
     {
         var compositionsQuery = _database
             .Get<Composition>()

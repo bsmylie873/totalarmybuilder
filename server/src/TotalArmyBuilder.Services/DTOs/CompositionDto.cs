@@ -9,4 +9,5 @@ public class CompositionDto
     public int? AvatarId { get; set; }
     
     public IList<AccountDto> Accounts { get; set; }
+    public IList<UnitDto> Units { get; set; }
 }

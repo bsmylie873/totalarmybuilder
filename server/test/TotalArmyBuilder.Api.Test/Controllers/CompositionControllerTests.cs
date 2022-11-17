@@ -7,6 +7,7 @@ using TotalArmyBuilder.Api.Controllers;
 using TotalArmyBuilder.Api.Test.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
+using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Service.DTOs;
@@ -19,40 +20,16 @@ public class CompositionControllerTests
 {
     private readonly IMapper _mapper;
     private readonly ICompositionService _service;
+    
+    private CompositionsController RetrieveController()
+    {
+        return new CompositionsController(_mapper, _service);
+    }
 
     public CompositionControllerTests()
     {
         _mapper = Substitute.For<IMapper>();
         _service = Substitute.For<ICompositionService>();
-    }
-
-    [Fact]
-    public void GetCompositionById_WhenCompositionFound_MappedAndReturned()
-    {
-        // Arrange
-        const int id = 1;
-        var composition = new CompositionDto
-        {
-            Id = id
-        };
-
-        var compositionDetailViewModel = new CompositionDetailViewModel();
-
-        _service.GetCompositionById(id).Returns(composition);
-        _mapper.Map<CompositionDetailViewModel>(composition).Returns(compositionDetailViewModel);
-
-        var controller = RetrieveController();
-        
-        // Act
-        var actionResult = controller.GetCompositionById(id);
-        
-        // Assert
-        var result = actionResult.AssertObjectResult<CompositionDetailViewModel, OkObjectResult>();
-
-        result.Should().BeSameAs(compositionDetailViewModel);
-
-        _service.Received(1).GetCompositionById(id);
-        _mapper.Received(1).Map<CompositionDetailViewModel>(composition);
     }
     
     [Theory]
@@ -102,9 +79,82 @@ public class CompositionControllerTests
         _service.Received(1).GetCompositions(name, battleType, factionId);
         _mapper.Received(1).Map<IList<CompositionViewModel>>(compositionList);
     }
-    
-    private CompositionsController RetrieveController()
+
+    [Fact]
+    public void GetCompositionById_WhenCompositionFound_MappedAndReturned()
     {
-        return new CompositionsController(_mapper, _service);
+        // Arrange
+        const int id = 1;
+        var composition = new CompositionDto
+        {
+            Id = id
+        };
+
+        var compositionDetailViewModel = new CompositionDetailViewModel();
+
+        _service.GetCompositionById(id).Returns(composition);
+        _mapper.Map<CompositionDetailViewModel>(composition).Returns(compositionDetailViewModel);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetCompositionById(id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<CompositionDetailViewModel, OkObjectResult>();
+
+        result.Should().BeSameAs(compositionDetailViewModel);
+
+        _service.Received(1).GetCompositionById(id);
+        _mapper.Received(1).Map<CompositionDetailViewModel>(composition);
+    }
+
+    
+    [Fact]
+    public void GetCompositionUnits_MappedAndReturned()
+    {
+        // Arrange
+        const int id = 1;
+        
+        var unit = new UnitDto
+        {
+            Id = id
+        };
+        
+        const int id2 = 2;
+        var unit2 = new UnitDto
+        {
+            Id = id2
+        };
+        
+        var unitList = new List<UnitDto>
+        {
+            unit, unit2
+        };
+        
+        var composition = new CompositionDto()
+        {
+            Id = id,
+            Units = unitList
+        };
+
+
+        var unitViewModels = new List<UnitViewModel>();
+
+        _service.GetCompositionUnits(composition.Id).Returns(composition.Units);
+        _mapper.Map<IList<UnitViewModel>>(composition.Units).Returns(unitViewModels);
+
+        var controller = RetrieveController();
+        
+        // Act
+        var actionResult = controller.GetCompositionUnits(composition.Id);
+        
+        // Assert
+        var result = actionResult.AssertObjectResult<IList<UnitViewModel>, OkObjectResult>();
+
+        result.Should().BeSameAs(unitViewModels);
+
+        _service.Received(1).GetCompositionUnits(composition.Id);
+        _mapper.Received(1).Map<IList<UnitViewModel>>(composition.Units);
     }
 }

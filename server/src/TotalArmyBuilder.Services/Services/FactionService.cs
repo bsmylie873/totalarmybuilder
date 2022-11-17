@@ -38,7 +38,7 @@ public class FactionService : IFactionService
             .SingleOrDefault(); ;
     }
     
-    public IList<UnitDto> GetUnitsByFaction(int id)
+    public IList<UnitDto> GetFactionUnits(int id)
     {
         var unitQuery = _database
             .Get<Unit>()

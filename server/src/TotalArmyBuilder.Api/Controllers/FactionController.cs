@@ -40,7 +40,7 @@ public class FactionsController : TotalArmyBaseController
     [HttpGet("{id}/units/", Name = "GetFactionUnits")]
     public ActionResult<IList<UnitViewModel>> GetFactionUnits(int id)
     {
-        var factionUnits = _service.GetUnitsByFaction(id);
-        return Ok(new {factionUnits});
+        var factionUnits = _service.GetFactionUnits(id);
+        return Ok(_mapper.Map<IList<UnitViewModel>>(factionUnits));
     }
 }

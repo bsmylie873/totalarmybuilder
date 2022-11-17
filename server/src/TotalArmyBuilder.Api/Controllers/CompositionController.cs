@@ -24,9 +24,9 @@ public class CompositionsController : TotalArmyBaseController
         (_mapper, _service) = (mapper, service);
     
     [HttpGet]
-    public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string name, [FromQuery] int factionId, [FromQuery] int avatarId)
+    public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string name, [FromQuery] int battleTypeId, [FromQuery] int factionId)
     {
-        var compositions = _service.GetCompositions(name, factionId, avatarId);
+        var compositions = _service.GetCompositions(name, battleTypeId, factionId);
         return Ok(_mapper.Map<IList<CompositionViewModel>>(compositions));
     }
 
@@ -41,8 +41,8 @@ public class CompositionsController : TotalArmyBaseController
     [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
     public ActionResult<IList<UnitViewModel>> GetCompositionUnits(int id)
     {
-        var compositionUnits = _service.GetUnitsByComposition(id);
-        return Ok(new {compositionUnits});
+        var compositionUnits = _service.GetCompositionUnits(id);
+        return Ok(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
     }
     
     [HttpPost]
