@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\src\TotalArmyBuilder.Services\TotalArmyBuilder.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services" />
+  </ItemGroup>
+
 </Project>
