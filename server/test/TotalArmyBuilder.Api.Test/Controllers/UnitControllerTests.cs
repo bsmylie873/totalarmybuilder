@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AutoFixture.Xunit2;
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -27,9 +28,7 @@ public class UnitControllerTests
         _service = Substitute.For<IUnitService>();
     }
 
-    [Theory]
-    [InlineData("name", 0)]
-    [InlineData(null, null)]
+    [Theory,AutoData]
     public void GetUnits_MappedAndReturned(string name, int cost)
     {
         // Arrange

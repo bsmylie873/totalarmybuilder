@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Net;
+using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +34,7 @@ public class CompositionControllerTests
         _service = Substitute.For<ICompositionService>();
     }
     
-    [Theory]
-    [InlineData("name", 0, 0)]
-    [InlineData(null, null, null)]
+    [Theory, AutoData]
     public void GetCompositions_MappedAndReturned(string name, int battleType, int factionId)
     {
         // Arrange
@@ -159,8 +158,7 @@ public class CompositionControllerTests
         _mapper.Received(1).Map<IList<UnitViewModel>>(composition.Units);
     }
     
-    [Theory]
-    [InlineData("name", 0, 0, 0)]
+    [Theory, AutoData]
     public void CreateComposition_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
     {
         // Arrange
@@ -190,8 +188,7 @@ public class CompositionControllerTests
         _mapper.Received(1).Map<CompositionDto>(createCompositionViewModel);
     }
     
-    [Theory]
-    [InlineData("name", 0, 0, 0)]
+    [Theory, AutoData]
     public void UpdateComposition_WhenCalledWithValidViewModel_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
     {
         // Arrange

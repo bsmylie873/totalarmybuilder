@@ -1,4 +1,5 @@
 using System.Net;
+using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,7 @@ public class AccountControllerTests
         _service = Substitute.For<IAccountService>();
     }
 
-    [Theory]
-    [InlineData("username", "email")]
-    [InlineData(null, null)]
+    [Theory, AutoData]
     public void GetAccounts_MappedAndReturned(string username, string email)
     {
         // Arrange
@@ -151,9 +150,7 @@ public class AccountControllerTests
         _mapper.Received(1).Map<IList<CompositionViewModel>>(account.Compositions);
     }
 
-    [Theory]
-    [InlineData("username", "email", "password")]
-    [InlineData(null, null, null)]
+    [Theory, AutoData]
     public void CreateAccount_MappedAndSaved(string username, string email, string password)
     {
         // Arrange
@@ -182,9 +179,7 @@ public class AccountControllerTests
         _mapper.Received(1).Map<AccountDto>(createAccountViewModel);
     }
     
-    [Theory]
-    [InlineData("username", "email")]
-    [InlineData(null, null)]
+    [Theory, AutoData]
     public void UpdateAccount_WhenCalledWithValidViewModel_MappedAndSaved(string username, string email)
     {
         // Arrange

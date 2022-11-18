@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AutoFixture.Xunit2;
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -27,9 +28,7 @@ public class FactionControllerTests
         _service = Substitute.For<IFactionService>();
     }
 
-    [Theory]
-    [InlineData("name")]
-    [InlineData(null)]
+    [Theory, AutoData]
     public void GetFactions_MappedAndReturned(string name)
     {
         // Arrange
