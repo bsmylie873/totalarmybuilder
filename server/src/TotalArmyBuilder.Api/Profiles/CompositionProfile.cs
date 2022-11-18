@@ -17,6 +17,9 @@ public class CompositionProfile : Profile
         CreateMap<CompositionDto, CompositionViewModel>().ForAllMembers(
             opts => 
                 opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<CompositionDto, CompositionDetailViewModel>().ForAllMembers(
+            opts => 
+                opts.Condition((src, dest, srcMember) => srcMember != null));
 
     }
 
