@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS compositions(
   	faction_id INT NOT NULL,
   	avatar_id INT NOT NULL,
     date_created TIMESTAMP NOT NULL,
+    wins INT NOT NULL,
+    losses INT NOT NULL,
   	FOREIGN KEY (faction_id)
       REFERENCES factions (id),
   	FOREIGN KEY (avatar_id)
