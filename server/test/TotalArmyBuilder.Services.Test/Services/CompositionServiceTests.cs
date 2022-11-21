@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using AutoFixture;
+using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
@@ -8,6 +9,7 @@ using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using TotalArmyBuilder.Services.Test.Customisations;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -16,6 +18,7 @@ public class CompositionServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
+    private readonly IFixture _fixture;
     
     private ICompositionService RetrieveService()
     {
@@ -35,69 +38,32 @@ public class CompositionServiceTests
     {
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
+        _fixture = new Fixture();
     }
 
     [Fact]
     public void GetCompositionById_WhenCompositionExist_ReturnsComposition()
     {
         // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var composition = new Composition
-        {
-            Id = id
-        };
-        
-        var composition2 = new Composition
-        {
-            Id = id2
-        };
-
-        var compositionList = new List<Composition>
-        {
-            composition, composition2
-        };
-
+        _fixture.Customize(new CompositionCustomisation("test"));
+        var compositionList = _fixture.CreateMany<Composition>(5);
         _database.Get<Composition>().Returns(compositionList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetCompositionById(id);
+        var result = service.GetCompositionById(compositionList.First().Id);
 
         // Assert
-        result.Should().BeEquivalentTo(composition, options => options.ExcludingMissingMembers());
+        result.Should().BeEquivalentTo(compositionList.First(), options => options.ExcludingMissingMembers());
     }
     
-    [Theory, AutoData]
-    public void GetCompositions_WhenCompositionsExist_ReturnsCompositions(string name, int battleType, int factionId)
+    [Fact]
+    public void GetCompositions_WhenCompositionsExist_ReturnsCompositions()
     {
         // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var composition = new Composition
-        {
-            Id = id,
-            Name = name,
-            BattleType = battleType,
-            FactionId = factionId,
-        };
-        
-        var composition2 = new Composition
-        {
-            Id = id2,
-            Name = name,
-            BattleType = battleType,
-            FactionId = factionId,
-        };
-
-        var compositionList = new List<Composition>
-        {
-            composition, composition2
-        };
-
+        _fixture.Customize(new CompositionCustomisation("test"));
+        var compositionList = _fixture.CreateMany<Composition>(5);
         _database.Get<Composition>().Returns(compositionList.AsQueryable());
 
         var service = RetrieveService();
@@ -109,4 +75,40 @@ public class CompositionServiceTests
         result.Should().BeEquivalentTo(compositionList, options => options.ExcludingMissingMembers());
     }
     
+    [Fact]
+    public void CreateComposition_MappedAndSaved()
+    {
+        // Arrange
+        _fixture.Customize(new CompositionCustomisation("test"));
+        var composition = _fixture.Create<Composition>();
+        var service = RetrieveService();
+
+        // Act
+        service.CreateComposition(_mapper.Map<CompositionDto>(composition));
+
+        // Assert
+        _database.Received(1).SaveChanges();
+        _database.Received(1).Add(Arg.Is<Composition>(x => x.Name == composition.Name));
+    }
+    
+    [Fact]
+    public void UpdateComposition_MappedAndSaved()
+    {
+        // Arrange
+        // Arrange
+        _fixture.Customize(new CompositionCustomisation("test"));
+        var compositionList = _fixture.CreateMany<Composition>(5);
+        var compositionDto = _mapper.Map<CompositionDto>(compositionList.First());
+        
+        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        
+        var service = RetrieveService();
+
+        // Act
+        service.UpdateComposition(compositionList.First().Id, compositionDto);
+
+        // Assert
+        _database.Received(1).Get<Composition>();
+        _database.Received(1).SaveChanges();
+    }
 }

@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using AutoFixture;
+using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
@@ -8,6 +9,7 @@ using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using TotalArmyBuilder.Services.Test.Customisations;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -16,6 +18,8 @@ public class FactionServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
+    private readonly IFixture _fixture;
+    
     
     private IFactionService RetrieveService()
     {
@@ -35,65 +39,31 @@ public class FactionServiceTests
     {
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
+        _fixture = new Fixture();
     }
 
     [Fact]
     public void GetFactionById_WhenFactionExist_ReturnsFaction()
     {
         // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var faction = new Faction
-        {
-            Id = id
-        };
-        
-        var faction2 = new Faction
-        {
-            Id = id2
-        };
-
-        var factionList = new List<Faction>
-        {
-            faction, faction2
-        };
-
+        _fixture.Customize(new FactionCustomisation("test"));
+        var factionList = _fixture.CreateMany<Faction>(5);
         _database.Get<Faction>().Returns(factionList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetFactionById(id);
+        var result = service.GetFactionById(factionList.First().Id);
 
         // Assert
-        result.Should().BeEquivalentTo(faction, options => options.ExcludingMissingMembers());
+        result.Should().BeEquivalentTo(factionList.First(), options => options.ExcludingMissingMembers());
     }
     
-    [Theory, AutoData]
-    public void GetFactions_WhenFactionsExist_ReturnsFactions(string name)
+    [Fact]
+    public void GetFactions_WhenFactionsExist_ReturnsFactions()
     {
-        // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var faction = new Faction
-        {
-            Id = id,
-            Name = name,
-        };
-        
-        var faction2 = new Faction
-        {
-            Id = id2,
-            Name = name,
-        };
-
-        var factionList = new List<Faction>
-        {
-            faction, faction2
-        };
-
+        _fixture.Customize(new FactionCustomisation("test"));
+        var factionList = _fixture.CreateMany<Faction>(5);
         _database.Get<Faction>().Returns(factionList.AsQueryable());
 
         var service = RetrieveService();

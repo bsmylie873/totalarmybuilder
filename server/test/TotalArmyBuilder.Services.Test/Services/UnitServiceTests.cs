@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using AutoFixture;
+using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
@@ -8,6 +9,7 @@ using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using TotalArmyBuilder.Services.Test.Customisations;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -16,6 +18,7 @@ public class UnitServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
+    private readonly IFixture _fixture;
     
     private IUnitService RetrieveService()
     {
@@ -35,65 +38,31 @@ public class UnitServiceTests
     {
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
+        _fixture = new Fixture();
     }
 
     [Fact]
     public void GetUnitById_WhenUnitExist_ReturnsUnit()
     {
         // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var unit = new Unit
-        {
-            Id = id
-        };
-        
-        var unit2 = new Unit
-        {
-            Id = id2
-        };
-
-        var unitList = new List<Unit>
-        {
-            unit, unit2
-        };
-
+        _fixture.Customize(new UnitCustomisation("test"));
+        var unitList = _fixture.CreateMany<Unit>(5);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetUnitById(id);
+        var result = service.GetUnitById(unitList.First().Id);
 
         // Assert
-        result.Should().BeEquivalentTo(unit, options => options.ExcludingMissingMembers());
+        result.Should().BeEquivalentTo(unitList.First(), options => options.ExcludingMissingMembers());
     }
     
-    [Theory, AutoData]
-    public void GetUnits_WhenUnitsExist_ReturnsUnits(string name, int cost)
+    [Fact]
+    public void GetUnits_WhenUnitsExist_ReturnsUnits()
     {
-        // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var unit = new Unit
-        {
-            Id = id,
-            Name = name,
-        };
-        
-        var unit2 = new Unit
-        {
-            Id = id2,
-            Name = name,
-        };
-
-        var unitList = new List<Unit>
-        {
-            unit, unit2
-        };
-
+        _fixture.Customize(new UnitCustomisation("test"));
+        var unitList = _fixture.CreateMany<Unit>(5);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
 
         var service = RetrieveService();

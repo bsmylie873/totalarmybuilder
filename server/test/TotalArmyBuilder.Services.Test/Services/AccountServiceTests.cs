@@ -10,6 +10,7 @@ using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using TotalArmyBuilder.Services.Test.Customisations;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -44,41 +45,25 @@ public class AccountServiceTests
     public void GetAccountById_WhenAccountExist_ReturnsAccount()
     {
         // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var account = new Account
-        {
-            Id = id
-        };
-
-        var account2 = new Account
-        {
-            Id = id2
-        };
-
-        var accountList = new List<Account>
-        {
-            account, account2
-        };
-
-
+        _fixture.Customize(new AccountCustomisation("test"));
+        var accountList = _fixture.CreateMany<Account>(5);
         _database.Get<Account>().Returns(accountList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetAccountById(id);
+        var result = service.GetAccountById(accountList.First().Id);
 
         // Assert
-        result.Should().BeEquivalentTo(account, options => options.ExcludingMissingMembers());
+        result.Should().BeEquivalentTo(accountList.First(), options => options.ExcludingMissingMembers());
     }
 
     [Fact]
     public void GetAccounts_WhenAccountsExist_ReturnsAccount()
     {
         // Arrange
-        var accountList = _fixture.Build<Account>().Without(x => x.AccountCompositions).CreateMany(5);
+        _fixture.Customize(new AccountCustomisation("test"));
+        var accountList = _fixture.CreateMany<Account>(5);
         _database.Get<Account>().Returns(accountList.AsQueryable());
 
         var service = RetrieveService();
@@ -90,27 +75,39 @@ public class AccountServiceTests
         result.Should().BeEquivalentTo(accountList, options => options.ExcludingMissingMembers());
     }
 
-    [Theory, AutoData]
-    public void CreateAccount_MappedAndSaved(string username, string email, string password)
+    [Fact]
+    public void CreateAccount_MappedAndSaved()
     {
         // Arrange
-        const int id = 1;
-
-        var account = new AccountDto
-        {
-            Id = id,
-            Username = username,
-            Email = email,
-            Password = password
-        };
-        
+        _fixture.Customize(new AccountCustomisation("test"));
+        var account = _fixture.Create<Account>();
         var service = RetrieveService();
 
         // Act
-        service.CreateAccount(account);
+        service.CreateAccount(_mapper.Map<AccountDto>(account));
 
         // Assert
         _database.Received(1).SaveChanges();
         _database.Received(1).Add(Arg.Is<Account>(x => x.Username == account.Username));
+    }
+    
+    [Fact]
+    public void UpdateAccount_MappedAndSaved()
+    {
+        // Arrange
+        _fixture.Customize(new AccountCustomisation("test"));
+        var accountList = _fixture.CreateMany<Account>(5);
+        var accountDto = _mapper.Map<AccountDto>(accountList.First());
+        
+        _database.Get<Account>().Returns(accountList.AsQueryable());
+        
+        var service = RetrieveService();
+
+        // Act
+        service.UpdateAccount(accountList.First().Id, accountDto);
+
+        // Assert
+        _database.Received(1).Get<Account>();
+        _database.Received(1).SaveChanges();
     }
 }
