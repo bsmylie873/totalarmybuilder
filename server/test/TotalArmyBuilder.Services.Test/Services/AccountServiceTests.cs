@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using AutoFixture;
+using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
@@ -17,6 +18,7 @@ public class AccountServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
+    private readonly IFixture _fixture;
 
     private IAccountService RetrieveService()
     {
@@ -35,6 +37,7 @@ public class AccountServiceTests
     {
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
+        _fixture = new Fixture();
     }
 
     [Fact]
@@ -71,32 +74,11 @@ public class AccountServiceTests
         result.Should().BeEquivalentTo(account, options => options.ExcludingMissingMembers());
     }
 
-    [Theory, AutoData]
-    public void GetAccounts_WhenAccountsExist_ReturnsAccount(string username, string email)
+    [Fact]
+    public void GetAccounts_WhenAccountsExist_ReturnsAccount()
     {
         // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var account = new Account
-        {
-            Id = id,
-            Username = username,
-            Email = email
-        };
-
-        var account2 = new Account
-        {
-            Id = id2,
-            Username = username,
-            Email = email
-        };
-
-        var accountList = new List<Account>
-        {
-            account, account2
-        };
-
+        var accountList = _fixture.Build<Account>().Without(x => x.AccountCompositions).CreateMany(5);
         _database.Get<Account>().Returns(accountList.AsQueryable());
 
         var service = RetrieveService();
@@ -126,10 +108,8 @@ public class AccountServiceTests
 
         // Act
         service.CreateAccount(account);
-        _database.Add(Arg.Any<Account>()).Returns(x => x.ArgAt<Account>(0));
 
         // Assert
-        _database.Received(1).Add(Arg.Is<Account>(x => x.Username == "username"));
         _database.Received(1).SaveChanges();
         _database.Received(1).Add(Arg.Is<Account>(x => x.Username == account.Username));
     }

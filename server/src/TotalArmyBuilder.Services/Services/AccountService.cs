@@ -53,8 +53,7 @@ public class AccountService : IAccountService
     
     public void CreateAccount(AccountDto account)
     {
-        var newAccount = new Account(); 
-        _mapper.Map(account, newAccount);
+        var newAccount = _mapper.Map<Account>(account);
         _database.Add(newAccount);
         _database.SaveChanges();
     }

@@ -104,37 +104,4 @@ public class UnitServiceTests
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
     }
-    
-    [Fact]
-    public void GetUnitLords_WhenUnitLordExist_ReturnsUnitLords()
-    {
-        // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var unit = new Unit
-        {
-            Id = id
-        };
-        
-        var unit2 = new Unit
-        {
-            Id = id2
-        };
-
-        var unitList = new List<Unit>
-        {
-            unit, unit2
-        };
-
-        _database.Get<Unit>().Returns(unitList.AsQueryable());
-
-        var service = RetrieveService();
-
-        // Act
-        var result = service.GetUnitLords();
-
-        // Assert
-        result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
-    }
 }
