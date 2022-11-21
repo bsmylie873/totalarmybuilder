@@ -40,6 +40,13 @@ public class UnitServiceTests
         _mapper = GetMapper();
         _fixture = new Fixture();
     }
+    
+    private void HandleFixtureRecursion()
+    {
+        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => _fixture.Behaviors.Remove(b));
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+    }
 
     [Fact]
     public void GetUnitById_WhenUnitExist_ReturnsUnit()
@@ -69,6 +76,74 @@ public class UnitServiceTests
 
         // Act
         var result = service.GetUnits();
+
+        // Assert
+        result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
+    }
+    
+    [Fact]
+    public void GetFactionUnits_WhenUnitsExist_ReturnsUnits()
+    {
+        // Arrange
+        HandleFixtureRecursion();
+        _fixture.Customize(new UnitCustomisation("test"));
+        var unitList = _fixture.CreateMany<Unit>(5);
+        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        
+        _fixture.Customize(new FactionCustomisation("test"));
+        var factionList = _fixture.CreateMany<Faction>(5);
+        _database.Get<Faction>().Returns(factionList.AsQueryable());
+
+        var service = RetrieveService();
+
+        // Act
+        var result = service.GetUnitFactions(unitList.First().Id);
+
+        // Assert
+        result.Should().BeEquivalentTo(factionList, options => options.ExcludingMissingMembers());
+    }
+    
+    [Fact]
+    public void GetUnitLords_WhenUnitsExist_ReturnsUnits()
+    {
+        // Arrange
+        HandleFixtureRecursion();
+        _fixture.Customize(new UnitCustomisation("test"));
+        var unitList = _fixture.CreateMany<Unit>(5);
+        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        
+        var lord = _fixture
+            .Build<LordUnit>()
+            .With(x => x.Id, 1)
+            .With(x => x.UnitId, unitList.First().Id);
+
+        var service = RetrieveService();
+
+        // Act
+        var result = service.GetUnitLords(unitList.First().Id);
+
+        // Assert
+        result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
+    }
+    
+    [Fact]
+    public void GetUnitHeroes_WhenUnitsExist_ReturnsUnits()
+    {
+        // Arrange
+        HandleFixtureRecursion();
+        _fixture.Customize(new UnitCustomisation("test"));
+        var unitList = _fixture.CreateMany<Unit>(5);
+        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        
+        var hero = _fixture
+            .Build<HeroUnit>()
+            .With(x => x.Id, 1)
+            .With(x => x.UnitId, unitList.First().Id);
+
+        var service = RetrieveService();
+
+        // Act
+        var result = service.GetUnitHeroes(unitList.First().Id);
 
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());

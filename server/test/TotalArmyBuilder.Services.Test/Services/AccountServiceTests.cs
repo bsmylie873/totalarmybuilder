@@ -33,6 +33,21 @@ public class AccountServiceTests
             });
             return new Mapper(config);
     }
+    
+    private static IMapper GetMapperComposition()
+    {
+        var config = new MapperConfiguration(cfg => {
+            cfg.AddProfile<CompositionProfile>();
+        });
+        return new Mapper(config);
+    }
+    
+    private void HandleFixtureRecursion()
+    {
+        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => _fixture.Behaviors.Remove(b));
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+    }
 
     public AccountServiceTests()
     {
@@ -74,6 +89,30 @@ public class AccountServiceTests
         // Assert
         result.Should().BeEquivalentTo(accountList, options => options.ExcludingMissingMembers());
     }
+    
+    [Fact]
+    public void GetAccountCompositions_WhenCompositionsExist_ReturnsCompositions()
+    {
+        // Arrange
+        HandleFixtureRecursion();
+        _fixture.Customize(new AccountCustomisation("test"));
+        var accountList = _fixture.Build<Account>().CreateMany(5);
+        _database.Get<Account>().Returns(accountList.AsQueryable());
+        
+        
+        _fixture.Customize(new CompositionCustomisation("test"));
+        var compositionList = _fixture.CreateMany<Composition>(5);
+        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        
+        var service = RetrieveService();
+        
+
+        // Act
+        var result = service.GetAccountCompositions(accountList.First().Id);
+
+        // Assert
+        result.Should().BeEquivalentTo(compositionList, options => options.ExcludingMissingMembers());
+    }
 
     [Fact]
     public void CreateAccount_MappedAndSaved()
@@ -105,6 +144,25 @@ public class AccountServiceTests
 
         // Act
         service.UpdateAccount(accountList.First().Id, accountDto);
+
+        // Assert
+        _database.Received(1).Get<Account>();
+        _database.Received(1).SaveChanges();
+    }
+    
+    [Fact]
+    public void DeleteAccount_MappedAndSaved()
+    {
+        // Arrange
+        _fixture.Customize(new AccountCustomisation("test"));
+        var accountList = _fixture.CreateMany<Account>(5);
+
+        _database.Get<Account>().Returns(accountList.AsQueryable());
+        
+        var service = RetrieveService();
+
+        // Act
+        service.DeleteAccount(accountList.First().Id);
 
         // Assert
         _database.Received(1).Get<Account>();

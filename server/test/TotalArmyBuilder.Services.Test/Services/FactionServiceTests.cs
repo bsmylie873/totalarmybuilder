@@ -34,6 +34,13 @@ public class FactionServiceTests
 
         return new Mapper(config);
     }
+    
+    private void HandleFixtureRecursion()
+    {
+        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => _fixture.Behaviors.Remove(b));
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+    }
 
     public FactionServiceTests()
     {
@@ -73,5 +80,29 @@ public class FactionServiceTests
 
         // Assert
         result.Should().BeEquivalentTo(factionList, options => options.ExcludingMissingMembers());
+    }
+    
+    [Fact]
+    public void GetFactionUnits_WhenUnitsExist_ReturnsUnits()
+    {
+        // Arrange
+        HandleFixtureRecursion();
+        _fixture.Customize(new FactionCustomisation("test"));
+        var factionList = _fixture.CreateMany<Faction>(5);
+        _database.Get<Faction>().Returns(factionList.AsQueryable());
+        
+        
+        _fixture.Customize(new UnitCustomisation("test"));
+        var unitList = _fixture.CreateMany<Unit>(5);
+        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        
+        var service = RetrieveService();
+        
+
+        // Act
+        var result = service.GetFactionUnits(factionList.First().Id);
+
+        // Assert
+        result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
     }
 }
