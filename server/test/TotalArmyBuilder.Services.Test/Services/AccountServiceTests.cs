@@ -4,6 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
+using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
@@ -16,7 +17,7 @@ public class AccountServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
-    
+
     private IAccountService RetrieveService()
     {
         return new AccountService(_database, _mapper);
@@ -47,7 +48,7 @@ public class AccountServiceTests
         {
             Id = id
         };
-        
+
         var account2 = new Account
         {
             Id = id2
@@ -57,7 +58,7 @@ public class AccountServiceTests
         {
             account, account2
         };
-        
+
 
         _database.Get<Account>().Returns(accountList.AsQueryable());
 
@@ -69,7 +70,7 @@ public class AccountServiceTests
         // Assert
         result.Should().BeEquivalentTo(account, options => options.ExcludingMissingMembers());
     }
-    
+
     [Theory, AutoData]
     public void GetAccounts_WhenAccountsExist_ReturnsAccount(string username, string email)
     {
@@ -83,7 +84,7 @@ public class AccountServiceTests
             Username = username,
             Email = email
         };
-        
+
         var account2 = new Account
         {
             Id = id2,
@@ -107,69 +108,29 @@ public class AccountServiceTests
         result.Should().BeEquivalentTo(accountList, options => options.ExcludingMissingMembers());
     }
 
-    /*[Fact]
-    public void GetAccountCompositions_WhenAccountCompositionsExist_ReturnsCompositions()
-    {
-        // Arrange
-        const int id = 1;
-        const int id2 = 2;
-
-        var account = new Account
-        {
-            Id = id
-        };
-        
-        var composition = new Composition
-        {
-            Id = id,
-        };
-        
-        var composition2 = new Composition
-        {
-            Id = id2,
-        };
-
-        var compositionList = new List<Composition>
-        {
-            composition, composition2
-        };
-
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
-
-        var service = RetrieveService();
-
-        // Act
-        var result = service.GetAccountCompositions(id);
-
-        // Assert
-        result.Should().BeEquivalentTo(compositionList, options => options.ExcludingMissingMembers());
-    }*/
-    
     [Theory, AutoData]
     public void CreateAccount_MappedAndSaved(string username, string email, string password)
     {
         // Arrange
         const int id = 1;
 
-        var account = new Account
+        var account = new AccountDto
         {
             Id = id,
             Username = username,
             Email = email,
             Password = password
         };
-
-        var accountDto = new AccountDto();
-        _mapper.Map(account,accountDto);
-        _database.Add(accountDto);
-
+        
         var service = RetrieveService();
-        
+
         // Act
-        service.CreateAccount(accountDto);
-        var result = service.GetAccountById(id);
-        
+        service.CreateAccount(account);
+        _database.Add(Arg.Any<Account>()).Returns(x => x.ArgAt<Account>(0));
+
         // Assert
-        result.Should().BeEquivalentTo(account, options => options.ExcludingMissingMembers());
+        _database.Received(1).Add(Arg.Is<Account>(x => x.Username == "username"));
+        _database.Received(1).SaveChanges();
+        _database.Received(1).Add(Arg.Is<Account>(x => x.Username == account.Username));
     }
 }

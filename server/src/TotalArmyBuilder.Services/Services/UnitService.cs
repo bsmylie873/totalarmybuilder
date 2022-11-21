@@ -49,22 +49,22 @@ public class UnitService : IUnitService
             .ToList(); ;
     }
     
-    public IList<UnitDto> GetUnitLords(int id)
+    public IList<UnitDto> GetUnitLords()
     {
         var lordQuery = _database
             .Get<Unit>()
-            .Where(new UnitByLordSpec(id));
+            .Where(new UnitByLordSpec());
 
         return _mapper
             .ProjectTo<UnitDto>(lordQuery)
             .ToList(); ;
     }
     
-    public IList<UnitDto> GetUnitHeroes(int id)
+    public IList<UnitDto> GetUnitHeroes()
     {
         var heroQuery = _database
             .Get<Unit>()
-            .Where(new UnitByHeroSpec(id));
+            .Where(new UnitByHeroSpec());
 
         return _mapper
             .ProjectTo<UnitDto>(heroQuery)

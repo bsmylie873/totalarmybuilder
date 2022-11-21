@@ -108,4 +108,5 @@ public class CompositionServiceTests
         // Assert
         result.Should().BeEquivalentTo(compositionList, options => options.ExcludingMissingMembers());
     }
+    
 }
