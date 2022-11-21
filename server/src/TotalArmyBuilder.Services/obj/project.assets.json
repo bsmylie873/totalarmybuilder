@@ -955,19 +955,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/brandon.smylie/.nuget/packages/": {}
+    "C:\\Users\\Brandon\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj",
+      "projectUniqueName": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Services\\TotalArmyBuilder.Services.csproj",
       "projectName": "TotalArmyBuilder.Services",
-      "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj",
-      "packagesPath": "/Users/brandon.smylie/.nuget/packages/",
-      "outputPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/obj/",
+      "projectPath": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Services\\TotalArmyBuilder.Services.csproj",
+      "packagesPath": "C:\\Users\\Brandon\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Services\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/brandon.smylie/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Brandon\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -979,8 +979,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Dal/TotalArmyBuilder.Dal.csproj": {
-              "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Dal/TotalArmyBuilder.Dal.csproj"
+            "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Dal\\TotalArmyBuilder.Dal.csproj": {
+              "projectPath": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Dal\\TotalArmyBuilder.Dal.csproj"
             }
           }
         }
@@ -1020,7 +1020,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   }

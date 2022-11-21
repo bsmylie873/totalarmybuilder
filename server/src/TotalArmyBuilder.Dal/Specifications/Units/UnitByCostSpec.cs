@@ -11,8 +11,7 @@ public class UnitByCostSpec : Specification<Unit>
     
     public override Expression<Func<Unit, bool>> BuildExpression()
     {
-        if (_cost == 0) return ShowAll;
-
-        return x => x.Cost.Equals(_cost);
+        if (_cost == null || _cost == 0) return ShowAll;
+        return x => x.Cost == _cost;
     }
 }

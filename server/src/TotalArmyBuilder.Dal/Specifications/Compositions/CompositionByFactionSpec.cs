@@ -9,6 +9,9 @@ public class CompositionByFactionSpec : Specification<Composition>
     private readonly int? _factionId;
     public CompositionByFactionSpec(int? factionId) => _factionId = factionId;
 
-    public override Expression<Func<Composition, bool>> BuildExpression() =>
-        x => x.FactionId == _factionId;
+    public override Expression<Func<Composition, bool>> BuildExpression()
+    {
+        if (_factionId == null) return ShowAll;
+        return x => x.FactionId == _factionId;
+    }
 }
