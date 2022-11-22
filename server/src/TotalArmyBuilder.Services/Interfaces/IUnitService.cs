@@ -8,6 +8,6 @@ public interface IUnitService
     IList<UnitDto> GetUnits(string? name = null, int? cost = null);
     UnitDto GetUnitById(int id);
     IList<FactionDto> GetUnitFactions(int id);
-    IList<UnitDto> GetUnitLords(int id);
-    IList<UnitDto> GetUnitHeroes(int id);
+    IList<UnitDto> GetUnitLords();
+    IList<UnitDto> GetUnitHeroes();
 }

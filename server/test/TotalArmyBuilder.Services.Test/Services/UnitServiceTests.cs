@@ -109,18 +109,16 @@ public class UnitServiceTests
         // Arrange
         HandleFixtureRecursion();
         _fixture.Customize(new UnitCustomisation("test"));
-        var unitList = _fixture.CreateMany<Unit>(5);
+        var unitList =_fixture.Build<Unit>().With(x => x.Id, 1).CreateMany(1);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
         
-        var lord = _fixture
-            .Build<LordUnit>()
-            .With(x => x.Id, 1)
-            .With(x => x.UnitId, unitList.First().Id);
+        var lordList = _fixture.Build<LordUnit>().With(x => x.UnitId, 1).CreateMany(1);
+        _database.Get<LordUnit>().Returns(lordList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetUnitLords(unitList.First().Id);
+        var result = service.GetUnitLords();
 
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
@@ -132,18 +130,16 @@ public class UnitServiceTests
         // Arrange
         HandleFixtureRecursion();
         _fixture.Customize(new UnitCustomisation("test"));
-        var unitList = _fixture.CreateMany<Unit>(5);
+        var unitList =_fixture.Build<Unit>().With(x => x.Id, 1).CreateMany(1);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
         
-        var hero = _fixture
-            .Build<HeroUnit>()
-            .With(x => x.Id, 1)
-            .With(x => x.UnitId, unitList.First().Id);
+        var heroList = _fixture.Build<HeroUnit>().With(x => x.UnitId, 1).CreateMany(1);
+        _database.Get<HeroUnit>().Returns(heroList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetUnitHeroes(unitList.First().Id);
+        var result = service.GetUnitLords();
 
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());

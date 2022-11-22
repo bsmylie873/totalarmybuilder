@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Metadata;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Factions;
@@ -49,25 +50,55 @@ public class UnitService : IUnitService
             .ToList(); ;
     }
     
-    public IList<UnitDto> GetUnitLords(int id)
+    public IList<UnitDto> GetUnitLords()
     {
-        var lordQuery = _database
+        var unitQuery = _database
             .Get<Unit>()
-            .Where(new UnitByLordSpec(id));
+            .ToList();
+        
+        var lordQuery = _database
+            .Get<LordUnit>()
+            .ToList();
 
-        return _mapper
-            .ProjectTo<UnitDto>(lordQuery)
-            .ToList(); ;
+        var lordUnits = new List<Unit>();
+
+        foreach (var lords in lordQuery)
+        {
+            foreach (var unit in unitQuery)
+            {
+                if (unit.Id == lords.Id)
+                {
+                    lordUnits.Add(unit);
+                }
+            }
+        }
+
+        return _mapper.Map<IList<UnitDto>>(lordUnits);
     }
     
-    public IList<UnitDto> GetUnitHeroes(int id)
+    public IList<UnitDto> GetUnitHeroes()
     {
-        var heroQuery = _database
+        var unitQuery = _database
             .Get<Unit>()
-            .Where(new UnitByHeroSpec(id));
+            .ToList();
+        
+        var heroQuery = _database
+            .Get<HeroUnit>()
+            .ToList();
 
-        return _mapper
-            .ProjectTo<UnitDto>(heroQuery)
-            .ToList(); ;
+        var heroUnits = new List<Unit>();
+
+        foreach (var heroes in heroQuery)
+        {
+            foreach (var unit in unitQuery)
+            {
+                if (unit.Id == heroes.Id)
+                {
+                    heroUnits.Add(unit);
+                }
+            }
+        }
+
+        return _mapper.Map<IList<UnitDto>>(heroUnits);
     }
 }

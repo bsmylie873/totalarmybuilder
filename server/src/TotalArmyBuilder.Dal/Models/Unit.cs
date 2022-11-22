@@ -21,6 +21,4 @@ public class Unit
     
     public ICollection<UnitFaction> UnitFactions { get; set; }
     
-    public ICollection<LordUnit> LordUnits { get; set; }
-    public ICollection<HeroUnit> HeroUnits { get; set; }
 }

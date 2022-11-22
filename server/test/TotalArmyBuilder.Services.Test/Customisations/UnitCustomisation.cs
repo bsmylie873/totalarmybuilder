@@ -21,8 +21,6 @@ public class UnitCustomisation : ICustomization
             .With(x => x.AvatarId)
             .Without(x => x.CompositionUnits)
             .Without(x=> x.UnitFactions)
-            .Without(x => x.LordUnits)
-            .Without(x=> x.HeroUnits)
         );
     }
 }
