@@ -63,12 +63,12 @@ public class UnitService : IUnitService
     
     public IList<UnitDto> GetUnitHeroes()
     {
-        var lordQuery = _database
-            .Get<LordUnit>()
+        var heroQuery = _database
+            .Get<HeroUnit>()
             .AsQueryable();
 
         return _mapper
-            .ProjectTo<UnitDto>(lordQuery)
+            .ProjectTo<UnitDto>(heroQuery)
             .ToList();
     }
 }

@@ -26,41 +26,25 @@ public class AccountServiceTests
     {
         return new AccountService(_database, _mapper);
     }
-    
-    private IAccountService RetrieveServiceComposition()
-    {
-        return new AccountService(_database, _compositionMapper);
-    }
 
     private static IMapper GetMapper()
     {
         var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile<AccountProfile>();
+                cfg.AddProfile<CompositionProfile>();
             });
             return new Mapper(config);
-    }
-    
-    private static IMapper GetCompositionMapper()
-    {
-        var config = new MapperConfiguration(cfg => {
-            cfg.AddProfile<CompositionProfile>();
-        });
-        return new Mapper(config);
-    }
-    
-    private void HandleFixtureRecursion()
-    {
-        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
-            .ForEach(b => _fixture.Behaviors.Remove(b));
-        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
 
     public AccountServiceTests()
     {
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
-        _compositionMapper = GetCompositionMapper();
         _fixture = new Fixture();
+        
+        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => _fixture.Behaviors.Remove(b));
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
 
     [Fact]
@@ -68,8 +52,8 @@ public class AccountServiceTests
     {
         // Arrange
         _fixture.Customize(new AccountCustomisation("test"));
-        var accountList = _fixture.CreateMany<Account>(5);
-        _database.Get<Account>().Returns(accountList.AsQueryable());
+        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
+        _database.Get<Account>().Returns(accountList);
 
         var service = RetrieveService();
 
@@ -85,8 +69,8 @@ public class AccountServiceTests
     {
         // Arrange
         _fixture.Customize(new AccountCustomisation("test"));
-        var accountList = _fixture.CreateMany<Account>(5);
-        _database.Get<Account>().Returns(accountList.AsQueryable());
+        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
+        _database.Get<Account>().Returns(accountList);
 
         var service = RetrieveService();
 
@@ -101,21 +85,27 @@ public class AccountServiceTests
     public void GetAccountCompositions_WhenCompositionsExist_ReturnsCompositions()
     {
         // Arrange
-        HandleFixtureRecursion();
-        _fixture.Customize(new AccountCustomisation("test"));
-        var accountList = _fixture.Build<Account>().CreateMany(5);
-        _database.Get<Account>().Returns(accountList.AsQueryable());
+        const int accountId = 1;
+        const int compositionId = 1;
         
+        var accountCompositionList =_fixture
+            .Build<AccountComposition>()
+            .With(x=> x.AccountId, accountId)
+            .With(x=> x.CompositionId, compositionId)
+            .CreateMany(1)
+            .ToList();
         
-        _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5);
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
-        
-        var service = RetrieveServiceComposition();
-        
+        var compositionList =_fixture
+            .Build<Composition>()
+            .With(x => x.Id, compositionId)
+            .With(x => x.AccountCompositions, accountCompositionList)
+            .CreateMany(1)
+            .AsQueryable();
 
+        var service = RetrieveService();
+        
         // Act
-        var result = service.GetAccountCompositions(accountList.First().Id);
+        var result = service.GetAccountCompositions(accountCompositionList.First().Id);
 
         // Assert
         result.Should().BeEquivalentTo(compositionList, options => options.ExcludingMissingMembers());
@@ -173,9 +163,9 @@ public class AccountServiceTests
     {
         // Arrange
         _fixture.Customize(new AccountCustomisation("test"));
-        var accountList = _fixture.CreateMany<Account>(5);
+        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
 
-        _database.Get<Account>().Returns(accountList.AsQueryable());
+        _database.Get<Account>().Returns(accountList);
         
         var service = RetrieveService();
 

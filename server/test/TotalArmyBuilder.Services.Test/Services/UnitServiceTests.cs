@@ -25,11 +25,6 @@ public class UnitServiceTests
     {
         return new UnitService(_database, _mapper);
     }
-    
-    private IAccountService RetrieveServiceFactions()
-    {
-        return new AccountService(_database, _factionMapper);
-    }
 
     private static IMapper GetMapper()
     {
@@ -56,8 +51,8 @@ public class UnitServiceTests
     {
         // Arrange
         _fixture.Customize(new UnitCustomisation("test"));
-        var unitList = _fixture.CreateMany<Unit>(5);
-        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        var unitList = _fixture.CreateMany<Unit>(5).AsQueryable();
+        _database.Get<Unit>().Returns(unitList);
 
         var service = RetrieveService();
 
@@ -85,7 +80,7 @@ public class UnitServiceTests
     }
     
     [Fact]
-    public void GetFactionUnits_WhenUnitsExist_ReturnsUnits()
+    public void GetUnitFactions_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
         const int factionId = 1;
@@ -120,7 +115,7 @@ public class UnitServiceTests
     public void GetUnitLords_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
-        Unit unit = new Unit()
+        Unit unit = new Unit
         {
             Id = 1,
             Name = "LordUnit",
@@ -158,7 +153,7 @@ public class UnitServiceTests
     public void GetUnitHeroes_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
-        Unit unit = new Unit()
+        Unit unit = new Unit
         {
             Id = 1,
             Name = "HeroUnit",

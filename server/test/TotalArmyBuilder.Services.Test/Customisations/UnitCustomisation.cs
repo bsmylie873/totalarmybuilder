@@ -5,8 +5,7 @@ namespace TotalArmyBuilder.Services.Test.Customisations;
 public class UnitCustomisation : ICustomization
 {
     private readonly string _name = "test";
-
-    public UnitCustomisation() { }
+    
     public UnitCustomisation(string name)
     {
         _name = name;
