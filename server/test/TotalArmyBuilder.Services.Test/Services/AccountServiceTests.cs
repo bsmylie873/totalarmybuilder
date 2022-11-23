@@ -19,11 +19,17 @@ public class AccountServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
+    private readonly IMapper _compositionMapper;
     private readonly IFixture _fixture;
 
     private IAccountService RetrieveService()
     {
         return new AccountService(_database, _mapper);
+    }
+    
+    private IAccountService RetrieveServiceComposition()
+    {
+        return new AccountService(_database, _compositionMapper);
     }
 
     private static IMapper GetMapper()
@@ -34,7 +40,7 @@ public class AccountServiceTests
             return new Mapper(config);
     }
     
-    private static IMapper GetMapperComposition()
+    private static IMapper GetCompositionMapper()
     {
         var config = new MapperConfiguration(cfg => {
             cfg.AddProfile<CompositionProfile>();
@@ -53,6 +59,7 @@ public class AccountServiceTests
     {
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
+        _compositionMapper = GetCompositionMapper();
         _fixture = new Fixture();
     }
 
@@ -104,7 +111,7 @@ public class AccountServiceTests
         var compositionList = _fixture.CreateMany<Composition>(5);
         _database.Get<Composition>().Returns(compositionList.AsQueryable());
         
-        var service = RetrieveService();
+        var service = RetrieveServiceComposition();
         
 
         // Act
