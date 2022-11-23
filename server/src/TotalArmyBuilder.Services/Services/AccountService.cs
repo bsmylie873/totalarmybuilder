@@ -7,6 +7,7 @@ using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
+using TotalArmyBuilder.Service.Services.Exceptions;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Service.Services;
@@ -68,7 +69,6 @@ public class AccountService : IAccountService
         if (currentAccount == null) throw new Exception("Not Found");
 
         _mapper.Map(account, currentAccount);
-        currentAccount.Id = id;
         _database.SaveChanges();
     }
     
@@ -78,7 +78,7 @@ public class AccountService : IAccountService
             .Get<Account>()
             .FirstOrDefault(new AccountByIdSpec(id));
 
-        if (currentAccount == null) throw new Exception("Not Found");
+        if (currentAccount == null) throw new NotFoundException();
         
         _database.Delete(currentAccount);
         _database.SaveChanges();

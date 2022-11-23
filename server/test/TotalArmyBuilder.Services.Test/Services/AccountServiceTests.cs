@@ -142,13 +142,24 @@ public class AccountServiceTests
     {
         // Arrange
         _fixture.Customize(new AccountCustomisation("test"));
-        var accountList = _fixture.CreateMany<Account>(5);
-        var accountDto = _mapper.Map<AccountDto>(accountList.First());
-        
-        _database.Get<Account>().Returns(accountList.AsQueryable());
+        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
+        var accountDto = _fixture
+            .Build<AccountDto>()
+            .Without(x=> x.Compositions)
+            .With(x=> x.Id, accountList.First().Id)
+            .Create();
+
+        _database.Get<Account>().Returns(accountList);
         
         var service = RetrieveService();
 
+        _database.When(x=> x.SaveChanges()).Do(x =>
+        {
+            accountList.First()
+                .Should()
+                .BeEquivalentTo(accountDto, o=>o.ExcludingMissingMembers());
+        });
+        
         // Act
         service.UpdateAccount(accountList.First().Id, accountDto);
 
@@ -173,6 +184,7 @@ public class AccountServiceTests
 
         // Assert
         _database.Received(1).Get<Account>();
+        _database.Received(1).Delete(accountList.First());
         _database.Received(1).SaveChanges();
     }
 }

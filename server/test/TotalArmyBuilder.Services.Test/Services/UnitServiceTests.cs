@@ -18,17 +18,24 @@ public class UnitServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
+    private readonly IMapper _factionMapper;
     private readonly IFixture _fixture;
     
     private IUnitService RetrieveService()
     {
         return new UnitService(_database, _mapper);
     }
+    
+    private IAccountService RetrieveServiceFactions()
+    {
+        return new AccountService(_database, _factionMapper);
+    }
 
     private static IMapper GetMapper()
     {
         var config = new MapperConfiguration(cfg => {
             cfg.AddProfile<UnitProfile>();
+            cfg.AddProfile<FactionProfile>();
         });
 
         return new Mapper(config);
@@ -39,10 +46,6 @@ public class UnitServiceTests
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
         _fixture = new Fixture();
-    }
-    
-    private void HandleFixtureRecursion()
-    {
         _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
             .ForEach(b => _fixture.Behaviors.Remove(b));
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
@@ -85,19 +88,29 @@ public class UnitServiceTests
     public void GetFactionUnits_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
-        HandleFixtureRecursion();
-        _fixture.Customize(new UnitCustomisation("test"));
-        var unitList = _fixture.CreateMany<Unit>(5);
-        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        const int factionId = 1;
+        const int unitId = 1;
         
-        _fixture.Customize(new FactionCustomisation("test"));
-        var factionList = _fixture.CreateMany<Faction>(5);
-        _database.Get<Faction>().Returns(factionList.AsQueryable());
+        var unitFactionList =_fixture
+            .Build<UnitFaction>()
+            .With(x=> x.FactionId, factionId)
+            .With(x=> x.UnitId, unitId)
+            .CreateMany(1)
+            .ToList();
+        
+        var factionList =_fixture
+            .Build<Faction>()
+            .With(x => x.Id, factionId)
+            .With(x => x.UnitFactions, unitFactionList)
+            .CreateMany(1)
+            .AsQueryable();
+        
+        _database.Get<Faction>().Returns(factionList);
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetUnitFactions(unitList.First().Id);
+        var result = service.GetUnitFactions(unitId);
 
         // Assert
         result.Should().BeEquivalentTo(factionList, options => options.ExcludingMissingMembers());
@@ -115,7 +128,6 @@ public class UnitServiceTests
             AvatarId = 1
         };
         
-        HandleFixtureRecursion();
         _fixture.Customize(new UnitCustomisation("test"));
         var unitList =_fixture
             .Build<Unit>()
@@ -154,7 +166,6 @@ public class UnitServiceTests
             AvatarId = 1
         };
         
-        HandleFixtureRecursion();
         _fixture.Customize(new UnitCustomisation("test"));
         var unitList =_fixture
             .Build<Unit>()

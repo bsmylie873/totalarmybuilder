@@ -23,10 +23,8 @@ public class FactionProfile : Profile
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<FactionDto, Faction>()
-            .ForMember(d => d.Id, o => o.Ignore());
-        
-        CreateMap<FactionDto, Faction>().ForAllMembers(
-            opts => 
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+            .ForMember(d => d.Id, o => o.Ignore())
+            .ForAllMembers(opts => 
+                    opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
