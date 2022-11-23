@@ -68,7 +68,7 @@ public class AccountService : IAccountService
             .Get<Account>()
             .FirstOrDefault(new AccountByIdSpec(id));
 
-        if (currentAccount == null) throw new Exception("Not Found");
+        if (currentAccount == null) throw new NotFoundException();
 
         _mapper.Map(account, currentAccount);
         _database.SaveChanges();

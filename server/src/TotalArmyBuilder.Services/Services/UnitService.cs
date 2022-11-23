@@ -6,6 +6,7 @@ using TotalArmyBuilder.Dal.Specifications.Factions;
 using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
+using TotalArmyBuilder.Service.Services.Exceptions;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Service.Services;
@@ -33,6 +34,8 @@ public class UnitService : IUnitService
         var unitQuery = _database
             .Get<Unit>()
             .Where(new UnitByIdSpec(id));
+        
+        if (unitQuery == null) throw new NotFoundException();
 
         return _mapper
             .ProjectTo<UnitDto>(unitQuery)

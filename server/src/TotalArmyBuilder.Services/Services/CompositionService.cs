@@ -7,6 +7,7 @@ using TotalArmyBuilder.Dal.Specifications.Compositions;
 using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
+using TotalArmyBuilder.Service.Services.Exceptions;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Service.Services;
@@ -34,6 +35,8 @@ public class CompositionService : ICompositionService
         var compositionQuery = _database
             .Get<Composition>()
             .Where(new CompositionByIdSpec(id));
+        
+        if (compositionQuery == null) throw new NotFoundException();
 
         return _mapper
             .ProjectTo<CompositionDto>(compositionQuery)
@@ -66,7 +69,7 @@ public class CompositionService : ICompositionService
             .Get<Composition>()
             .FirstOrDefault(new CompositionByIdSpec(id));
 
-        if (currentComposition == null) throw new Exception("Not Found");
+        if (currentComposition == null) throw new NotFoundException();
 
         _mapper.Map(composition, currentComposition);
 
@@ -79,7 +82,7 @@ public class CompositionService : ICompositionService
             .Get<Composition>()
             .FirstOrDefault(new CompositionByIdSpec(id));
 
-        if (currentComposition == null) throw new Exception("Not Found");
+        if (currentComposition == null) throw new NotFoundException();
         
         _database.Delete(currentComposition);
         _database.SaveChanges();
