@@ -54,17 +54,21 @@ public class UnitService : IUnitService
     {
         var lordQuery = _database
             .Get<LordUnit>()
-            .ToList();
+            .AsQueryable();
 
-        return _mapper.Map<IList<UnitDto>>(lordQuery);
+        return _mapper
+            .ProjectTo<UnitDto>(lordQuery)
+            .ToList();
     }
     
     public IList<UnitDto> GetUnitHeroes()
     {
-        var heroQuery = _database
-            .Get<HeroUnit>()
-            .ToList();
+        var lordQuery = _database
+            .Get<LordUnit>()
+            .AsQueryable();
 
-        return _mapper.Map<IList<UnitDto>>(heroQuery);
+        return _mapper
+            .ProjectTo<UnitDto>(lordQuery)
+            .ToList();
     }
 }

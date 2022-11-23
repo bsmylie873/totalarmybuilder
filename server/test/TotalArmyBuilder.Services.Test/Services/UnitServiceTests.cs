@@ -107,15 +107,29 @@ public class UnitServiceTests
     public void GetUnitLords_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
+        Unit unit = new Unit()
+        {
+            Id = 1,
+            Name = "LordUnit",
+            Cost = 1000,
+            AvatarId = 1
+        };
+        
         HandleFixtureRecursion();
         _fixture.Customize(new UnitCustomisation("test"));
-        var unitList =_fixture.Build<Unit>().With(x => x.Id, 1).CreateMany(1);
+        var unitList =_fixture
+            .Build<Unit>()
+            .With(x => x.Id, 1)
+            .With(x => x.Name, "LordUnit")
+            .With(x=>x.Cost,1000)
+            .With(x=>x.AvatarId,1)
+            .CreateMany(1);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
         
         var lordList = _fixture
             .Build<LordUnit>()
             .With(x => x.UnitId, 1)
-            .With(x=> x.Unit.Id, 1)
+            .With(x=> x.Unit, unit)
             .CreateMany(1);
         _database.Get<LordUnit>().Returns(lordList.AsQueryable());
 
@@ -132,18 +146,36 @@ public class UnitServiceTests
     public void GetUnitHeroes_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
+        Unit unit = new Unit()
+        {
+            Id = 1,
+            Name = "HeroUnit",
+            Cost = 1000,
+            AvatarId = 1
+        };
+        
         HandleFixtureRecursion();
         _fixture.Customize(new UnitCustomisation("test"));
-        var unitList =_fixture.Build<Unit>().With(x => x.Id, 1).CreateMany(1);
+        var unitList =_fixture
+            .Build<Unit>()
+            .With(x => x.Id, 1)
+            .With(x => x.Name, "HeroUnit")
+            .With(x=>x.Cost,1000)
+            .With(x=>x.AvatarId,1)
+            .CreateMany(1);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
         
-        var heroList = _fixture.Build<HeroUnit>().With(x => x.UnitId, 1).CreateMany(1);
+        var heroList = _fixture
+            .Build<HeroUnit>()
+            .With(x => x.UnitId, 1)
+            .With(x=> x.Unit, unit)
+            .CreateMany(1);
         _database.Get<HeroUnit>().Returns(heroList.AsQueryable());
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetUnitLords();
+        var result = service.GetUnitHeroes();
 
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
