@@ -28,17 +28,13 @@ public class CompositionServiceTests
     private static IMapper GetMapper()
     {
         var config = new MapperConfiguration(cfg => {
+            cfg.AddProfile<AccountProfile>();
             cfg.AddProfile<CompositionProfile>();
+            cfg.AddProfile<FactionProfile>();
+            cfg.AddProfile<UnitProfile>();
         });
 
         return new Mapper(config);
-    }
-
-    private void HandleFixtureRecursion()
-    {
-        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
-            .ForEach(b => _fixture.Behaviors.Remove(b));
-        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
 
     public CompositionServiceTests()
@@ -46,6 +42,10 @@ public class CompositionServiceTests
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
         _fixture = new Fixture();
+        
+        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => _fixture.Behaviors.Remove(b));
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
     
 
@@ -53,7 +53,6 @@ public class CompositionServiceTests
     public void GetCompositionById_WhenCompositionExist_ReturnsComposition()
     {
         // Arrange
-        HandleFixtureRecursion();
         _fixture.Customize(new CompositionCustomisation("test"));
         var compositionList = _fixture.CreateMany<Composition>(5);
         _database.Get<Composition>().Returns(compositionList.AsQueryable());
@@ -70,8 +69,6 @@ public class CompositionServiceTests
     [Fact]
     public void GetCompositions_WhenCompositionsExist_ReturnsCompositions()
     {
-        // Arrange
-        HandleFixtureRecursion();
         _fixture.Customize(new CompositionCustomisation("test"));
         var compositionList = _fixture.CreateMany<Composition>(5);
         _database.Get<Composition>().Returns(compositionList.AsQueryable());
@@ -89,21 +86,29 @@ public class CompositionServiceTests
     public void GetCompositionUnits_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
-        HandleFixtureRecursion();
-        _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5);
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        const int compositionId = 1;
+        const int unitId = 1;
         
+        var compositionUnitList =_fixture
+            .Build<CompositionUnit>()
+            .With(x=> x.CompositionId, compositionId)
+            .With(x=> x.UnitId, unitId)
+            .CreateMany(1)
+            .ToList();
         
-        _fixture.Customize(new UnitCustomisation("test"));
-        var unitList = _fixture.CreateMany<Unit>(5);
-        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        var unitList =_fixture
+            .Build<Unit>()
+            .With(x => x.Id, unitId)
+            .With(x => x.CompositionUnits, compositionUnitList)
+            .CreateMany(1)
+            .AsQueryable();
+        
+        _database.Get<Unit>().Returns(unitList);
         
         var service = RetrieveService();
         
-
         // Act
-        var result = service.GetCompositionUnits(compositionList.First().Id);
+        var result = service.GetCompositionUnits(compositionId);
 
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());
@@ -113,7 +118,6 @@ public class CompositionServiceTests
     public void CreateComposition_MappedAndSaved()
     {
         // Arrange
-        HandleFixtureRecursion();
         _fixture.Customize(new CompositionCustomisation("test"));
         var composition = _fixture.Create<Composition>();
         var service = RetrieveService();
@@ -130,7 +134,6 @@ public class CompositionServiceTests
     public void UpdateComposition_MappedAndSaved()
     {
         // Arrange
-        HandleFixtureRecursion();
         _fixture.Customize(new CompositionCustomisation("test"));
         var compositionList = _fixture.CreateMany<Composition>(5);
         var compositionDto = _mapper.Map<CompositionDto>(compositionList.First());
@@ -151,7 +154,6 @@ public class CompositionServiceTests
     public void DeleteComposition_MappedAndSaved()
     {
         // Arrange
-        HandleFixtureRecursion();
         _fixture.Customize(new CompositionCustomisation("test"));
         var compositionList = _fixture.CreateMany<Composition>(5);
 

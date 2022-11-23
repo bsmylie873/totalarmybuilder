@@ -10,5 +10,5 @@ public class CompositionDto
     public DateTime DateCreated { get; set; }
     
     public IList<AccountDto> Accounts { get; set; }
-    public IList<UnitDto> Units { get; set; }
+    public IList<UnitDto>? Units { get; set; }
 }

@@ -19,7 +19,6 @@ public class AccountServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
-    private readonly IMapper _compositionMapper;
     private readonly IFixture _fixture;
 
     private IAccountService RetrieveService()
@@ -51,7 +50,7 @@ public class AccountServiceTests
     public void GetAccountById_WhenAccountExist_ReturnsAccount()
     {
         // Arrange
-        _fixture.Customize(new AccountCustomisation("test"));
+        _fixture.Customize(new AccountCustomisation());
         var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
         _database.Get<Account>().Returns(accountList);
 
@@ -68,7 +67,7 @@ public class AccountServiceTests
     public void GetAccounts_WhenAccountsExist_ReturnsAccount()
     {
         // Arrange
-        _fixture.Customize(new AccountCustomisation("test"));
+        _fixture.Customize(new AccountCustomisation());
         var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
         _database.Get<Account>().Returns(accountList);
 
@@ -87,7 +86,7 @@ public class AccountServiceTests
         // Arrange
         const int accountId = 1;
         const int compositionId = 1;
-        
+
         var accountCompositionList =_fixture
             .Build<AccountComposition>()
             .With(x=> x.AccountId, accountId)
@@ -101,11 +100,13 @@ public class AccountServiceTests
             .With(x => x.AccountCompositions, accountCompositionList)
             .CreateMany(1)
             .AsQueryable();
-
+        
+        _database.Get<Composition>().Returns(compositionList);
+        
         var service = RetrieveService();
         
         // Act
-        var result = service.GetAccountCompositions(accountCompositionList.First().Id);
+        var result = service.GetAccountCompositions(accountId);
 
         // Assert
         result.Should().BeEquivalentTo(compositionList, options => options.ExcludingMissingMembers());
@@ -115,7 +116,7 @@ public class AccountServiceTests
     public void CreateAccount_MappedAndSaved()
     {
         // Arrange
-        _fixture.Customize(new AccountCustomisation("test"));
+        _fixture.Customize(new AccountCustomisation());
         var account = _fixture.Create<Account>();
         var service = RetrieveService();
 
@@ -131,7 +132,7 @@ public class AccountServiceTests
     public void UpdateAccount_MappedAndSaved()
     {
         // Arrange
-        _fixture.Customize(new AccountCustomisation("test"));
+        _fixture.Customize(new AccountCustomisation());
         var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
         var accountDto = _fixture
             .Build<AccountDto>()
@@ -162,7 +163,7 @@ public class AccountServiceTests
     public void DeleteAccount_MappedAndSaved()
     {
         // Arrange
-        _fixture.Customize(new AccountCustomisation("test"));
+        _fixture.Customize(new AccountCustomisation());
         var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
 
         _database.Get<Account>().Returns(accountList);

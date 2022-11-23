@@ -30,16 +30,10 @@ public class FactionServiceTests
     {
         var config = new MapperConfiguration(cfg => {
             cfg.AddProfile<FactionProfile>();
+            cfg.AddProfile<UnitProfile>();
         });
 
         return new Mapper(config);
-    }
-    
-    private void HandleFixtureRecursion()
-    {
-        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
-            .ForEach(b => _fixture.Behaviors.Remove(b));
-        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
 
     public FactionServiceTests()
@@ -47,6 +41,10 @@ public class FactionServiceTests
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
         _fixture = new Fixture();
+        
+        _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => _fixture.Behaviors.Remove(b));
+        _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
     }
 
     [Fact]
@@ -86,21 +84,29 @@ public class FactionServiceTests
     public void GetFactionUnits_WhenUnitsExist_ReturnsUnits()
     {
         // Arrange
-        HandleFixtureRecursion();
-        _fixture.Customize(new FactionCustomisation("test"));
-        var factionList = _fixture.CreateMany<Faction>(5);
-        _database.Get<Faction>().Returns(factionList.AsQueryable());
+        const int factionId = 1;
+        const int unitId = 1;
         
+        var unitFactionList =_fixture
+            .Build<UnitFaction>()
+            .With(x=> x.FactionId, factionId)
+            .With(x=> x.UnitId, unitId)
+            .CreateMany(1)
+            .ToList();
         
-        _fixture.Customize(new UnitCustomisation("test"));
-        var unitList = _fixture.CreateMany<Unit>(5);
-        _database.Get<Unit>().Returns(unitList.AsQueryable());
+        var unitList =_fixture
+            .Build<Unit>()
+            .With(x => x.Id, unitId)
+            .With(x => x.UnitFactions, unitFactionList)
+            .CreateMany(1)
+            .AsQueryable();
+        
+        _database.Get<Unit>().Returns(unitList);
         
         var service = RetrieveService();
         
-
         // Act
-        var result = service.GetFactionUnits(factionList.First().Id);
+        var result = service.GetFactionUnits(factionId);
 
         // Assert
         result.Should().BeEquivalentTo(unitList, options => options.ExcludingMissingMembers());

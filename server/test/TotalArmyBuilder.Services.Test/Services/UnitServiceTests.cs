@@ -18,7 +18,6 @@ public class UnitServiceTests
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
-    private readonly IMapper _factionMapper;
     private readonly IFixture _fixture;
     
     private IUnitService RetrieveService()
@@ -41,6 +40,7 @@ public class UnitServiceTests
         _database = Substitute.For<ITotalArmyDatabase>();
         _mapper = GetMapper();
         _fixture = new Fixture();
+        
         _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
             .ForEach(b => _fixture.Behaviors.Remove(b));
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
@@ -50,7 +50,7 @@ public class UnitServiceTests
     public void GetUnitById_WhenUnitExist_ReturnsUnit()
     {
         // Arrange
-        _fixture.Customize(new UnitCustomisation("test"));
+        _fixture.Customize(new UnitCustomisation());
         var unitList = _fixture.CreateMany<Unit>(5).AsQueryable();
         _database.Get<Unit>().Returns(unitList);
 
@@ -66,7 +66,7 @@ public class UnitServiceTests
     [Fact]
     public void GetUnits_WhenUnitsExist_ReturnsUnits()
     {
-        _fixture.Customize(new UnitCustomisation("test"));
+        _fixture.Customize(new UnitCustomisation());
         var unitList = _fixture.CreateMany<Unit>(5);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
 
@@ -123,7 +123,7 @@ public class UnitServiceTests
             AvatarId = 1
         };
         
-        _fixture.Customize(new UnitCustomisation("test"));
+        _fixture.Customize(new UnitCustomisation());
         var unitList =_fixture
             .Build<Unit>()
             .With(x => x.Id, 1)
@@ -161,7 +161,7 @@ public class UnitServiceTests
             AvatarId = 1
         };
         
-        _fixture.Customize(new UnitCustomisation("test"));
+        _fixture.Customize(new UnitCustomisation());
         var unitList =_fixture
             .Build<Unit>()
             .With(x => x.Id, 1)

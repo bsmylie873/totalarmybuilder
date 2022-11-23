@@ -16,18 +16,14 @@ public class AccountProfile : Profile
     private void ConfigureDomainToDtoModel()
     {
         CreateMap<Account, AccountDto>()
-            .ForMember(d => d.Compositions, 
-                o=> o
-                    .MapFrom(x => x.AccountCompositions.Select(y => y.Composition)))
-            .ForAllMembers(opts => 
+            .ForAllMembers(opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
     
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<AccountDto, Account>()
-            /*.ForMember(x => x.Id, o=>o.Ignore())*/
-            .ForAllMembers(opts => 
+            .ForAllMembers(opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
