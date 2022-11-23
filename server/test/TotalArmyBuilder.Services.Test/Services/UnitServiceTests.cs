@@ -112,7 +112,11 @@ public class UnitServiceTests
         var unitList =_fixture.Build<Unit>().With(x => x.Id, 1).CreateMany(1);
         _database.Get<Unit>().Returns(unitList.AsQueryable());
         
-        var lordList = _fixture.Build<LordUnit>().With(x => x.UnitId, 1).CreateMany(1);
+        var lordList = _fixture
+            .Build<LordUnit>()
+            .With(x => x.UnitId, 1)
+            .With(x=> x.Unit.Id, 1)
+            .CreateMany(1);
         _database.Get<LordUnit>().Returns(lordList.AsQueryable());
 
         var service = RetrieveService();

@@ -52,53 +52,19 @@ public class UnitService : IUnitService
     
     public IList<UnitDto> GetUnitLords()
     {
-        var unitQuery = _database
-            .Get<Unit>()
-            .ToList();
-        
         var lordQuery = _database
             .Get<LordUnit>()
             .ToList();
 
-        var lordUnits = new List<Unit>();
-
-        foreach (var lords in lordQuery)
-        {
-            foreach (var unit in unitQuery)
-            {
-                if (unit.Id == lords.Id)
-                {
-                    lordUnits.Add(unit);
-                }
-            }
-        }
-
-        return _mapper.Map<IList<UnitDto>>(lordUnits);
+        return _mapper.Map<IList<UnitDto>>(lordQuery);
     }
     
     public IList<UnitDto> GetUnitHeroes()
     {
-        var unitQuery = _database
-            .Get<Unit>()
-            .ToList();
-        
         var heroQuery = _database
             .Get<HeroUnit>()
             .ToList();
 
-        var heroUnits = new List<Unit>();
-
-        foreach (var heroes in heroQuery)
-        {
-            foreach (var unit in unitQuery)
-            {
-                if (unit.Id == heroes.Id)
-                {
-                    heroUnits.Add(unit);
-                }
-            }
-        }
-
-        return _mapper.Map<IList<UnitDto>>(heroUnits);
+        return _mapper.Map<IList<UnitDto>>(heroQuery);
     }
 }

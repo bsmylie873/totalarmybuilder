@@ -10,4 +10,10 @@ public class LordUnit
     
     [Column ("unit_id")] public int UnitId { get; set; }
     [ForeignKey(nameof(UnitId))] public Unit Unit { get; set; }
+    
+    public LordUnit WithUnit(Unit newUnit)
+    {
+        return new LordUnit(newUnit, this.Unit);
+    }
 }
+
