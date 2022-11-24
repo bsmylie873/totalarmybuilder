@@ -10,6 +10,7 @@ using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
 using TotalArmyBuilder.Services.Test.Customisations;
+using TotalArmyBuilder.Services.Test.Extensions;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -50,14 +51,22 @@ public class UnitServiceTests
     public void GetUnitById_WhenUnitExist_ReturnsUnit()
     {
         // Arrange
+        const int unitId = 1;
+        
+        var unitIds = _fixture.MockWithOne(unitId);
+        
         _fixture.Customize(new UnitCustomisation());
-        var unitList = _fixture.CreateMany<Unit>(5).AsQueryable();
+        var unitList = _fixture
+            .Build<Unit>()
+            .With(x => x.Id, unitIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
         _database.Get<Unit>().Returns(unitList);
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetUnitById(unitList.First().Id);
+        var result = service.GetUnitById(unitId);
 
         // Assert
         result.Should().BeEquivalentTo(unitList.First(), options => options.ExcludingMissingMembers());
@@ -86,18 +95,20 @@ public class UnitServiceTests
         const int factionId = 1;
         const int unitId = 1;
         
+        var unitIds = _fixture.MockWithOne(unitId);
+        
         var unitFactionList =_fixture
             .Build<UnitFaction>()
             .With(x=> x.FactionId, factionId)
-            .With(x=> x.UnitId, unitId)
-            .CreateMany(1)
+            .With(x=> x.UnitId, unitIds.GetValue)
+            .CreateMany(5)
             .ToList();
         
         var factionList =_fixture
             .Build<Faction>()
             .With(x => x.Id, factionId)
             .With(x => x.UnitFactions, unitFactionList)
-            .CreateMany(1)
+            .CreateMany(5)
             .AsQueryable();
         
         _database.Get<Faction>().Returns(factionList);
@@ -123,6 +134,10 @@ public class UnitServiceTests
             AvatarId = 1
         };
         
+        const int unitId = 1;
+        
+        var unitIds = _fixture.MockWithOne(unitId);
+        
         _fixture.Customize(new UnitCustomisation());
         var unitList =_fixture
             .Build<Unit>()
@@ -130,8 +145,9 @@ public class UnitServiceTests
             .With(x => x.Name, "LordUnit")
             .With(x=>x.Cost,1000)
             .With(x=>x.AvatarId,1)
-            .CreateMany(1);
-        _database.Get<Unit>().Returns(unitList.AsQueryable());
+            .CreateMany(1)
+            .AsQueryable();
+        _database.Get<Unit>().Returns(unitList);
         
         var lordList = _fixture
             .Build<LordUnit>()

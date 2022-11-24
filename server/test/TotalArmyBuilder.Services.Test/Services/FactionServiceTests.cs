@@ -10,6 +10,7 @@ using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
 using TotalArmyBuilder.Services.Test.Customisations;
+using TotalArmyBuilder.Services.Test.Extensions;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -51,14 +52,22 @@ public class FactionServiceTests
     public void GetFactionById_WhenFactionExist_ReturnsFaction()
     {
         // Arrange
-        _fixture.Customize(new FactionCustomisation("test"));
-        var factionList = _fixture.CreateMany<Faction>(5);
-        _database.Get<Faction>().Returns(factionList.AsQueryable());
+        const int factionId = 1;
+        
+        var factionIds = _fixture.MockWithOne(factionId);
+        
+        _fixture.Customize(new FactionCustomisation());
+        var factionList = _fixture
+            .Build<Faction>()
+            .With(x => x.Id, factionIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
+        _database.Get<Faction>().Returns(factionList);
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetFactionById(factionList.First().Id);
+        var result = service.GetFactionById(factionId);
 
         // Assert
         result.Should().BeEquivalentTo(factionList.First(), options => options.ExcludingMissingMembers());
@@ -67,7 +76,7 @@ public class FactionServiceTests
     [Fact]
     public void GetFactions_WhenFactionsExist_ReturnsFactions()
     {
-        _fixture.Customize(new FactionCustomisation("test"));
+        _fixture.Customize(new FactionCustomisation());
         var factionList = _fixture.CreateMany<Faction>(5);
         _database.Get<Faction>().Returns(factionList.AsQueryable());
 
@@ -87,18 +96,20 @@ public class FactionServiceTests
         const int factionId = 1;
         const int unitId = 1;
         
+        var factionIds = _fixture.MockWithOne(factionId);
+        
         var unitFactionList =_fixture
             .Build<UnitFaction>()
-            .With(x=> x.FactionId, factionId)
+            .With(x=> x.FactionId, factionIds.GetValue)
             .With(x=> x.UnitId, unitId)
-            .CreateMany(1)
+            .CreateMany(5)
             .ToList();
         
         var unitList =_fixture
             .Build<Unit>()
             .With(x => x.Id, unitId)
             .With(x => x.UnitFactions, unitFactionList)
-            .CreateMany(1)
+            .CreateMany(5)
             .AsQueryable();
         
         _database.Get<Unit>().Returns(unitList);

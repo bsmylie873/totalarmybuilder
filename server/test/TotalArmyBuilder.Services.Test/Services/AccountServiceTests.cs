@@ -12,6 +12,7 @@ using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
 using TotalArmyBuilder.Service.Services.Exceptions;
 using TotalArmyBuilder.Services.Test.Customisations;
+using TotalArmyBuilder.Services.Test.Extensions;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -50,15 +51,23 @@ public class AccountServiceTests
     [Fact]
     public void GetAccountById_WhenAccountExist_ReturnsAccount()
     {
+        const int accountId = 1;
+        
+        var accountIds = _fixture.MockWithOne(accountId);
+        
         // Arrange
         _fixture.Customize(new AccountCustomisation());
-        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
+        var accountList = _fixture
+            .Build<Account>()
+            .With(x => x.Id, accountIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
         _database.Get<Account>().Returns(accountList);
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetAccountById(accountList.First().Id);
+        var result = service.GetAccountById(accountId);
 
         // Assert
         result.Should().BeEquivalentTo(accountList.First(), options => options.ExcludingMissingMembers());
@@ -88,18 +97,20 @@ public class AccountServiceTests
         const int accountId = 1;
         const int compositionId = 1;
 
+        var accountIds = _fixture.MockWithOne(accountId);
+
         var accountCompositionList =_fixture
             .Build<AccountComposition>()
-            .With(x=> x.AccountId, accountId)
+            .With(x=> x.AccountId, accountIds.GetValue)
             .With(x=> x.CompositionId, compositionId)
-            .CreateMany(1)
+            .CreateMany(5)
             .ToList();
-        
-        var compositionList =_fixture
+
+        var compositionList = _fixture
             .Build<Composition>()
             .With(x => x.Id, compositionId)
             .With(x => x.AccountCompositions, accountCompositionList)
-            .CreateMany(1)
+            .CreateMany(5)
             .AsQueryable();
         
         _database.Get<Composition>().Returns(compositionList);
@@ -133,12 +144,21 @@ public class AccountServiceTests
     public void UpdateAccount_MappedAndSaved()
     {
         // Arrange
+        const int accountId = 1;
+        
+        var accountIds = _fixture.MockWithOne(accountId);
+        
         _fixture.Customize(new AccountCustomisation());
-        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
+        var accountList = _fixture
+            .Build<Account>()
+            .With(x => x.Id, accountIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
+        
         var accountDto = _fixture
             .Build<AccountDto>()
             .Without(x=> x.Compositions)
-            .With(x=> x.Id, accountList.First().Id)
+            .With(x=> x.Id, accountId)
             .Create();
 
         _database.Get<Account>().Returns(accountList);
@@ -153,7 +173,7 @@ public class AccountServiceTests
         });
         
         // Act
-        service.UpdateAccount(accountList.First().Id, accountDto);
+        service.UpdateAccount(accountId, accountDto);
 
         // Assert
         _database.Received(1).Get<Account>();
@@ -166,8 +186,15 @@ public class AccountServiceTests
         // Arrange
         const int accountId = 1;
         
+        var accountIds = _fixture.MockWithOne(accountId);
+        
         _fixture.Customize(new AccountCustomisation());
-        var accountList = _fixture.CreateMany<Account>(0).AsQueryable();
+        var accountList = _fixture
+            .Build<Account>()
+            .With(x => x.Id, accountIds.GetValue)
+            .CreateMany(0)
+            .AsQueryable();
+
         var accountDto = _fixture
             .Build<AccountDto>()
             .Without(x=> x.Compositions)
@@ -186,15 +213,23 @@ public class AccountServiceTests
     public void DeleteAccount_MappedAndSaved()
     {
         // Arrange
+        const int accountId = 1;
+        
+        var accountIds = _fixture.MockWithOne(accountId);
+        
         _fixture.Customize(new AccountCustomisation());
-        var accountList = _fixture.CreateMany<Account>(5).AsQueryable();
+        var accountList = _fixture
+            .Build<Account>()
+            .With(x => x.Id, accountIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
 
         _database.Get<Account>().Returns(accountList);
         
         var service = RetrieveService();
 
         // Act
-        service.DeleteAccount(accountList.First().Id);
+        service.DeleteAccount(accountId);
 
         // Assert
         _database.Received(1).Get<Account>();
@@ -207,15 +242,22 @@ public class AccountServiceTests
     {
         // Arrange
         const int accountId = 1;
+        const int wrongId = 2;
+        
+        var accountIds = _fixture.MockWithOne(accountId);
         
         _fixture.Customize(new AccountCustomisation());
-        var accountList = _fixture.CreateMany<Account>(0).AsQueryable();
+        var accountList = _fixture
+            .Build<Account>()
+            .With(x => x.Id, accountIds.GetValue)
+            .CreateMany(1)
+            .AsQueryable();
 
         _database.Get<Account>().Returns(accountList);
         
         var service = RetrieveService();
 
         // Act & Assert
-        Assert.Throws<NotFoundException>(() =>service.DeleteAccount(accountId));
+        Assert.Throws<NotFoundException>(() =>service.DeleteAccount(wrongId));
     }
 }

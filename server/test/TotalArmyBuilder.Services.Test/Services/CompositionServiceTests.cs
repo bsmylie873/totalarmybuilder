@@ -11,6 +11,7 @@ using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
 using TotalArmyBuilder.Service.Services.Exceptions;
 using TotalArmyBuilder.Services.Test.Customisations;
+using TotalArmyBuilder.Services.Test.Extensions;
 
 
 namespace TotalArmyBuilder.Services.Test.Services;
@@ -53,14 +54,22 @@ public class CompositionServiceTests
     public void GetCompositionById_WhenCompositionExist_ReturnsComposition()
     {
         // Arrange
-        _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        const int compositionId = 1;
+        
+        var compositionIds = _fixture.MockWithOne(compositionId);
+        
+        _fixture.Customize(new CompositionCustomisation());
+        var compositionList = _fixture
+            .Build<Composition>()
+            .With(x => x.Id, compositionIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
         _database.Get<Composition>().Returns(compositionList);
 
         var service = RetrieveService();
 
         // Act
-        var result = service.GetCompositionById(compositionList.First().Id);
+        var result = service.GetCompositionById(compositionId);
 
         // Assert
         result.Should().BeEquivalentTo(compositionList.First(), options => options.ExcludingMissingMembers());
@@ -69,7 +78,7 @@ public class CompositionServiceTests
     [Fact]
     public void GetCompositions_WhenCompositionsExist_ReturnsCompositions()
     {
-        _fixture.Customize(new CompositionCustomisation("test"));
+        _fixture.Customize(new CompositionCustomisation());
         var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
         _database.Get<Composition>().Returns(compositionList);
 
@@ -89,18 +98,20 @@ public class CompositionServiceTests
         const int compositionId = 1;
         const int unitId = 1;
         
+        var compositionIds = _fixture.MockWithOne(compositionId);
+        
         var compositionUnitList =_fixture
             .Build<CompositionUnit>()
-            .With(x=> x.CompositionId, compositionId)
+            .With(x=> x.CompositionId, compositionIds.GetValue)
             .With(x=> x.UnitId, unitId)
-            .CreateMany(1)
+            .CreateMany(5)
             .ToList();
         
         var unitList =_fixture
             .Build<Unit>()
             .With(x => x.Id, unitId)
             .With(x => x.CompositionUnits, compositionUnitList)
-            .CreateMany(1)
+            .CreateMany(5)
             .AsQueryable();
         
         _database.Get<Unit>().Returns(unitList);
@@ -118,7 +129,7 @@ public class CompositionServiceTests
     public void CreateComposition_MappedAndSaved()
     {
         // Arrange
-        _fixture.Customize(new CompositionCustomisation("test"));
+        _fixture.Customize(new CompositionCustomisation());
         var composition = _fixture.Create<Composition>();
         var service = RetrieveService();
 
@@ -134,21 +145,38 @@ public class CompositionServiceTests
     public void UpdateComposition_MappedAndSaved()
     {
         // Arrange
-        _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        const int compositionId = 1;
+
+        var compositionIds = _fixture.MockWithOne(compositionId);
+        
+        _fixture.Customize(new CompositionCustomisation());
+        var compositionList = _fixture
+            .Build<Composition>()
+            .With(x => x.Id, compositionIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
+        _database.Get<Composition>().Returns(compositionList);
+        
         var compositionDto = _fixture
             .Build<CompositionDto>()
             .Without(x => x.Accounts)
             .Without(x=> x.Units)
-            .With(x=> x.Id, compositionList.First().Id)
+            .With(x=> x.Id, compositionId)
             .Create();
         
         _database.Get<Composition>().Returns(compositionList);
         
         var service = RetrieveService();
+        
+        _database.When(x=> x.SaveChanges()).Do(x =>
+        {
+            compositionList.First()
+                .Should()
+                .BeEquivalentTo(compositionDto, o=>o.ExcludingMissingMembers());
+        });
 
         // Act
-        service.UpdateComposition(compositionList.First().Id, compositionDto);
+        service.UpdateComposition(compositionId, compositionDto);
 
         // Assert
         _database.Received(1).Get<Composition>();
@@ -160,37 +188,54 @@ public class CompositionServiceTests
     {
         // Arrange
         const int compositionId = 1;
+        const int wrongId = 2;
         
-        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        var compositionIds = _fixture.MockWithOne(compositionId);
+        
+        _fixture.Customize(new CompositionCustomisation());
+        var compositionList = _fixture
+            .Build<Composition>()
+            .With(x => x.Id, compositionIds.GetValue)
+            .CreateMany(1)
+            .AsQueryable();
+        _database.Get<Composition>().Returns(compositionList);
+        
         var compositionDto = _fixture
             .Build<CompositionDto>()
             .Without(x => x.Accounts)
             .Without(x=> x.Units)
-            .With(x=> x.Id, compositionList.First().Id)
+            .With(x=> x.Id, compositionId)
             .Create();
 
         _database.Get<Composition>().Returns(compositionList);
         
         var service = RetrieveService();
 
-
         // Act & Assert
-        Assert.Throws<NotFoundException>(() =>service.UpdateComposition(compositionId, compositionDto));
+        Assert.Throws<NotFoundException>(() =>service.UpdateComposition(wrongId, compositionDto));
     }
     
     [Fact]
     public void DeleteComposition_MappedAndSaved()
     {
         // Arrange
-        _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        const int compositionId = 1;
+
+        var compositionIds = _fixture.MockWithOne(compositionId);
+        
+        _fixture.Customize(new CompositionCustomisation());
+        var compositionList = _fixture
+            .Build<Composition>()
+            .With(x => x.Id, compositionIds.GetValue)
+            .CreateMany(5)
+            .AsQueryable();
 
         _database.Get<Composition>().Returns(compositionList);
         
         var service = RetrieveService();
 
         // Act
-        service.DeleteComposition(compositionList.First().Id);
+        service.DeleteComposition(compositionId);
 
         // Assert
         _database.Received(1).Get<Composition>();
@@ -202,15 +247,22 @@ public class CompositionServiceTests
     {
         // Arrange
         const int compositionId = 1;
+        const int wrongId = 2;
         
-        _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        var compositionIds = _fixture.MockWithOne(compositionId);
+        
+        _fixture.Customize(new CompositionCustomisation());
+        var compositionList = _fixture
+            .Build<Composition>()
+            .With(x => x.Id, compositionIds.GetValue)
+            .CreateMany(1)
+            .AsQueryable();
 
         _database.Get<Composition>().Returns(compositionList);
         
         var service = RetrieveService();
 
         // Act & Assert
-        Assert.Throws<NotFoundException>(() =>service.DeleteComposition(compositionId));
+        Assert.Throws<NotFoundException>(() =>service.DeleteComposition(wrongId));
     }
 }
