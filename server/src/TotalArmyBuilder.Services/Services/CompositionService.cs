@@ -35,8 +35,6 @@ public class CompositionService : ICompositionService
         var compositionQuery = _database
             .Get<Composition>()
             .Where(new CompositionByIdSpec(id));
-        
-        if (compositionQuery == null) throw new NotFoundException();
 
         return _mapper
             .ProjectTo<CompositionDto>(compositionQuery)

@@ -35,8 +35,6 @@ public class UnitService : IUnitService
             .Get<Unit>()
             .Where(new UnitByIdSpec(id));
         
-        if (unitQuery == null) throw new NotFoundException();
-
         return _mapper
             .ProjectTo<UnitDto>(unitQuery)
             .SingleOrDefault(); ;

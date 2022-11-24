@@ -9,6 +9,7 @@ using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using TotalArmyBuilder.Service.Services.Exceptions;
 using TotalArmyBuilder.Services.Test.Customisations;
 
 
@@ -30,7 +31,6 @@ public class CompositionServiceTests
         var config = new MapperConfiguration(cfg => {
             cfg.AddProfile<AccountProfile>();
             cfg.AddProfile<CompositionProfile>();
-            cfg.AddProfile<FactionProfile>();
             cfg.AddProfile<UnitProfile>();
         });
 
@@ -54,8 +54,8 @@ public class CompositionServiceTests
     {
         // Arrange
         _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5);
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        _database.Get<Composition>().Returns(compositionList);
 
         var service = RetrieveService();
 
@@ -70,8 +70,8 @@ public class CompositionServiceTests
     public void GetCompositions_WhenCompositionsExist_ReturnsCompositions()
     {
         _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5);
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        _database.Get<Composition>().Returns(compositionList);
 
         var service = RetrieveService();
 
@@ -135,10 +135,15 @@ public class CompositionServiceTests
     {
         // Arrange
         _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5);
-        var compositionDto = _mapper.Map<CompositionDto>(compositionList.First());
+        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        var compositionDto = _fixture
+            .Build<CompositionDto>()
+            .Without(x => x.Accounts)
+            .Without(x=> x.Units)
+            .With(x=> x.Id, compositionList.First().Id)
+            .Create();
         
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        _database.Get<Composition>().Returns(compositionList);
         
         var service = RetrieveService();
 
@@ -151,13 +156,36 @@ public class CompositionServiceTests
     }
     
     [Fact]
+    public void UpdateComposition_CompositionDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        const int compositionId = 1;
+        
+        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+        var compositionDto = _fixture
+            .Build<CompositionDto>()
+            .Without(x => x.Accounts)
+            .Without(x=> x.Units)
+            .With(x=> x.Id, compositionList.First().Id)
+            .Create();
+
+        _database.Get<Composition>().Returns(compositionList);
+        
+        var service = RetrieveService();
+
+
+        // Act & Assert
+        Assert.Throws<NotFoundException>(() =>service.UpdateComposition(compositionId, compositionDto));
+    }
+    
+    [Fact]
     public void DeleteComposition_MappedAndSaved()
     {
         // Arrange
         _fixture.Customize(new CompositionCustomisation("test"));
-        var compositionList = _fixture.CreateMany<Composition>(5);
+        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
 
-        _database.Get<Composition>().Returns(compositionList.AsQueryable());
+        _database.Get<Composition>().Returns(compositionList);
         
         var service = RetrieveService();
 
@@ -167,5 +195,22 @@ public class CompositionServiceTests
         // Assert
         _database.Received(1).Get<Composition>();
         _database.Received(1).SaveChanges();
+    }
+    
+    [Fact]
+    public void DeleteComposition_CompositionDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        const int compositionId = 1;
+        
+        _fixture.Customize(new CompositionCustomisation("test"));
+        var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
+
+        _database.Get<Composition>().Returns(compositionList);
+        
+        var service = RetrieveService();
+
+        // Act & Assert
+        Assert.Throws<NotFoundException>(() =>service.DeleteComposition(compositionId));
     }
 }

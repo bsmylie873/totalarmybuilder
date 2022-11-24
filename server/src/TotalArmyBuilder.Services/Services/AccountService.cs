@@ -35,8 +35,6 @@ public class AccountService : IAccountService
         var accountQuery = _database
             .Get<Account>()
             .Where(new AccountByIdSpec(id));
-        
-        if (accountQuery == null) throw new NotFoundException();
 
         return _mapper
             .ProjectTo<AccountDto>(accountQuery)

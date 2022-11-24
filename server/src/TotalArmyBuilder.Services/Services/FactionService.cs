@@ -33,8 +33,6 @@ public class FactionService : IFactionService
         var factionQuery = _database
             .Get<Faction>()
             .Where(new FactionByIdSpec(id));
-        
-        if (factionQuery == null) throw new NotFoundException();
 
         return _mapper
             .ProjectTo<FactionDto>(factionQuery)
@@ -46,8 +44,6 @@ public class FactionService : IFactionService
         var unitQuery = _database
             .Get<Unit>()
             .Where(new UnitByFactionSpec(id));
-        
-        if (unitQuery == null) throw new NotFoundException();
 
         return _mapper
             .ProjectTo<UnitDto>(unitQuery)

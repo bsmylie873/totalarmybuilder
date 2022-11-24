@@ -10,6 +10,7 @@ using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using TotalArmyBuilder.Service.Services.Exceptions;
 using TotalArmyBuilder.Services.Test.Customisations;
 
 
@@ -160,6 +161,28 @@ public class AccountServiceTests
     }
     
     [Fact]
+    public void UpdateAccount_AccountDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        const int accountId = 1;
+        
+        _fixture.Customize(new AccountCustomisation());
+        var accountList = _fixture.CreateMany<Account>(0).AsQueryable();
+        var accountDto = _fixture
+            .Build<AccountDto>()
+            .Without(x=> x.Compositions)
+            .With(x=> x.Id, accountId)
+            .Create();
+
+        _database.Get<Account>().Returns(accountList);
+        
+        var service = RetrieveService();
+
+        // Act & Assert
+        Assert.Throws<NotFoundException>(() =>service.UpdateAccount(accountId, accountDto));
+    }
+    
+    [Fact]
     public void DeleteAccount_MappedAndSaved()
     {
         // Arrange
@@ -177,5 +200,22 @@ public class AccountServiceTests
         _database.Received(1).Get<Account>();
         _database.Received(1).Delete(accountList.First());
         _database.Received(1).SaveChanges();
+    }
+    
+    [Fact]
+    public void DeleteAccount_AccountDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        const int accountId = 1;
+        
+        _fixture.Customize(new AccountCustomisation());
+        var accountList = _fixture.CreateMany<Account>(0).AsQueryable();
+
+        _database.Get<Account>().Returns(accountList);
+        
+        var service = RetrieveService();
+
+        // Act & Assert
+        Assert.Throws<NotFoundException>(() =>service.DeleteAccount(accountId));
     }
 }
