@@ -24,10 +24,10 @@ public class AccountsController : TotalArmyBaseController
         (_mapper, _service) = (mapper, service);
     
     [HttpGet]
-    public ActionResult<IList<AccountViewModel>> GetAccounts([FromQuery] string username, [FromQuery] string email)
+    public ActionResult<IList<AccountViewModel>>GetAccounts([FromQuery] string? username, [FromQuery] string? email)
     {
         var accounts = _service.GetAccounts(username, email);
-        return Ok(_mapper.Map<IList<AccountViewModel>>(accounts));
+        return OkOrNoContent(_mapper.Map<IList<AccountViewModel>>(accounts));
     }
     
     [HttpGet("{id}", Name = "GetAccountById")]

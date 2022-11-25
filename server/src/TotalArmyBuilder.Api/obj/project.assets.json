@@ -1324,19 +1324,19 @@
     ]
   },
   "packageFolders": {
-    "/root/.nuget/packages/": {}
+    "/Users/brandon.smylie/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/app/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj",
+      "projectUniqueName": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj",
       "projectName": "TotalArmyBuilder.Api",
-      "projectPath": "/app/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj",
-      "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/app/src/TotalArmyBuilder.Api/obj/",
+      "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj",
+      "packagesPath": "/Users/brandon.smylie/.nuget/packages/",
+      "outputPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/root/.nuget/NuGet/NuGet.Config"
+        "/Users/brandon.smylie/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -1348,8 +1348,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "/app/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj": {
-              "projectPath": "/app/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj"
+            "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj": {
+              "projectPath": "/Users/brandon.smylie/totalarmybuilder/server/src/TotalArmyBuilder.Services/TotalArmyBuilder.Services.csproj"
             }
           }
         }
@@ -1404,7 +1404,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.403/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
       }
     }
   }
