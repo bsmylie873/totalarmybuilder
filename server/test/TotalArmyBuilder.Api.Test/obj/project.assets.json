@@ -7800,19 +7800,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Brandon\\.nuget\\packages\\": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\test\\TotalArmyBuilder.Api.Test\\TotalArmyBuilder.Api.Test.csproj",
+      "projectUniqueName": "/app/test/TotalArmyBuilder.Api.Test/TotalArmyBuilder.Api.Test.csproj",
       "projectName": "TotalArmyBuilder.Api.Test",
-      "projectPath": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\test\\TotalArmyBuilder.Api.Test\\TotalArmyBuilder.Api.Test.csproj",
-      "packagesPath": "C:\\Users\\Brandon\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\test\\TotalArmyBuilder.Api.Test\\obj\\",
+      "projectPath": "/app/test/TotalArmyBuilder.Api.Test/TotalArmyBuilder.Api.Test.csproj",
+      "packagesPath": "/root/.nuget/packages/",
+      "outputPath": "/app/test/TotalArmyBuilder.Api.Test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Brandon\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -7824,8 +7824,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Api\\TotalArmyBuilder.Api.csproj": {
-              "projectPath": "C:\\Users\\Brandon\\RiderProjects\\totalarmybuilder\\server\\src\\TotalArmyBuilder.Api\\TotalArmyBuilder.Api.csproj"
+            "/app/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj": {
+              "projectPath": "/app/src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj"
             }
           }
         }
@@ -7893,7 +7893,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.403/RuntimeIdentifierGraph.json"
       }
     }
   }
