@@ -53,9 +53,15 @@ public static class DatabaseSeed
         Faction faction1 = new Faction
         {
             Id = 1,
-            Name = "faction",
+            Name = "faction1",
         };
         
+        Faction faction2 = new Faction
+        {
+            Id = 2,
+            Name = "faction2",
+        };
+
         UnitFaction unitFaction1 = new UnitFaction
         {
             Id = 1,
@@ -98,7 +104,15 @@ public static class DatabaseSeed
             CompositionId = 1
         };
         
-        var compositionUnits = new List<CompositionUnit> { compositionUnit1, compositionUnit2, compositionUnit3 };
+        CompositionUnit compositionUnit4 = new CompositionUnit
+        {
+            Id = 4,
+            UnitId = 3,
+            CompositionId = 2
+        };
+        
+        var compositionUnits1 = new List<CompositionUnit> { compositionUnit1, compositionUnit2, compositionUnit3 };
+        var compositionUnits2 = new List<CompositionUnit> { compositionUnit4 };
 
         Composition composition1 = new Composition
         {
@@ -110,25 +124,54 @@ public static class DatabaseSeed
             DateCreated = DateTime.MinValue,
             Wins = 1,
             Losses = 1,
-            CompositionUnits = compositionUnits
+            CompositionUnits = compositionUnits1
+        };
+        
+        Composition composition2 = new Composition
+        {
+            Id = 2,
+            Name = "composition2",
+            BattleType = 2,
+            FactionId = 2,
+            AvatarId = 2,
+            DateCreated = DateTime.MinValue,
+            Wins = 2,
+            Losses = 2,
+            CompositionUnits = compositionUnits2
         };
 
         Account account1 = new Account
         {
             Id = 1,
-            Username = "username",
-            Email = "email@email.com",
-            Password = "password"
+            Username = "username1",
+            Email = "email1@email.com",
+            Password = "password1"
         };
         
-        AccountComposition accountComposition = new AccountComposition
+        Account account2 = new Account
+        {
+            Id = 2,
+            Username = "username2",
+            Email = "email2@email.com",
+            Password = "password2"
+        };
+        
+        AccountComposition accountComposition1 = new AccountComposition
         {
             Id = 1,
             AccountId = 1,
             CompositionId = 1
         };
+        
+        AccountComposition accountComposition2 = new AccountComposition
+        {
+            Id = 2,
+            AccountId = 2,
+            CompositionId = 2
+        };
 
-        var accountCompositions = new List<AccountComposition> { accountComposition };
+        var accountCompositions1 = new List<AccountComposition> { accountComposition1 };
+        var accountCompositions2 = new List<AccountComposition> { accountComposition2 };
 
         database.Accounts.Add(new Account
         {
@@ -136,12 +179,21 @@ public static class DatabaseSeed
             Username = account1.Username,
             Email = account1.Email,
             Password = account1.Password,
-            AccountCompositions = accountCompositions
+            AccountCompositions = accountCompositions1
+        });
+        
+        database.Accounts.Add(new Account
+        {
+            Id = account2.Id,
+            Username = account2.Username,
+            Email = account2.Email,
+            Password = account2.Password,
+            AccountCompositions = accountCompositions2
         });
 
         database.Compositions.Add(new Composition
         {
-            Id = account1.Id,
+            Id = composition1.Id,
             Name = composition1.Name,
             BattleType = composition1.BattleType,
             FactionId = composition1.FactionId,
@@ -149,13 +201,29 @@ public static class DatabaseSeed
             DateCreated = composition1.DateCreated,
             Wins = composition1.Wins,
             Losses = composition1.Losses,
-            AccountCompositions = accountCompositions,
-            CompositionUnits = compositionUnits
+            AccountCompositions = accountCompositions1,
+            CompositionUnits = compositionUnits1
+        });
+        
+        database.Compositions.Add(new Composition
+        {
+            Id = composition2.Id,
+            Name = composition2.Name,
+            BattleType = composition2.BattleType,
+            FactionId = composition2.FactionId,
+            AvatarId = composition2.AvatarId,
+            DateCreated = composition2.DateCreated,
+            Wins = composition2.Wins,
+            Losses = composition2.Losses,
+            AccountCompositions = accountCompositions2,
+            CompositionUnits = compositionUnits2
         });
 
-        database.AccountCompositions.Add(accountComposition);
+        database.AccountCompositions.Add(accountComposition1);
+        database.AccountCompositions.Add(accountComposition2);
 
         database.Factions.Add(faction1);
+        database.Factions.Add(faction2);
 
         database.Units.Add(unit1);
         database.Units.Add(unit2);
@@ -173,6 +241,7 @@ public static class DatabaseSeed
         database.CompositionUnits.Add(compositionUnit1);
         database.CompositionUnits.Add(compositionUnit2);
         database.CompositionUnits.Add(compositionUnit3);
+        database.CompositionUnits.Add(compositionUnit4);
 
         database.SaveChanges();
     }

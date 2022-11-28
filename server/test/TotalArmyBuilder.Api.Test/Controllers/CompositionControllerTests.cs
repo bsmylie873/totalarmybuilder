@@ -115,7 +115,6 @@ public class CompositionControllerTests
     {
         // Arrange
         const int id = 1;
-        
         var unit = new UnitDto
         {
             Id = id

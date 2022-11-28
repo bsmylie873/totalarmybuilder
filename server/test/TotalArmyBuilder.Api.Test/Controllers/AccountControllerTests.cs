@@ -103,7 +103,7 @@ public class AccountControllerTests
     }
 
     [Fact]
-    public void GetAccountCompositions_MappedAndReturned()
+    public void GetAccountCompositions_WhenCompositionsFound_MappedAndReturned()
     {
         // Arrange
         const int id = 1;

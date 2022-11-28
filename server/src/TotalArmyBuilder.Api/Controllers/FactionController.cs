@@ -26,7 +26,7 @@ public class FactionsController : TotalArmyBaseController
     public ActionResult<IList<FactionViewModel>> GetFactions([FromQuery] string? name)
     {
         var factions = _service.GetFactions(name);
-        return Ok(_mapper.Map<IList<FactionViewModel>>(factions));
+        return OkOrNoContent(_mapper.Map<IList<FactionViewModel>>(factions));
     }
     
     [HttpGet("{id}", Name = "GetFactionById")]
@@ -40,6 +40,6 @@ public class FactionsController : TotalArmyBaseController
     public ActionResult<IList<UnitViewModel>> GetFactionUnits(int id)
     {
         var factionUnits = _service.GetFactionUnits(id);
-        return Ok(_mapper.Map<IList<UnitViewModel>>(factionUnits));
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(factionUnits));
     }
 }

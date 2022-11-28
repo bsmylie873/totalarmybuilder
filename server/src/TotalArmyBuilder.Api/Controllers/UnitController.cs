@@ -22,7 +22,7 @@ public class UnitsController : TotalArmyBaseController
     public ActionResult<IList<UnitViewModel>> GetUnits([FromQuery] string? name, [FromQuery] int? cost)
     {
         var units = _service.GetUnits(name, cost);
-        return Ok(_mapper.Map<IList<UnitViewModel>>(units));
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(units));
     }
     
     [HttpGet("{id}", Name = "GetUnitById")]
@@ -37,21 +37,21 @@ public class UnitsController : TotalArmyBaseController
     public ActionResult<IList<FactionViewModel>> GetUnitFactions(int id)
     {
         var unitFactions = _service.GetUnitFactions(id);
-        return Ok(_mapper.Map<IList<FactionViewModel>>(unitFactions));
+        return OkOrNoContent(_mapper.Map<IList<FactionViewModel>>(unitFactions));
     }
     
-    [HttpGet("/lords/", Name = "GetUnitLords")]
+    [HttpGet("lords/", Name = "GetUnitLords")]
     public ActionResult<IList<UnitViewModel>> GetUnitLords()
     {
         var unitLords = _service.GetUnitLords();
-        return Ok(_mapper.Map<IList<UnitViewModel>>(unitLords));
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(unitLords));
     }
     
-    [HttpGet("/heroes/", Name = "GetUnitHeroes")]
+    [HttpGet("heroes/", Name = "GetUnitHeroes")]
     public ActionResult<IList<UnitViewModel>> GetUnitHeroes()
     {
         var unitHeroes = _service.GetUnitHeroes();
-        return Ok(_mapper.Map<IList<UnitViewModel>>(unitHeroes));
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(unitHeroes));
     }
 
 }

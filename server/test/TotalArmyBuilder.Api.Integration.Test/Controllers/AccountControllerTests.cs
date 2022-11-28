@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using TotalArmyBuilder.Api.Integration.Test.Base;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
@@ -20,8 +22,11 @@ public class AccountControllerTests
     
     public AccountControllerTests(ITestOutputHelper testOutputHelper, IntegrationClassFixture integrationFixture)
     {
+        WebApplicationFactoryClientOptions opt = new WebApplicationFactoryClientOptions();
+        opt.BaseAddress = new Uri("https://localhost");
+        
         _testOutputHelper = testOutputHelper;
-        _httpClient = integrationFixture.Host.CreateClient();
+        _httpClient = integrationFixture.Host.CreateClient(opt);
     } 
     
     [Fact]
@@ -37,16 +42,16 @@ public class AccountControllerTests
     [Fact]
     public async Task GetAnAccountById_WhenAccountPresent_ReturnsOk()
     {
-        const int id = 1;
+        const int id = 2;
         var response = await _httpClient.GetAsync($"/accounts/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
         //_testOutputHelper.WriteLine(value.VerifyDeSerialization<AccountDetailViewModel>());
         
-        Assert.Contains("1", value);
-        Assert.Contains("username", value);
-        Assert.Contains("email", value);
+        Assert.Contains("2", value);
+        Assert.Contains("username2", value);
+        Assert.Contains("email2", value);
     }
     
     [Fact]
@@ -66,30 +71,25 @@ public class AccountControllerTests
     [Fact]
     public async Task CreateAnAccount_WhenAccountDetails_ValidAndPresent_ReturnsOk()
     {
-        const int id = 2;
-        const string username = "username2";
-        const string email = "email2@email.com";
-        const string password = "password2";
+        const string username = "newUsername";
+        const string email = "newemail@email.com";
+        const string password = "newPassword";
 
         Account account = new Account
         {
-            Id = id,
             Username = username,
             Email = email,
             Password = password
         };
 
-        var accountJson = JsonConvert.SerializeObject(account);
-
-        var stringContent = new StringContent(accountJson);
-        var response = await _httpClient.PostAsync($"/accounts/", stringContent);
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var response = await _httpClient.PostAsJsonAsync($"accounts/", account);
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
     
     [Fact]
     public async Task UpdateAnAccount_WhenNewAccountDetails_ValidAndPresent_ReturnsOk()
     {
-        const int id = 1;
+        const int id = 2;
         const string newUsername = "new username";
 
         Account account = new Account
@@ -98,18 +98,18 @@ public class AccountControllerTests
         };
 
         var accountJson = JsonConvert.SerializeObject(account);
-
-        var stringContent = new StringContent(accountJson);
-        var response = await _httpClient.PatchAsync($"/accounts/{id}", stringContent);
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var stringContent = new StringContent(accountJson, UnicodeEncoding.UTF8, "application/json");
+        
+        var response = await _httpClient.PatchAsync($"accounts/{id}", stringContent);
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
     
     [Fact]
     public async Task DeleteAnAccount_WhenAccountFound_ThenDeleted_ReturnsOk()
     {
-        const int id = 1;
+        const int id = 2;
         
-        var response = await _httpClient.DeleteAsync($"/accounts/{id}");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var response = await _httpClient.DeleteAsync($"accounts/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 }

@@ -75,7 +75,7 @@ public class UnitControllerTests
         _testOutputHelper.WriteLine(value.VerifyDeSerialization<UnitViewModel[]>());
         
         Assert.Contains("1", value);
-        Assert.Contains("name", value);
+        Assert.Contains("unit1", value);
     }
     
     [Fact]
@@ -88,7 +88,7 @@ public class UnitControllerTests
         var value = await response.Content.ReadAsStringAsync();
         _testOutputHelper.WriteLine(value.VerifyDeSerialization<UnitViewModel[]>());
         
-        Assert.Contains("1", value);
-        Assert.Contains("name", value);
+        Assert.Contains("2", value);
+        Assert.Contains("unit2", value);
     }
 }

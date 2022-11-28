@@ -121,7 +121,7 @@ public class FactionControllerTests
             unit, unit2
         };
         
-        var faction = new FactionDto()
+        var faction = new FactionDto
         {
             Id = id,
             Units = unitList

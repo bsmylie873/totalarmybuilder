@@ -27,14 +27,13 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string? name, [FromQuery] int? battleTypeId, [FromQuery] int? factionId)
     {
         var compositions = _service.GetCompositions(name, battleTypeId, factionId);
-        return Ok(_mapper.Map<IList<CompositionViewModel>>(compositions));
+        return OkOrNoContent(_mapper.Map<IList<CompositionViewModel>>(compositions));
     }
 
     [HttpGet("{id}", Name = "GetCompositionById")]
     public ActionResult<CompositionDetailViewModel> GetCompositionById(int id)
     {
         var composition = _service.GetCompositionById(id);
-
         return OkOrNoContent(_mapper.Map<CompositionDetailViewModel>(composition));
     }
 
@@ -42,7 +41,7 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult<IList<UnitViewModel>> GetCompositionUnits(int id)
     {
         var compositionUnits = _service.GetCompositionUnits(id);
-        return Ok(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
     }
     
     [HttpPost]
