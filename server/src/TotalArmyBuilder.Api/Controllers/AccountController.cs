@@ -18,7 +18,7 @@ namespace TotalArmyBuilder.Api.Controllers;
 public class AccountsController : TotalArmyBaseController
 {
     private readonly IAccountService _service;
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
     
     public AccountsController(IMapper mapper, IAccountService service) => 
         (_mapper, _service) = (mapper, service);
@@ -34,8 +34,7 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
         var account = _service.GetAccountById(id);
-        var model = _mapper.Map<AccountDetailViewModel>(account);
-        return Ok(model);
+        return OkOrNoContent(_mapper.Map<AccountDetailViewModel>(account));
     }
 
     [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]

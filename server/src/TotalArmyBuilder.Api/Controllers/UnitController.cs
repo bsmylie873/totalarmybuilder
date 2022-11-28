@@ -19,7 +19,7 @@ public class UnitsController : TotalArmyBaseController
         (_mapper, _service) = (mapper, service);
         
     [HttpGet]
-    public ActionResult<IList<UnitViewModel>> GetUnits([FromQuery] string name, [FromQuery] int cost)
+    public ActionResult<IList<UnitViewModel>> GetUnits([FromQuery] string? name, [FromQuery] int? cost)
     {
         var units = _service.GetUnits(name, cost);
         return Ok(_mapper.Map<IList<UnitViewModel>>(units));
