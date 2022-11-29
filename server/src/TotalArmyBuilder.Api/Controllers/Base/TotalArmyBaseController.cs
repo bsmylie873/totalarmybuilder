@@ -22,7 +22,7 @@ public class TotalArmyBaseController : ControllerBase
         return Ok(value);
     }
         
-    protected  ActionResult OkOrNoNotFound(object value)
+    protected ActionResult OkOrNoNotFound(object value)
     {
         if (HasNoValueOrItems(value)) return NotFound();
             

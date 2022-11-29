@@ -20,6 +20,11 @@ public static class JsonValidator
         return @this;
     }
 
+    public static T VerifyDeSerialize<T>(this string @this)
+    {
+        return JsonConvert.DeserializeObject<T>(VerifyDeSerialization<T>(@this));
+    }
+
     private static (string, JsonSchema) RetrieveSchemaForComparison<T>(string data)
     {
         var type = typeof(T);

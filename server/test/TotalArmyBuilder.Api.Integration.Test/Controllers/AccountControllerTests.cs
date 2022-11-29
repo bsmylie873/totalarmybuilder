@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Namotion.Reflection;
 using Newtonsoft.Json;
 using TotalArmyBuilder.Api.Integration.Test.Base;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
@@ -47,11 +48,9 @@ public class AccountControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
-        //_testOutputHelper.WriteLine(value.VerifyDeSerialization<AccountDetailViewModel>());
-        
-        Assert.Contains("2", value);
-        Assert.Contains("username2", value);
-        Assert.Contains("email2", value);
+        var result = value.VerifyDeSerialize<AccountDetailViewModel>();
+
+        result.Id.Should().Be(id);
     }
     
     [Fact]
@@ -92,15 +91,12 @@ public class AccountControllerTests
         const int id = 2;
         const string newUsername = "new username";
 
-        Account account = new Account
+        UpdateAccountViewModel account = new UpdateAccountViewModel
         {
             Username = newUsername
         };
 
-        var accountJson = JsonConvert.SerializeObject(account);
-        var stringContent = new StringContent(accountJson, UnicodeEncoding.UTF8, "application/json");
-        
-        var response = await _httpClient.PatchAsync($"accounts/{id}", stringContent);
+        var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
     

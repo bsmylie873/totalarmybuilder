@@ -54,7 +54,10 @@ public class AccountControllerTests
             account, account2
         };
 
-        var accountViewModels = new List<AccountViewModel>();
+        var accountViewModels = new List<AccountViewModel>
+        {
+            new AccountViewModel()
+        };
 
         _service.GetAccounts(username, email).Returns(accountList);
         _mapper.Map<IList<AccountViewModel>>(accountList).Returns(accountViewModels);

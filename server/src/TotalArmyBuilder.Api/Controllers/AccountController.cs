@@ -28,9 +28,9 @@ public class AccountsController : TotalArmyBaseController
     {
         var accounts = _service.GetAccounts(username, email);
         
-        if (accounts.Count == 0) { return NoContent(); }
+        //if (accounts.Count == 0) { return NoContent(); }
         
-        return Ok(_mapper.Map<IList<AccountViewModel>>(accounts));
+        return OkOrNoContent(_mapper.Map<IList<AccountViewModel>>(accounts));
     }
     
     [HttpGet("{id}", Name = "GetAccountById")]
@@ -47,7 +47,7 @@ public class AccountsController : TotalArmyBaseController
         if (accountCompositions.Count == 0) { return NoContent(); }
 
         var accountCompositionViewModels = _mapper.Map<IList<CompositionViewModel>>(accountCompositions);
-        return OkOrNoListContent(accountCompositionViewModels);
+        return Ok(accountCompositionViewModels);
     }
 
     [HttpPost]
