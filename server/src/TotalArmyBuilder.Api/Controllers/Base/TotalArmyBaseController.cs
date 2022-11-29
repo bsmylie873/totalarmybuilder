@@ -14,6 +14,13 @@ public class TotalArmyBaseController : ControllerBase
             
         return Ok(value);
     }
+    
+    protected ActionResult OkOrNoListContent(IList value)
+    {
+        if (HasNoValueOrItems(value)) return NoContent();
+            
+        return Ok(value);
+    }
         
     protected  ActionResult OkOrNoNotFound(object value)
     {

@@ -45,7 +45,9 @@ public class AccountsController : TotalArmyBaseController
     {
         var accountCompositions = _service.GetAccountCompositions(id);
         if (accountCompositions.Count == 0) { return NoContent(); }
-        return Ok(_mapper.Map<IList<CompositionViewModel>>(accountCompositions));
+
+        var accountCompositionViewModels = _mapper.Map<IList<CompositionViewModel>>(accountCompositions);
+        return OkOrNoListContent(accountCompositionViewModels);
     }
 
     [HttpPost]
