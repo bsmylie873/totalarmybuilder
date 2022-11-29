@@ -27,21 +27,25 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult<IList<AccountViewModel>>GetAccounts([FromQuery] string? username, [FromQuery] string? email)
     {
         var accounts = _service.GetAccounts(username, email);
-        return OkOrNoContent(_mapper.Map<IList<AccountViewModel>>(accounts));
+        
+        if (accounts.Count == 0) { return NoContent(); }
+        
+        return Ok(_mapper.Map<IList<AccountViewModel>>(accounts));
     }
     
     [HttpGet("{id}", Name = "GetAccountById")]
     public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
         var account = _service.GetAccountById(id);
-        return OkOrNoContent(_mapper.Map<AccountDetailViewModel>(account));
+        return OkOrNoNotFound(_mapper.Map<AccountDetailViewModel>(account));
     }
 
     [HttpGet("{id}/compositions/", Name = "GetAccountCompositions")]
     public ActionResult<IList<CompositionViewModel>> GetAccountCompositions(int id)
     {
         var accountCompositions = _service.GetAccountCompositions(id);
-        return OkOrNoContent(_mapper.Map<IList<CompositionViewModel>>(accountCompositions));
+        if (accountCompositions.Count == 0) { return NoContent(); }
+        return Ok(_mapper.Map<IList<CompositionViewModel>>(accountCompositions));
     }
 
     [HttpPost]

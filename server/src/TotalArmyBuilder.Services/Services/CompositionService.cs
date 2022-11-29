@@ -54,8 +54,7 @@ public class CompositionService : ICompositionService
     
     public void CreateComposition(CompositionDto composition)
     {
-        var newComposition = new Composition(); 
-        _mapper.Map(composition, newComposition);
+        var newComposition = _mapper.Map<Composition>(composition);
         _database.Add(newComposition);
         _database.SaveChanges();
     }

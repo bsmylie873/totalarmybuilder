@@ -4,7 +4,6 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using TotalArmyBuilder.Api.Integration.Test.Base;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
-using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Models;
@@ -43,8 +42,7 @@ public class CompositionControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
-        //_testOutputHelper.WriteLine(value.VerifyDeSerialization<AccountDetailViewModel>());
-        
+
         Assert.Contains("1", value);
         Assert.Contains("name", value);
     }
@@ -68,11 +66,11 @@ public class CompositionControllerTests
     {
         const string name = "name999";
         const int battleType = 1;
-        const int factionId = 1;
-        const int avatarId = 1;
-        DateTime dateCreated = DateTime.MaxValue;
-        const int wins = 999;
-        const int losses = 1;
+        const int factionId = 4;
+        const int avatarId = 56;
+        DateTime dateCreated = DateTime.UtcNow;
+        const int wins = 0;
+        const int losses = 0;
 
         AccountComposition accountComposition = new AccountComposition
         {
@@ -110,9 +108,9 @@ public class CompositionControllerTests
             AccountCompositions = accountCompositions,
             CompositionUnits = compositionUnits
         };
-        
-        
+
         var response = await _httpClient.PostAsJsonAsync($"compositions/", composition);
+
         response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
     

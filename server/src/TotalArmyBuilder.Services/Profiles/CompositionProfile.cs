@@ -24,8 +24,6 @@ public class CompositionProfile : Profile
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<CompositionDto, Composition>()
-            .ForMember(d => d.Id, 
-                o => o.Ignore())
             .ForAllMembers(opts => 
                     opts.Condition((src, dest, srcMember) => srcMember != null));
     }

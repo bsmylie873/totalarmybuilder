@@ -2,16 +2,10 @@ using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.Controllers.Base;
-using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
-using TotalArmyBuilder.Dal.Interfaces;
-using TotalArmyBuilder.Dal.Models;
-using TotalArmyBuilder.Dal.Specifications.Compositions;
-using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
-using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
@@ -27,7 +21,8 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string? name, [FromQuery] int? battleTypeId, [FromQuery] int? factionId)
     {
         var compositions = _service.GetCompositions(name, battleTypeId, factionId);
-        return OkOrNoContent(_mapper.Map<IList<CompositionViewModel>>(compositions));
+        if (compositions.Count == 0) { return NoContent(); }
+        return Ok(_mapper.Map<IList<CompositionViewModel>>(compositions));
     }
 
     [HttpGet("{id}", Name = "GetCompositionById")]
@@ -41,7 +36,8 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult<IList<UnitViewModel>> GetCompositionUnits(int id)
     {
         var compositionUnits = _service.GetCompositionUnits(id);
-        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
+        if (compositionUnits.Count == 0) { return NoContent(); }
+        return Ok(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
     }
     
     [HttpPost]
