@@ -4,16 +4,16 @@ namespace TotalArmyBuilder.Api.ViewModels.Accounts;
 
 public class UpdateAccountViewModel : AccountViewModel
 {
-    public string? Password { get; set; }
+    public string? Username { get; set; }
+    public string? Email { get; set; }
 }
 
 public class UpdateAccountViewModelValidator : AbstractValidator<UpdateAccountViewModel>
 {
     public UpdateAccountViewModelValidator()
     {
-        When(x => !string.IsNullOrWhiteSpace(x.Username), () => { RuleFor(x => x.Username).Length(0, 50).NotEmpty(); });
-
-        When(x => !string.IsNullOrWhiteSpace(x.Email), () => { RuleFor(x => x.Email).EmailAddress().NotNull(); });
-        When(x => !string.IsNullOrWhiteSpace(x.Password), () => { RuleFor(x => x.Password).EmailAddress().NotNull(); });
+        RuleFor(x => x).Must(x => x.Username != null && x.Email != null);
+        When(x => x.Username != null, () => { RuleFor(x => x.Username).Length(0, 50).NotEmpty(); });
+        When(x => x.Email != null, () => { RuleFor(x => x.Email).EmailAddress().NotNull(); });
     }
 }

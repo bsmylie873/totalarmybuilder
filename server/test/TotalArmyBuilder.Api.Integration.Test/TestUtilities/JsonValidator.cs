@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -6,7 +7,7 @@ using NJsonSchema;
 using NJsonSchema.Generation;
 
 namespace TotalArmyBuilder.Api.Integration.Test.TestUtilities;
-
+[ExcludeFromCodeCoverage]
 public static class JsonValidator
 {
     public static string VerifyDeSerialization<T>(this string @this)

@@ -1,8 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Models;
 
 namespace TotalArmyBuilder.Api.Integration.Test.Base;
-
+[ExcludeFromCodeCoverage]
 public static class DatabaseSeed
 {
     public static void SeedDatabase(TotalArmyContext database)

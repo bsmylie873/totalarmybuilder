@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TotalArmyBuilder.Api.Test.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ControllerTestExtensions
 {
     public static T AssertObjectResult<T, TU>(this ActionResult<T> @this) where TU : ActionResult

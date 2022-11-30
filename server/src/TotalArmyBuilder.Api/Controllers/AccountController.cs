@@ -50,13 +50,14 @@ public class AccountsController : TotalArmyBaseController
         return StatusCode((int)HttpStatusCode.Created);
     }
 
-    [HttpPut]
+    [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
-        var account = _mapper.Map<AccountDto>(accountDetails);
-        _service.UpdateAccount(id, account);
+        var existingAccount = _service.GetAccountById(1);
+        _mapper.Map(accountDetails, existingAccount);
+        _service.UpdateAccount(id, existingAccount);
         return NoContent();
     }
 

@@ -1,8 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace TotalArmyBuilder.Api.Integration.Test.TestUtilities;
-
+[ExcludeFromCodeCoverage]
 public static class HttpClientJsonExtensionsPatch
 {
     public static Task<HttpResponseMessage> PatchAsJsonAsync<T>(this HttpClient @this, string? requestUri, T value,

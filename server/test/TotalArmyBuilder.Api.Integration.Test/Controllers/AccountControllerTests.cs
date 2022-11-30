@@ -90,15 +90,13 @@ public class AccountControllerTests
         const int id = 2;
         const string newUsername = "newUsername";
         const string newEmail = "newEmail@newEmail.com";
-        const string newPassword = "newPassword";
 
         var account = new UpdateAccountViewModel
         {
             Username = newUsername,
-            Email = newEmail
         };
 
-        var response = await _httpClient.PutAsJsonAsync($"accounts/{id}", account);
+        var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
 

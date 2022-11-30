@@ -1,4 +1,5 @@
 using AutoMapper;
+using TotalArmyBuilder.Api.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Service.DTOs;
 
@@ -14,21 +15,13 @@ public class AccountProfile : Profile
 
     private void ConfigureDtoToViewModel()
     {
-        CreateMap<AccountDto, AccountViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<AccountDto, AccountDetailViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<AccountDto, AccountViewModel>().IgnoreAllNull();
+        CreateMap<AccountDto, AccountDetailViewModel>().IgnoreAllNull();
     }
 
     private void ConfigureCreateModelToDto()
     {
-        CreateMap<CreateAccountViewModel, AccountDto>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<UpdateAccountViewModel, AccountDto>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<CreateAccountViewModel, AccountDto>().IgnoreAllNull();
+        CreateMap<UpdateAccountViewModel, AccountDto>().IgnoreAllNull();
     }
 }

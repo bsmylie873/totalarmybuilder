@@ -14,9 +14,7 @@ public class UnitProfile : Profile
 
     private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Unit, UnitDto>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<Unit, UnitDto>();
 
         CreateMap<LordUnit, UnitDto>()
             .ForMember(d => d.Id,
@@ -41,8 +39,6 @@ public class UnitProfile : Profile
 
     private void ConfigureDtoToDomainModel()
     {
-        CreateMap<UnitDto, Unit>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<UnitDto, Unit>();
     }
 }
