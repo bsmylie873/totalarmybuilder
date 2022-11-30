@@ -1,5 +1,6 @@
-namespace TotalArmyBuilder.Api.ViewModels.Factions;
 using FluentValidation;
+
+namespace TotalArmyBuilder.Api.ViewModels.Factions;
 
 public class FactionViewModel
 {
@@ -7,9 +8,9 @@ public class FactionViewModel
     public string Name { get; set; }
 }
 
-public class FactionViewModelValidator : AbstractValidator<FactionViewModel> 
+public class FactionViewModelValidator : AbstractValidator<FactionViewModel>
 {
-    public FactionViewModelValidator() 
+    public FactionViewModelValidator()
     {
         RuleFor(x => x.Id).NotNull();
         RuleFor(x => x.Name).Length(0, 50);

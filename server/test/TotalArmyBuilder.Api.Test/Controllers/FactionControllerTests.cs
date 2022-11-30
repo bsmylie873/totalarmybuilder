@@ -16,11 +16,6 @@ public class FactionControllerTests
 {
     private readonly IMapper _mapper;
     private readonly IFactionService _service;
-    
-    private FactionsController RetrieveController()
-    {
-        return new FactionsController(_mapper, _service);
-    } 
 
     public FactionControllerTests()
     {
@@ -28,7 +23,13 @@ public class FactionControllerTests
         _service = Substitute.For<IFactionService>();
     }
 
-    [Theory, AutoData]
+    private FactionsController RetrieveController()
+    {
+        return new FactionsController(_mapper, _service);
+    }
+
+    [Theory]
+    [AutoData]
     public void GetFactions_MappedAndReturned(string name)
     {
         // Arrange
@@ -38,7 +39,7 @@ public class FactionControllerTests
             Id = id,
             Name = name
         };
-        
+
         const int id2 = 2;
         var faction2 = new FactionDto
         {
@@ -51,25 +52,28 @@ public class FactionControllerTests
             faction, faction2
         };
 
-        var factionViewModels = new List<FactionViewModel>();
+        var factionViewModels = new List<FactionViewModel>
+        {
+            new()
+        };
 
         _service.GetFactions(name).Returns(factionList);
         _mapper.Map<IList<FactionViewModel>>(factionList).Returns(factionViewModels);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetFactions(name);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<IList<FactionViewModel>, OkObjectResult>();
-        
+
         result.Should().BeSameAs(factionViewModels);
 
         _service.Received(1).GetFactions(name);
         _mapper.Received(1).Map<IList<FactionViewModel>>(factionList);
     }
-    
+
     [Fact]
     public void GetFactionById_WhenFactionFound_MappedAndReturned()
     {
@@ -86,10 +90,10 @@ public class FactionControllerTests
         _mapper.Map<FactionDetailViewModel>(faction).Returns(factionDetailViewModel);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetFactionById(id);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<FactionDetailViewModel, OkObjectResult>();
 
@@ -98,29 +102,29 @@ public class FactionControllerTests
         _service.Received(1).GetFactionById(id);
         _mapper.Received(1).Map<FactionDetailViewModel>(faction);
     }
-    
+
     [Fact]
     public void GetFactionUnits_WhenFactionFound_MappedAndReturned()
     {
         // Arrange
         const int id = 1;
-        
+
         var unit = new UnitDto
         {
             Id = id
         };
-        
+
         const int id2 = 2;
         var unit2 = new UnitDto
         {
             Id = id2
         };
-        
+
         var unitList = new List<UnitDto>
         {
             unit, unit2
         };
-        
+
         var faction = new FactionDto
         {
             Id = id,
@@ -128,16 +132,19 @@ public class FactionControllerTests
         };
 
 
-        var unitViewModels = new List<UnitViewModel>();
+        var unitViewModels = new List<UnitViewModel>
+        {
+            new()
+        };
 
         _service.GetFactionUnits(faction.Id).Returns(faction.Units);
         _mapper.Map<IList<UnitViewModel>>(faction.Units).Returns(unitViewModels);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetFactionUnits(faction.Id);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<IList<UnitViewModel>, OkObjectResult>();
 

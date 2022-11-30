@@ -1,7 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TotalArmyBuilder.Dal.Models;
-using TotalArmyBuilder.Dal.Specifications.Compositions;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 using Unosquare.EntityFramework.Specification.Common.Primitive;
 
@@ -18,5 +16,8 @@ public class CompositionSearchSpec : Specification<Composition>
                 .Or(new CompositionByFactionSpec(factionId)));
     }
 
-    public override Expression<Func<Composition, bool>> BuildExpression() => _spec.BuildExpression();
+    public override Expression<Func<Composition, bool>> BuildExpression()
+    {
+        return _spec.BuildExpression();
+    }
 }

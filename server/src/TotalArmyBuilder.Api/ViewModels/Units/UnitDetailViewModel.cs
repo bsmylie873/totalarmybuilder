@@ -1,15 +1,22 @@
-namespace TotalArmyBuilder.Api.ViewModels.Units;
 using FluentValidation;
+
+namespace TotalArmyBuilder.Api.ViewModels.Units;
 
 public class UnitDetailViewModel : UnitViewModel
 {
     public int Id { get; set; }
+    public string Name { get; set; }
+    public int Cost { get; set; }
+    public int AvatarId { get; set; }
 }
 
-public class UnitDetailViewModelValidator : AbstractValidator<UnitDetailViewModel> 
+public class UnitDetailViewModelValidator : AbstractValidator<UnitDetailViewModel>
 {
-    public UnitDetailViewModelValidator() 
+    public UnitDetailViewModelValidator()
     {
         RuleFor(x => x.Id).NotNull();
+        RuleFor(x => x.Name).Length(0, 50);
+        RuleFor(x => x.Cost).GreaterThanOrEqualTo(0).NotNull();
+        RuleFor(x => x.AvatarId).NotNull();
     }
 }

@@ -2,12 +2,13 @@
 using TotalArmyBuilder.Dal.Models;
 
 namespace TotalArmyBuilder.Services.Test.Customisations;
+
 public class CompositionCustomisation : ICustomization
 {
     public void Customize(IFixture fixture)
     {
         fixture.Customize<Composition>(composer => composer
-            .With(x=> x.Id)
+            .With(x => x.Id)
             .With(x => x.Name)
             .With(x => x.BattleType, 0)
             .With(x => x.FactionId)

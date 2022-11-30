@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
   server:
-    profiles: ["dev"]
+    profiles: [ "dev" ]
     build:
       context: ./server
       dockerfile: Dockerfile.local

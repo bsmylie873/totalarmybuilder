@@ -7,8 +7,14 @@ namespace TotalArmyBuilder.Dal.Specifications.Accounts;
 public class AccountByIdSpec : Specification<Account>
 {
     private readonly int _id;
-    public AccountByIdSpec(int id) => _id = id;
-    
-    public override Expression<Func<Account, bool>> BuildExpression() =>
-        x => x.Id == _id;
+
+    public AccountByIdSpec(int id)
+    {
+        _id = id;
+    }
+
+    public override Expression<Func<Account, bool>> BuildExpression()
+    {
+        return x => x.Id == _id;
+    }
 }

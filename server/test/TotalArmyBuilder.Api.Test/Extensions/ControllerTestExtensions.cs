@@ -11,20 +11,17 @@ public static class ControllerTestExtensions
         @this.Result.Should().BeOfType<TU>();
         return (T)((ObjectResult)@this.Result).Value;
     }
-        
+
     public static void AssertResult<T, TU>(this ActionResult<T> @this) where TU : ActionResult
     {
         @this.Result.Should().BeOfType<TU>();
         @this.Result.Should().NotBeAssignableTo<ObjectResult>();
     }
 
-    public static void AssertResult<T>(this ActionResult @this, HttpStatusCode? statusCode = null) 
+    public static void AssertResult<T>(this ActionResult @this, HttpStatusCode? statusCode = null)
     {
         @this.Should().BeOfType<T>();
         @this.Should().NotBeAssignableTo<ObjectResult>();
-        if (statusCode.HasValue && @this is StatusCodeResult result)
-        {
-            result.StatusCode.Should().Be((int)statusCode);
-        }
+        if (statusCode.HasValue && @this is StatusCodeResult result) result.StatusCode.Should().Be((int)statusCode);
     }
 }

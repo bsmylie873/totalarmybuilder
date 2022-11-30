@@ -6,9 +6,8 @@ namespace TotalArmyBuilder.Dal.Models;
 [Table("lords")]
 public class LordUnit
 {
-    [Key] [Column ("id")] public int Id { get; set; }
-    
-    [Column ("unit_id")] public int UnitId { get; set; }
+    [Key] [Column("id")] public int Id { get; set; }
+
+    [Column("unit_id")] public int UnitId { get; set; }
     [ForeignKey(nameof(UnitId))] public Unit Unit { get; set; }
 }
-

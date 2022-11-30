@@ -6,7 +6,7 @@ public class UnitDto
     public string? Name { get; set; }
     public int? Cost { get; set; }
     public int? AvatarId { get; set; }
-    
+
     public IList<CompositionDto> Compositions { get; set; }
     public IList<FactionDto> Factions { get; set; }
 }

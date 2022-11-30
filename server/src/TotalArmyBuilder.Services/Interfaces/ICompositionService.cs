@@ -1,4 +1,3 @@
-using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Service.DTOs;
 
 namespace TotalArmyBuilder.Service.Interfaces;

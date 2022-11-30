@@ -18,18 +18,19 @@ public class AccountControllerTests
     private readonly IMapper _mapper;
     private readonly IAccountService _service;
 
-    private AccountsController RetrieveController()
-    {
-        return new AccountsController(_mapper, _service);
-    }
-
     public AccountControllerTests()
     {
         _mapper = Substitute.For<IMapper>();
         _service = Substitute.For<IAccountService>();
     }
 
-    [Theory, AutoData]
+    private AccountsController RetrieveController()
+    {
+        return new AccountsController(_mapper, _service);
+    }
+
+    [Theory]
+    [AutoData]
     public void GetAccounts_MappedAndReturned(string username, string email)
     {
         // Arrange
@@ -56,7 +57,7 @@ public class AccountControllerTests
 
         var accountViewModels = new List<AccountViewModel>
         {
-            new AccountViewModel()
+            new()
         };
 
         _service.GetAccounts(username, email).Returns(accountList);
@@ -134,7 +135,10 @@ public class AccountControllerTests
         };
 
 
-        var compositionViewModels = new List<CompositionViewModel>();
+        var compositionViewModels = new List<CompositionViewModel>
+        {
+            new()
+        };
 
         _service.GetAccountCompositions(account.Id).Returns(account.Compositions);
         _mapper.Map<IList<CompositionViewModel>>(account.Compositions).Returns(compositionViewModels);
@@ -153,7 +157,8 @@ public class AccountControllerTests
         _mapper.Received(1).Map<IList<CompositionViewModel>>(account.Compositions);
     }
 
-    [Theory, AutoData]
+    [Theory]
+    [AutoData]
     public void CreateAccount_MappedAndSaved(string username, string email, string password)
     {
         // Arrange
@@ -181,17 +186,18 @@ public class AccountControllerTests
         _service.Received(1).CreateAccount(account);
         _mapper.Received(1).Map<AccountDto>(createAccountViewModel);
     }
-    
-    [Theory, AutoData]
+
+    [Theory]
+    [AutoData]
     public void UpdateAccount_WhenCalledWithValidViewModel_MappedAndSaved(string username, string email)
     {
         // Arrange
-        const int id = 1;
+        const int id = 2;
         var account = new AccountDto
         {
             Id = id,
             Username = username,
-            Email = email,
+            Email = email
         };
 
         var updateAccountViewModel = new UpdateAccountViewModel();
@@ -209,7 +215,7 @@ public class AccountControllerTests
         _service.Received(1).UpdateAccount(id, account);
         _mapper.Received(1).Map<AccountDto>(updateAccountViewModel);
     }
-    
+
     [Fact]
     public void DeleteAccount_WhenCalledWithValidId_DeletedAndSaved()
     {

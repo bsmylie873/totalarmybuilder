@@ -1,13 +1,11 @@
-using Newtonsoft.Json.Schema;
-
-namespace TotalArmyBuilder.Api.Integration.Test.TestUtilities;
-using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
+
+namespace TotalArmyBuilder.Api.Integration.Test.TestUtilities;
 
 public static class JsonValidator
 {
@@ -22,7 +20,8 @@ public static class JsonValidator
 
     public static T VerifyDeSerialize<T>(this string @this)
     {
-        return JsonConvert.DeserializeObject<T>(VerifyDeSerialization<T>(@this));
+        return JsonConvert.DeserializeObject<T>(VerifyDeSerialization<T>(@this)) ??
+               throw new InvalidOperationException();
     }
 
     private static (string, JsonSchema) RetrieveSchemaForComparison<T>(string data)
@@ -40,11 +39,13 @@ public static class JsonValidator
 
     private static JsonSchemaGeneratorSettings RetrieveJsonSettings()
     {
-        return new()
+        return new JsonSchemaGeneratorSettings
         {
             SerializerSettings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                CheckAdditionalContent = true,
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore
             }
         };
     }

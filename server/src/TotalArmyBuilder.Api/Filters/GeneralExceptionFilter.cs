@@ -10,14 +10,15 @@ namespace TotalArmyBuilder.Api.Filters;
 [ExcludeFromCodeCoverage]
 public class GeneralExceptionFilter : IExceptionFilter
 {
-
     private readonly IWebHostEnvironment _hostingEnvironment;
 
-    public GeneralExceptionFilter(IWebHostEnvironment hostingEnvironment) => _hostingEnvironment = hostingEnvironment;
+    public GeneralExceptionFilter(IWebHostEnvironment hostingEnvironment)
+    {
+        _hostingEnvironment = hostingEnvironment;
+    }
 
     public void OnException(ExceptionContext context)
     {
-
         var response = context.HttpContext.Response;
         response.StatusCode = (int)RetrieveStatusCodeForException(context.Exception);
         response.ContentType = MimeTypes.Application.Json;
@@ -25,14 +26,14 @@ public class GeneralExceptionFilter : IExceptionFilter
         context.Result = new JsonResult(new
         {
             error = new[] { context.Exception.Message },
-            stackTrace = _hostingEnvironment.IsDevelopment() ? context.Exception.StackTrace : string.Empty,
+            stackTrace = _hostingEnvironment.IsDevelopment() ? context.Exception.StackTrace : string.Empty
         });
     }
 
-    private static HttpStatusCode RetrieveStatusCodeForException(System.Exception exception)
+    private static HttpStatusCode RetrieveStatusCodeForException(Exception exception)
     {
         if (exception is ArgumentException) return HttpStatusCode.BadRequest;
-        if (exception is NotFoundException) return HttpStatusCode.NotFound; 
+        if (exception is NotFoundException) return HttpStatusCode.NotFound;
 
         return HttpStatusCode.InternalServerError;
     }

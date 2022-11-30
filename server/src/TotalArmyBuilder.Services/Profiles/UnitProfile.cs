@@ -1,7 +1,6 @@
 using AutoMapper;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Service.DTOs;
-using TotalArmyBuilder.Service.Services;
 
 namespace TotalArmyBuilder.Service.Profiles;
 
@@ -16,9 +15,9 @@ public class UnitProfile : Profile
     private void ConfigureDomainToDtoModel()
     {
         CreateMap<Unit, UnitDto>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
-        
+
         CreateMap<LordUnit, UnitDto>()
             .ForMember(d => d.Id,
                 o => o.MapFrom(src => src.Unit.Id))
@@ -28,7 +27,7 @@ public class UnitProfile : Profile
                 o => o.MapFrom(src => src.Unit.Cost))
             .ForMember(d => d.AvatarId,
                 o => o.MapFrom(src => src.Unit.AvatarId));
-        
+
         CreateMap<HeroUnit, UnitDto>()
             .ForMember(d => d.Id,
                 o => o.MapFrom(src => src.Unit.Id))
@@ -39,11 +38,11 @@ public class UnitProfile : Profile
             .ForMember(d => d.AvatarId,
                 o => o.MapFrom(src => src.Unit.AvatarId));
     }
-    
+
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<UnitDto, Unit>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

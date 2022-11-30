@@ -1,11 +1,13 @@
-namespace TotalArmyBuilder.Api.ViewModels.Accounts;
 using FluentValidation;
+
+namespace TotalArmyBuilder.Api.ViewModels.Accounts;
+
 public class CreateAccountViewModel : AccountViewModel
 {
     public string Password { get; set; }
 }
 
-public class CreateAccountViewModelValidator : AbstractValidator<CreateAccountViewModel> 
+public class CreateAccountViewModelValidator : AbstractValidator<CreateAccountViewModel>
 {
     public CreateAccountViewModelValidator()
     {

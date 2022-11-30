@@ -7,13 +7,16 @@ namespace TotalArmyBuilder.Dal.Specifications.Accounts;
 public class AccountByUsernameSpec : Specification<Account>
 {
     private readonly string _username;
-    public AccountByUsernameSpec(string username) => _username = username;
+
+    public AccountByUsernameSpec(string username)
+    {
+        _username = username;
+    }
 
     public override Expression<Func<Account, bool>> BuildExpression()
     {
         if (string.IsNullOrWhiteSpace(_username)) return ShowAll;
-        
+
         return x => x.Email.StartsWith(_username);
     }
-        
 }

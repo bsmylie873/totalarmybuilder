@@ -8,6 +8,6 @@ public interface ITotalArmyDatabase
     void AddAsync<T>(params T[] items) where T : class;
     void Delete<T>(params T[] items) where T : class;
     int SaveChanges();
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     bool ExecuteWithinTransaction(Action action);
 }

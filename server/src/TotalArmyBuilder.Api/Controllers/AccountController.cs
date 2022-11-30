@@ -4,35 +4,29 @@ using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
-using TotalArmyBuilder.Dal.Interfaces;
-using TotalArmyBuilder.Dal.Models;
-using TotalArmyBuilder.Dal.Specifications.Accounts;
-using TotalArmyBuilder.Dal.Specifications.Compositions;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
-using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
 [Route("[controller]")]
 public class AccountsController : TotalArmyBaseController
 {
-    private readonly IAccountService _service;
     private readonly IMapper _mapper;
-    
-    public AccountsController(IMapper mapper, IAccountService service) => 
+    private readonly IAccountService _service;
+
+    public AccountsController(IMapper mapper, IAccountService service)
+    {
         (_mapper, _service) = (mapper, service);
-    
+    }
+
     [HttpGet]
-    public ActionResult<IList<AccountViewModel>>GetAccounts([FromQuery] string? username, [FromQuery] string? email)
+    public ActionResult<IList<AccountViewModel>> GetAccounts([FromQuery] string? username, [FromQuery] string? email)
     {
         var accounts = _service.GetAccounts(username, email);
-        
-        //if (accounts.Count == 0) { return NoContent(); }
-        
         return OkOrNoContent(_mapper.Map<IList<AccountViewModel>>(accounts));
     }
-    
+
     [HttpGet("{id}", Name = "GetAccountById")]
     public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
@@ -44,10 +38,7 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult<IList<CompositionViewModel>> GetAccountCompositions(int id)
     {
         var accountCompositions = _service.GetAccountCompositions(id);
-        if (accountCompositions.Count == 0) { return NoContent(); }
-
-        var accountCompositionViewModels = _mapper.Map<IList<CompositionViewModel>>(accountCompositions);
-        return Ok(accountCompositionViewModels);
+        return OkOrNoContent(_mapper.Map<IList<CompositionViewModel>>(accountCompositions));
     }
 
     [HttpPost]
@@ -59,7 +50,7 @@ public class AccountsController : TotalArmyBaseController
         return StatusCode((int)HttpStatusCode.Created);
     }
 
-    [HttpPatch]
+    [HttpPut]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
@@ -68,7 +59,7 @@ public class AccountsController : TotalArmyBaseController
         _service.UpdateAccount(id, account);
         return NoContent();
     }
-    
+
     [HttpDelete]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]

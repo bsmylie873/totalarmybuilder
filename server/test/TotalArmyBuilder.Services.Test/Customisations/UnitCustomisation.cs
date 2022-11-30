@@ -2,6 +2,7 @@
 using TotalArmyBuilder.Dal.Models;
 
 namespace TotalArmyBuilder.Services.Test.Customisations;
+
 public class UnitCustomisation : ICustomization
 {
     public void Customize(IFixture fixture)
@@ -12,7 +13,7 @@ public class UnitCustomisation : ICustomization
             .With(x => x.Cost)
             .With(x => x.AvatarId)
             .Without(x => x.CompositionUnits)
-            .Without(x=> x.UnitFactions)
+            .Without(x => x.UnitFactions)
         );
     }
 }

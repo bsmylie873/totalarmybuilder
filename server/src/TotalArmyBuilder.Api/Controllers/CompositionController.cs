@@ -12,17 +12,20 @@ namespace TotalArmyBuilder.Api.Controllers;
 [Route("[controller]")]
 public class CompositionsController : TotalArmyBaseController
 {
-    private readonly ICompositionService _service;
     private readonly IMapper _mapper;
-    public CompositionsController(IMapper mapper, ICompositionService service) => 
+    private readonly ICompositionService _service;
+
+    public CompositionsController(IMapper mapper, ICompositionService service)
+    {
         (_mapper, _service) = (mapper, service);
-    
+    }
+
     [HttpGet]
-    public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string? name, [FromQuery] int? battleTypeId, [FromQuery] int? factionId)
+    public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string? name,
+        [FromQuery] int? battleTypeId, [FromQuery] int? factionId)
     {
         var compositions = _service.GetCompositions(name, battleTypeId, factionId);
-        if (compositions.Count == 0) { return NoContent(); }
-        return Ok(_mapper.Map<IList<CompositionViewModel>>(compositions));
+        return OkOrNoContent(_mapper.Map<IList<CompositionViewModel>>(compositions));
     }
 
     [HttpGet("{id}", Name = "GetCompositionById")]
@@ -36,10 +39,9 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult<IList<UnitViewModel>> GetCompositionUnits(int id)
     {
         var compositionUnits = _service.GetCompositionUnits(id);
-        if (compositionUnits.Count == 0) { return NoContent(); }
-        return Ok(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
     }
-    
+
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public ActionResult CreateComposition([FromBody] CreateCompositionViewModel compositionDetails)
@@ -48,8 +50,8 @@ public class CompositionsController : TotalArmyBaseController
         _service.CreateComposition(composition);
         return StatusCode((int)HttpStatusCode.Created);
     }
-    
-    [HttpPatch]
+
+    [HttpPut]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
@@ -58,7 +60,7 @@ public class CompositionsController : TotalArmyBaseController
         _service.UpdateComposition(id, composition);
         return NoContent();
     }
-    
+
     [HttpDelete]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -68,4 +70,3 @@ public class CompositionsController : TotalArmyBaseController
         return NoContent();
     }
 }
-

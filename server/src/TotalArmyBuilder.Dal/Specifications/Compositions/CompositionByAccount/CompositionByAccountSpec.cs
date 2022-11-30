@@ -8,7 +8,11 @@ namespace TotalArmyBuilder.Dal.Specifications.Compositions;
 public class CompositionByAccountSpec : Specification<Composition>
 {
     private readonly int _id;
-    public CompositionByAccountSpec(int id) => _id = id;
+
+    public CompositionByAccountSpec(int id)
+    {
+        _id = id;
+    }
 
     public override Expression<Func<Composition, bool>> BuildExpression()
     {

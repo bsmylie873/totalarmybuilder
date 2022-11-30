@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Net;
+﻿using System.Net;
 using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentAssertions;
@@ -7,14 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using TotalArmyBuilder.Api.Controllers;
 using TotalArmyBuilder.Api.Test.Extensions;
-using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
-using TotalArmyBuilder.Dal.Interfaces;
-using TotalArmyBuilder.Dal.Specifications.Accounts;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
-
 
 namespace TotalArmyBuilder.Api.Test.Controllers;
 
@@ -22,19 +17,20 @@ public class CompositionControllerTests
 {
     private readonly IMapper _mapper;
     private readonly ICompositionService _service;
-    
-    private CompositionsController RetrieveController()
-    {
-        return new CompositionsController(_mapper, _service);
-    }
 
     public CompositionControllerTests()
     {
         _mapper = Substitute.For<IMapper>();
         _service = Substitute.For<ICompositionService>();
     }
-    
-    [Theory, AutoData]
+
+    private CompositionsController RetrieveController()
+    {
+        return new CompositionsController(_mapper, _service);
+    }
+
+    [Theory]
+    [AutoData]
     public void GetCompositions_MappedAndReturned(string name, int battleType, int factionId)
     {
         // Arrange
@@ -44,16 +40,16 @@ public class CompositionControllerTests
             Id = id,
             Name = name,
             BattleType = battleType,
-            FactionId = factionId,
+            FactionId = factionId
         };
-        
+
         const int id2 = 2;
         var composition2 = new CompositionDto
         {
             Id = id2,
             Name = name,
             BattleType = battleType,
-            FactionId = factionId,
+            FactionId = factionId
         };
 
         var compositionList = new List<CompositionDto>
@@ -61,19 +57,22 @@ public class CompositionControllerTests
             composition, composition2
         };
 
-        var compositionViewModels = new List<CompositionViewModel>();
+        var compositionViewModels = new List<CompositionViewModel>
+        {
+            new()
+        };
 
         _service.GetCompositions(name, battleType, factionId).Returns(compositionList);
         _mapper.Map<IList<CompositionViewModel>>(compositionList).Returns(compositionViewModels);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetCompositions(name, battleType, factionId);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<IList<CompositionViewModel>, OkObjectResult>();
-        
+
         result.Should().BeSameAs(compositionViewModels);
 
         _service.Received(1).GetCompositions(name, battleType, factionId);
@@ -96,10 +95,10 @@ public class CompositionControllerTests
         _mapper.Map<CompositionDetailViewModel>(composition).Returns(compositionDetailViewModel);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetCompositionById(id);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<CompositionDetailViewModel, OkObjectResult>();
 
@@ -109,7 +108,7 @@ public class CompositionControllerTests
         _mapper.Received(1).Map<CompositionDetailViewModel>(composition);
     }
 
-    
+
     [Fact]
     public void GetCompositionUnits_MappedAndReturned()
     {
@@ -119,35 +118,38 @@ public class CompositionControllerTests
         {
             Id = id
         };
-        
+
         const int id2 = 2;
         var unit2 = new UnitDto
         {
             Id = id2
         };
-        
+
         var unitList = new List<UnitDto>
         {
             unit, unit2
         };
-        
-        var composition = new CompositionDto()
+
+        var composition = new CompositionDto
         {
             Id = id,
             Units = unitList
         };
 
 
-        var unitViewModels = new List<UnitViewModel>();
+        var unitViewModels = new List<UnitViewModel>
+        {
+            new()
+        };
 
         _service.GetCompositionUnits(composition.Id).Returns(composition.Units);
         _mapper.Map<IList<UnitViewModel>>(composition.Units).Returns(unitViewModels);
 
         var controller = RetrieveController();
-        
+
         // Act
         var actionResult = controller.GetCompositionUnits(composition.Id);
-        
+
         // Assert
         var result = actionResult.AssertObjectResult<IList<UnitViewModel>, OkObjectResult>();
 
@@ -156,8 +158,9 @@ public class CompositionControllerTests
         _service.Received(1).GetCompositionUnits(composition.Id);
         _mapper.Received(1).Map<IList<UnitViewModel>>(composition.Units);
     }
-    
-    [Theory, AutoData]
+
+    [Theory]
+    [AutoData]
     public void CreateComposition_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
     {
         // Arrange
@@ -169,6 +172,9 @@ public class CompositionControllerTests
             BattleType = battleType,
             FactionId = factionId,
             AvatarId = avatarId,
+            DateCreated = DateTime.Now,
+            Wins = 0,
+            Losses = 0
         };
 
         var createCompositionViewModel = new CreateCompositionViewModel();
@@ -186,9 +192,11 @@ public class CompositionControllerTests
         _service.Received(1).CreateComposition(composition);
         _mapper.Received(1).Map<CompositionDto>(createCompositionViewModel);
     }
-    
-    [Theory, AutoData]
-    public void UpdateComposition_WhenCalledWithValidViewModel_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
+
+    [Theory]
+    [AutoData]
+    public void UpdateComposition_WhenCalledWithValidViewModel_MappedAndSaved(string name, int battleType,
+        int factionId, int avatarId, DateTime dateCreated, int wins, int losses)
     {
         // Arrange
         const int id = 1;
@@ -199,6 +207,9 @@ public class CompositionControllerTests
             BattleType = battleType,
             FactionId = factionId,
             AvatarId = avatarId,
+            DateCreated = dateCreated,
+            Wins = wins,
+            Losses = losses
         };
 
         var updateCompositionViewModel = new UpdateCompositionViewModel();
@@ -216,7 +227,7 @@ public class CompositionControllerTests
         _service.Received(1).UpdateComposition(id, composition);
         _mapper.Received(1).Map<CompositionDto>(updateCompositionViewModel);
     }
-    
+
     [Fact]
     public void DeleteComposition_WhenCalledWithValidId_DeletedAndSaved()
     {

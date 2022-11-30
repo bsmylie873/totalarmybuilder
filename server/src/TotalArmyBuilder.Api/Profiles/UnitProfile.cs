@@ -14,14 +14,14 @@ public class UnitProfile : Profile
     private void ConfigureDtoToViewModel()
     {
         CreateMap<UnitDto, UnitViewModel>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<UnitDto, UnitDetailViewModel>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
     private void ConfigureCreateModelToDto()
     {
-    } 
+    }
 }

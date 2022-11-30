@@ -15,7 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddFluentValidation(s => s.RegisterValidatorsFromAssemblyContaining<Program>());
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddScoped<ITotalArmyDatabase, TotalArmyContext>(_ => new TotalArmyContext("Server=localhost;Port=5432;Database=tw-army-builder;User Id=admin;Password=password;"));
+builder.Services.AddScoped<ITotalArmyDatabase, TotalArmyContext>(_ =>
+    new TotalArmyContext("Server=localhost;Port=5432;Database=tw-army-builder;User Id=admin;Password=password;"));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICompositionService, CompositionService>();
 builder.Services.AddScoped<IFactionService, FactionService>();
@@ -24,6 +25,10 @@ builder.Services.AddScoped<IUnitService, UnitService>();
 builder.Services.AddAutoMapper(config => config.AllowNullCollections = true, typeof(Program).Assembly,
     typeof(AccountService).Assembly);
 builder.Services.AddAutoMapper(typeof(AccountProfile));
+
+builder.Services.AddControllers()
+    .AddNewtonsoftJson();
+
 
 var app = builder.Build();
 
@@ -42,4 +47,6 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

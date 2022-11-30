@@ -1,6 +1,4 @@
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
@@ -16,8 +14,11 @@ public class CompositionService : ICompositionService
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
-    public CompositionService(ITotalArmyDatabase database, IMapper mapper) => 
+
+    public CompositionService(ITotalArmyDatabase database, IMapper mapper)
+    {
         (_database, _mapper) = (database, mapper);
+    }
 
     public IList<CompositionDto> GetCompositions(string? name, int? battleType, int? factionId)
     {
@@ -29,7 +30,7 @@ public class CompositionService : ICompositionService
             .ProjectTo<CompositionDto>(compositionQuery)
             .ToList();
     }
-    
+
     public CompositionDto GetCompositionById(int id)
     {
         var compositionQuery = _database
@@ -40,7 +41,7 @@ public class CompositionService : ICompositionService
             .ProjectTo<CompositionDto>(compositionQuery)
             .SingleOrDefault();
     }
-    
+
     public IList<UnitDto> GetCompositionUnits(int id)
     {
         var unitQuery = _database
@@ -49,9 +50,10 @@ public class CompositionService : ICompositionService
 
         return _mapper
             .ProjectTo<UnitDto>(unitQuery)
-            .ToList(); ;
+            .ToList();
+        ;
     }
-    
+
     public void CreateComposition(CompositionDto composition)
     {
         var newComposition = _mapper.Map<Composition>(composition);
@@ -72,7 +74,7 @@ public class CompositionService : ICompositionService
 
         _database.SaveChanges();
     }
-    
+
     public void DeleteComposition(int id)
     {
         var currentComposition = _database
@@ -80,7 +82,7 @@ public class CompositionService : ICompositionService
             .FirstOrDefault(new CompositionByIdSpec(id));
 
         if (currentComposition == null) throw new NotFoundException();
-        
+
         _database.Delete(currentComposition);
         _database.SaveChanges();
     }

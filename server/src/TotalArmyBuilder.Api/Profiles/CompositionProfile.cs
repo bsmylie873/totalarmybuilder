@@ -15,21 +15,20 @@ public class CompositionProfile : Profile
     private void ConfigureDtoToViewModel()
     {
         CreateMap<CompositionDto, CompositionViewModel>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<CompositionDto, CompositionDetailViewModel>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
-
     }
 
     private void ConfigureCreateModelToDto()
     {
         CreateMap<CreateCompositionViewModel, CompositionDto>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<UpdateCompositionViewModel, CompositionDto>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
-    } 
+    }
 }

@@ -14,14 +14,14 @@ public class FactionProfile : Profile
     private void ConfigureDTOToViewModel()
     {
         CreateMap<FactionDto, FactionViewModel>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<FactionDto, FactionDetailViewModel>().ForAllMembers(
-            opts => 
+            opts =>
                 opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 
     private void ConfigureCreateModelToDTO()
     {
-    } 
+    }
 }

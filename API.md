@@ -1,10 +1,13 @@
 # API Specification
 
 ## FACTIONS
+
 ### Return a list of all factions.
-`GET /factions` 
+
+`GET /factions`
 
 Response:
+
 ```json
 [
   {
@@ -19,9 +22,11 @@ Response:
 ```
 
 ### Return a specific faction by id.
+
 `GET /factions/{factionId}`
 
 Response:
+
 ```json
 [
   {
@@ -32,10 +37,13 @@ Response:
 ```
 
 ## UNITS
+
 ### Return a specific unit by id.
+
 `GET /units/{unitId}`
 
 Response:
+
 ```json
 [
   {
@@ -51,9 +59,11 @@ Response:
 ```
 
 ### Return all units which belong to a faction.
-`GET /factions/{factionId}/units` 
 
-Response: 
+`GET /factions/{factionId}/units`
+
+Response:
+
 ```json
 [
   {
@@ -78,9 +88,11 @@ Response:
 ```
 
 ### Return units associated with a composition.
-`GET compositions/{compositionId}/units` 
+
+`GET compositions/{compositionId}/units`
 
 Response:
+
 ```json
 [
   {
@@ -105,10 +117,13 @@ Response:
 ```
 
 ## COMPOSITIONS
+
 ### Return a list of all compositions.
-`GET /compositions` 
+
+`GET /compositions`
 
 Response:
+
 ```json
 [
   {
@@ -141,9 +156,11 @@ Response:
 ```
 
 ### Return a specific composition by id.
-`GET /compositions/{compositionId}` 
+
+`GET /compositions/{compositionId}`
 
 Response:
+
 ```json
 [
   {
@@ -177,9 +194,11 @@ Response:
 ```
 
 ### Return compositions made by a specific account.
-`GET /accounts/{accountId}/compositions` 
+
+`GET /accounts/{accountId}/compositions`
 
 Response:
+
 ```json
 [
   {
@@ -210,9 +229,11 @@ Response:
 ```
 
 ### Create a new composition tied to an account.
-`POST /accounts/{accountId}/compositions` 
+
+`POST /accounts/{accountId}/compositions`
 
 Request:
+
 ```json
 [
   {
@@ -236,13 +257,15 @@ Request:
 ]
 ```
 
-Response: 
+Response:
 `201 Created`
 
 ### Update a composition by id.
-`PATCH /compositions/{compositionId}` 
+
+`PATCH /compositions/{compositionId}`
 
 Request:
+
 ```json
 [
   {
@@ -272,16 +295,19 @@ Request:
 ```
 
 ### Delete an account by id.
-`DELETE /compositions/{compositionId}` 
+
+`DELETE /compositions/{compositionId}`
 
 Response - `204 No Content`
 
-
 ## ACCOUNT
+
 ### Return a account by id.
-`GET /account/{id}` 
+
+`GET /account/{id}`
 
 Response:
+
 ```json
 [
   {
@@ -292,9 +318,11 @@ Response:
 ```
 
 ### Create a new account.
-`POST /account` 
+
+`POST /account`
 
 Request:
+
 ```json
 [
   {
@@ -308,9 +336,11 @@ Response:
 `201 Created`
 
 ### Update an account by id.
-`PUT /account/{accountId}` 
+
+`PUT /account/{accountId}`
 
 Request:
+
 ```json
 [
   {
@@ -321,7 +351,8 @@ Request:
 ```
 
 ### Delete an account by id.
-`DELETE /account/{accountId}` 
+
+`DELETE /account/{accountId}`
 
 Response - `204 No Content`
 

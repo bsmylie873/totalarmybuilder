@@ -11,25 +11,25 @@ namespace TotalArmyBuilder.Api.Integration.Test.Controllers;
 [Collection("Integration")]
 public class FactionControllerTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly HttpClient _httpClient;
-    
+    private readonly ITestOutputHelper _testOutputHelper;
+
     public FactionControllerTests(ITestOutputHelper testOutputHelper, IntegrationClassFixture integrationFixture)
     {
         _testOutputHelper = testOutputHelper;
         _httpClient = integrationFixture.Host.CreateClient();
-    } 
-    
+    }
+
     [Fact]
     public async Task GetAllFactions_WhenFactionsPresent_ReturnsOk()
     {
-        var response = await _httpClient.GetAsync($"/factions/");
+        var response = await _httpClient.GetAsync("/factions/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+
         var value = await response.Content.ReadAsStringAsync();
         _testOutputHelper.WriteLine(value.VerifyDeSerialization<FactionViewModel[]>());
     }
-    
+
     [Fact]
     public async Task GetAFactionById_WhenCompositionPresent_ReturnsOk()
     {
@@ -38,12 +38,12 @@ public class FactionControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
-        //_testOutputHelper.WriteLine(value.VerifyDeSerialization<AccountDetailViewModel>());
-        
-        Assert.Contains("1", value);
-        Assert.Contains("name", value);
+        var result = value.VerifyDeSerialize<FactionDetailViewModel>();
+
+        result.Id.Should().Be(id);
+        result.Name.Should().Be("faction1");
     }
-    
+
     [Fact]
     public async Task GetFactionUnitsById_WhenFactionUnits_Present_ReturnsOk()
     {
@@ -52,9 +52,11 @@ public class FactionControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
-        _testOutputHelper.WriteLine(value.VerifyDeSerialization<UnitViewModel[]>());
-        
-        Assert.Contains("1", value);
-        Assert.Contains("unit1", value);
+        var result = value.VerifyDeSerialize<IList<UnitDetailViewModel>>();
+
+        result[0].Id.Should().Be(id);
+        result[0].Name.Should().Be("unit1");
+        result[0].Cost.Should().Be(1);
+        result[0].AvatarId.Should().Be(1);
     }
 }

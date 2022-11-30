@@ -1,6 +1,4 @@
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Accounts;
@@ -16,8 +14,11 @@ public class AccountService : IAccountService
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
-    public AccountService(ITotalArmyDatabase database, IMapper mapper) => 
+
+    public AccountService(ITotalArmyDatabase database, IMapper mapper)
+    {
         (_database, _mapper) = (database, mapper);
+    }
 
     public IList<AccountDto> GetAccounts(string? username, string? email)
     {
@@ -27,7 +28,8 @@ public class AccountService : IAccountService
 
         return _mapper
             .ProjectTo<AccountDto>(accountQuery)
-            .ToList(); ;
+            .ToList();
+        ;
     }
 
     public AccountDto GetAccountById(int id)
@@ -38,9 +40,10 @@ public class AccountService : IAccountService
 
         return _mapper
             .ProjectTo<AccountDto>(accountQuery)
-            .SingleOrDefault(); ;
+            .SingleOrDefault();
+        ;
     }
-    
+
     public IList<CompositionDto> GetAccountCompositions(int id)
     {
         var compositionsQuery = _database
@@ -49,9 +52,10 @@ public class AccountService : IAccountService
 
         return _mapper
             .ProjectTo<CompositionDto>(compositionsQuery)
-            .ToList(); ;
+            .ToList();
+        ;
     }
-    
+
     public void CreateAccount(AccountDto account)
     {
         var newAccount = _mapper.Map<Account>(account);
@@ -71,7 +75,7 @@ public class AccountService : IAccountService
         _mapper.Map(account, currentAccount);
         _database.SaveChanges();
     }
-    
+
     public void DeleteAccount(int id)
     {
         var currentAccount = _database
@@ -79,10 +83,8 @@ public class AccountService : IAccountService
             .FirstOrDefault(new AccountByIdSpec(id));
 
         if (currentAccount == null) throw new NotFoundException();
-        
+
         _database.Delete(currentAccount);
         _database.SaveChanges();
     }
 }
-
-

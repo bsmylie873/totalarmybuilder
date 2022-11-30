@@ -17,18 +17,19 @@ public class UnitControllerTests
     private readonly IMapper _mapper;
     private readonly IUnitService _service;
 
-    private UnitsController RetrieveController()
-    {
-        return new UnitsController(_mapper, _service);
-    }
-
     public UnitControllerTests()
     {
         _mapper = Substitute.For<IMapper>();
         _service = Substitute.For<IUnitService>();
     }
 
-    [Theory, AutoData]
+    private UnitsController RetrieveController()
+    {
+        return new UnitsController(_mapper, _service);
+    }
+
+    [Theory]
+    [AutoData]
     public void GetUnits_MappedAndReturned(string name, int cost)
     {
         // Arrange
@@ -53,7 +54,10 @@ public class UnitControllerTests
             unit, unit2
         };
 
-        var unitViewModels = new List<UnitViewModel>();
+        var unitViewModels = new List<UnitViewModel>
+        {
+            new()
+        };
 
         _service.GetUnits(name, cost).Returns(unitList);
         _mapper.Map<IList<UnitViewModel>>(unitList).Returns(unitViewModels);
@@ -123,14 +127,17 @@ public class UnitControllerTests
             faction, faction2
         };
 
-        var unit = new UnitDto()
+        var unit = new UnitDto
         {
             Id = id,
             Factions = factionList
         };
 
 
-        var factionViewModels = new List<FactionViewModel>();
+        var factionViewModels = new List<FactionViewModel>
+        {
+            new()
+        };
 
         _service.GetUnitFactions(unit.Id).Returns(unit.Factions);
         _mapper.Map<IList<FactionViewModel>>(unit.Factions).Returns(factionViewModels);
@@ -171,7 +178,10 @@ public class UnitControllerTests
             lord, lord2
         };
 
-        var lordViewModels = new List<UnitViewModel>();
+        var lordViewModels = new List<UnitViewModel>
+        {
+            new()
+        };
 
         _service.GetUnitLords().Returns(lordList);
         _mapper.Map<IList<UnitViewModel>>(lordList).Returns(lordViewModels);
@@ -213,7 +223,10 @@ public class UnitControllerTests
                 hero, hero2
             };
 
-            var heroViewModels = new List<UnitViewModel>();
+            var heroViewModels = new List<UnitViewModel>
+            {
+                new()
+            };
 
             _service.GetUnitHeroes().Returns(heroList);
             _mapper.Map<IList<UnitViewModel>>(heroList).Returns(heroViewModels);

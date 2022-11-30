@@ -1,39 +1,37 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Newtonsoft.Json;
 using TotalArmyBuilder.Api.Integration.Test.Base;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Dal.Models;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace TotalArmyBuilder.Api.Integration.Test.Controllers;
 
 [Collection("Integration")]
 public class CompositionControllerTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly HttpClient _httpClient;
-    
+    private readonly ITestOutputHelper _testOutputHelper;
+
     public CompositionControllerTests(ITestOutputHelper testOutputHelper, IntegrationClassFixture integrationFixture)
     {
         _testOutputHelper = testOutputHelper;
         _httpClient = integrationFixture.Host.CreateClient();
-    } 
-    
+    }
+
     [Fact]
     public async Task GetAllCompositions_WhenCompositionsPresent_ReturnsOk()
     {
-        var response = await _httpClient.GetAsync($"compositions/");
+        var response = await _httpClient.GetAsync("compositions/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+
         var value = await response.Content.ReadAsStringAsync();
         _testOutputHelper.WriteLine(value.VerifyDeSerialization<CompositionViewModel[]>());
     }
-    
+
     [Fact]
     public async Task GetACompositionById_WhenCompositionPresent_ReturnsOk()
     {
@@ -43,10 +41,17 @@ public class CompositionControllerTests
 
         var value = await response.Content.ReadAsStringAsync();
 
-        Assert.Contains("1", value);
-        Assert.Contains("name", value);
+        var result = value.VerifyDeSerialize<CompositionDetailViewModel>();
+
+        result.Id.Should().Be(1);
+        result.Name.Should().Be("composition1");
+        result.BattleType.Should().Be(1);
+        result.FactionId.Should().Be(1);
+        result.AvatarId.Should().Be(1);
+        result.Wins.Should().Be(1);
+        result.Losses.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task GetCompositionUnitsById_WhenCompositionUnits_Present_ReturnsOk()
     {
@@ -55,12 +60,14 @@ public class CompositionControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
-        _testOutputHelper.WriteLine(value.VerifyDeSerialization<UnitViewModel[]>());
-        
-        Assert.Contains("1", value);
-        Assert.Contains("name", value);
+        var result = value.VerifyDeSerialize<IList<UnitDetailViewModel>>();
+
+        result[0].Id.Should().Be(id);
+        result[0].Name.Should().Be("unit1");
+        result[0].Cost.Should().Be(1);
+        result[0].AvatarId.Should().Be(1);
     }
-    
+
     [Fact]
     public async Task CreateAComposition_WhenCompositionDetails_ValidAndPresent_ReturnsOk()
     {
@@ -68,24 +75,24 @@ public class CompositionControllerTests
         const int battleType = 1;
         const int factionId = 4;
         const int avatarId = 56;
-        DateTime dateCreated = DateTime.UtcNow;
+        var dateCreated = DateTime.UtcNow;
         const int wins = 0;
         const int losses = 0;
 
-        AccountComposition accountComposition = new AccountComposition
+        var accountComposition = new AccountComposition
         {
             Id = 100,
             AccountId = 1,
             CompositionId = 56
         };
 
-        Unit unit1 = new Unit
+        var unit1 = new Unit
         {
             Id = 231,
             Name = "name231"
         };
 
-        CompositionUnit compositionUnit = new CompositionUnit
+        var compositionUnit = new CompositionUnit
         {
             Id = 756,
             CompositionId = unit1.Id,
@@ -96,7 +103,7 @@ public class CompositionControllerTests
 
         var accountCompositions = new List<AccountComposition> { accountComposition };
 
-        Composition composition = new Composition
+        var composition = new Composition
         {
             Name = name,
             BattleType = battleType,
@@ -109,34 +116,52 @@ public class CompositionControllerTests
             CompositionUnits = compositionUnits
         };
 
-        var response = await _httpClient.PostAsJsonAsync($"compositions/", composition);
+        var response = await _httpClient.PostAsJsonAsync("compositions/", composition);
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
-    
+
     [Fact]
     public async Task UpdateAComposition_WhenNewCompositionDetails_ValidAndPresent_ReturnsOk()
     {
-        const int id = 1;
+        const int id = 2;
         const string newName = "new name";
 
-        Composition composition = new Composition
+        var composition = new UpdateCompositionViewModel
         {
-            Name = newName
+            Id = 2,
+            Name = newName,
+            BattleType = 1,
+            FactionId = 2,
+            AvatarId = 2,
+            Wins = 2,
+            Losses = 2
         };
 
-        var compositionJson = JsonConvert.SerializeObject(composition);
-
-        var stringContent = new StringContent(compositionJson);
-        var response = await _httpClient.PatchAsync($"compositions/{id}", stringContent);
+        var response = await _httpClient.PutAsJsonAsync($"compositions/{id}", composition);
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        var getresponse = await _httpClient.GetAsync($"compositions/{id}");
+        getresponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var value = await getresponse.Content.ReadAsStringAsync();
+
+        var result = value.VerifyDeSerialize<CompositionDetailViewModel>();
+
+        result.Id.Should().Be(2);
+        result.Name.Should().Be("new name");
+        result.BattleType.Should().Be(1);
+        result.FactionId.Should().Be(2);
+        result.AvatarId.Should().Be(2);
+        result.Wins.Should().Be(2);
+        result.Losses.Should().Be(2);
     }
-    
+
     [Fact]
     public async Task DeleteAComposition_WhenCompositionFound_ThenDeleted_ReturnsOk()
     {
         const int id = 2;
-        
+
         var response = await _httpClient.DeleteAsync($"compositions/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }

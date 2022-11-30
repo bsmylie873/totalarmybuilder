@@ -13,5 +13,8 @@ public class FactionSearchSpec : Specification<Faction>
         _spec = new FactionByNameSpec(name);
     }
 
-    public override Expression<Func<Faction, bool>> BuildExpression() => _spec.BuildExpression();
+    public override Expression<Func<Faction, bool>> BuildExpression()
+    {
+        return _spec.BuildExpression();
+    }
 }

@@ -5,7 +5,6 @@ using TotalArmyBuilder.Dal.Specifications.Factions;
 using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
-using TotalArmyBuilder.Service.Services.Exceptions;
 using Unosquare.EntityFramework.Specification.Common.Extensions;
 
 namespace TotalArmyBuilder.Service.Services;
@@ -14,8 +13,11 @@ public class FactionService : IFactionService
 {
     private readonly ITotalArmyDatabase _database;
     private readonly IMapper _mapper;
-    public FactionService(ITotalArmyDatabase database, IMapper mapper) => 
+
+    public FactionService(ITotalArmyDatabase database, IMapper mapper)
+    {
         (_database, _mapper) = (database, mapper);
+    }
 
     public IList<FactionDto> GetFactions(string? name)
     {
@@ -27,7 +29,7 @@ public class FactionService : IFactionService
             .ProjectTo<FactionDto>(factionQuery)
             .ToList();
     }
-    
+
     public FactionDto GetFactionById(int id)
     {
         var factionQuery = _database
@@ -36,9 +38,10 @@ public class FactionService : IFactionService
 
         return _mapper
             .ProjectTo<FactionDto>(factionQuery)
-            .SingleOrDefault(); ;
+            .SingleOrDefault();
+        ;
     }
-    
+
     public IList<UnitDto> GetFactionUnits(int id)
     {
         var unitQuery = _database
@@ -47,6 +50,7 @@ public class FactionService : IFactionService
 
         return _mapper
             .ProjectTo<UnitDto>(unitQuery)
-            .ToList(); ;
+            .ToList();
+        ;
     }
 }

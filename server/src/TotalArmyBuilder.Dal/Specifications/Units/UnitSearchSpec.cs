@@ -15,5 +15,8 @@ public class UnitSearchSpec : Specification<Unit>
             .Or(new UnitByCostSpec(cost));
     }
 
-    public override Expression<Func<Unit, bool>> BuildExpression() => _spec.BuildExpression();
+    public override Expression<Func<Unit, bool>> BuildExpression()
+    {
+        return _spec.BuildExpression();
+    }
 }

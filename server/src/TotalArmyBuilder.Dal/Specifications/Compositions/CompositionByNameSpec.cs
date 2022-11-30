@@ -7,7 +7,11 @@ namespace TotalArmyBuilder.Dal.Specifications.Compositions;
 public class CompositionByNameSpec : Specification<Composition>
 {
     private readonly string _name;
-    public CompositionByNameSpec(string name) => _name = name;
+
+    public CompositionByNameSpec(string name)
+    {
+        _name = name;
+    }
 
     public override Expression<Func<Composition, bool>> BuildExpression()
     {
@@ -16,4 +20,3 @@ public class CompositionByNameSpec : Specification<Composition>
         return x => x.Name.StartsWith(_name);
     }
 }
-        

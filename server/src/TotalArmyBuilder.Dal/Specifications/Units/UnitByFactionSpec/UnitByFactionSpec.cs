@@ -8,7 +8,11 @@ namespace TotalArmyBuilder.Dal.Specifications.Units;
 public class UnitByFactionSpec : Specification<Unit>
 {
     private readonly int _id;
-    public UnitByFactionSpec(int id) => _id = id;
+
+    public UnitByFactionSpec(int id)
+    {
+        _id = id;
+    }
 
     public override Expression<Func<Unit, bool>> BuildExpression()
     {
