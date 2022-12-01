@@ -14,15 +14,11 @@ public class AccountProfile : Profile
 
     private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Account, AccountDto>()
-            .ForAllMembers(opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<Account, AccountDto>();
     }
 
     private void ConfigureDtoToDomainModel()
     {
-        CreateMap<AccountDto, Account>()
-            .ForAllMembers(opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<AccountDto, Account>();
     }
 }

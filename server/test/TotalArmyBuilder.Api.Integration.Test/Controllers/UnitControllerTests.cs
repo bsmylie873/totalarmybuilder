@@ -31,7 +31,7 @@ public class UnitControllerTests
     }
 
     [Fact]
-    public async Task GetAUnitById_WhenCompositionPresent_ReturnsOk()
+    public async Task GetAUnitById_WhenUnitPresent_ReturnsOk()
     {
         const int id = 1;
         var response = await _httpClient.GetAsync($"/units/{id}");
@@ -45,7 +45,15 @@ public class UnitControllerTests
         result.Cost.Should().Be(1);
         result.AvatarId.Should().Be(1);
     }
-
+    
+    [Fact]
+    public async Task GetAUnitById_WhenUnitNotPresent_ThrowsException()
+    {
+        const int id = 612;
+        var response = await _httpClient.GetAsync($"/units/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+    
     [Fact]
     public async Task GetUnitFactionsById_WhenUnitFactions_Present_ReturnsOk()
     {
@@ -58,6 +66,14 @@ public class UnitControllerTests
 
         result[0].Id.Should().Be(id);
         result[0].Name.Should().Be("faction1");
+    }
+    
+    [Fact]
+    public async Task GetUnitFactionsById_WhenUnitFactions_NotPresent_ThrowsException()
+    {
+        const int id = 612;
+        var response = await _httpClient.GetAsync($"/units/{id}/factions/");
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 
     [Fact]

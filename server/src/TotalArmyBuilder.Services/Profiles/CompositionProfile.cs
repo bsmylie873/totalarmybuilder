@@ -14,15 +14,11 @@ public class CompositionProfile : Profile
 
     private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Composition, CompositionDto>()
-            .ForAllMembers(opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<Composition, CompositionDto>();
     }
 
     private void ConfigureDtoToDomainModel()
     {
-        CreateMap<CompositionDto, Composition>()
-            .ForAllMembers(opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<CompositionDto, Composition>();
     }
 }

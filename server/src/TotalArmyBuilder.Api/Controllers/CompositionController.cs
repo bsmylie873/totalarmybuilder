@@ -32,7 +32,7 @@ public class CompositionsController : TotalArmyBaseController
     public ActionResult<CompositionDetailViewModel> GetCompositionById(int id)
     {
         var composition = _service.GetCompositionById(id);
-        return OkOrNoContent(_mapper.Map<CompositionDetailViewModel>(composition));
+        return OkOrNoNotFound(_mapper.Map<CompositionDetailViewModel>(composition));
     }
 
     [HttpGet("{id}/units/", Name = "GetCompositionUnits")]
@@ -51,13 +51,14 @@ public class CompositionsController : TotalArmyBaseController
         return StatusCode((int)HttpStatusCode.Created);
     }
 
-    [HttpPut]
+    [HttpPatch]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
     {
-        var composition = _mapper.Map<CompositionDto>(compositionDetails);
-        _service.UpdateComposition(id, composition);
+        var existingComposition = _service.GetCompositionById(id);
+        _mapper.Map(compositionDetails, existingComposition);
+        _service.UpdateComposition(id, existingComposition);
         return NoContent();
     }
 

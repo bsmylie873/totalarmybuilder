@@ -55,9 +55,9 @@ public class AccountsController : TotalArmyBaseController
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
-        var existingAccount = _service.GetAccountById(1);
-        _mapper.Map(accountDetails, existingAccount);
-        _service.UpdateAccount(id, existingAccount);
+        var existingAcc = _service.GetAccountById(id);
+        _mapper.Map(accountDetails, existingAcc);
+        _service.UpdateAccount(id, existingAcc);
         return NoContent();
     }
 

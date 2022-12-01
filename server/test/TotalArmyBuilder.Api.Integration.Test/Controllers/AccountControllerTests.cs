@@ -34,6 +34,7 @@ public class AccountControllerTests
         var value = await response.Content.ReadAsStringAsync();
         _testOutputHelper.WriteLine(value.VerifyDeSerialization<AccountViewModel[]>());
     }
+    
 
     [Fact]
     public async Task GetAnAccountById_WhenAccountPresent_ReturnsOk()
@@ -48,6 +49,14 @@ public class AccountControllerTests
         result.Id.Should().Be(id);
         result.Username.Should().Be("username2");
         result.Email.Should().Be("email2@email.com");
+    }
+    
+    [Fact]
+    public async Task GetAnAccountById_AccountNotPresent_ThrowException()
+    {
+        const int id = 20;
+        var response = await _httpClient.GetAsync($"/accounts/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -64,6 +73,14 @@ public class AccountControllerTests
         result[0].BattleType.Should().Be(1);
         result[0].FactionId.Should().Be(1);
         result[0].AvatarId.Should().Be(1);
+    }
+    
+    [Fact]
+    public async Task GetAnAccountCompositionsById_WhenAccountCompositions_NotPresent_ThrowException()
+    {
+        const int id = 964;
+        var response = await _httpClient.GetAsync($"/accounts/{id}/compositions/");
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 
     [Fact]
@@ -83,6 +100,24 @@ public class AccountControllerTests
         var response = await _httpClient.PostAsJsonAsync("accounts/", account);
         response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
+    
+    [Fact]
+    public async Task CreateAnAccount_WhenAccountDetails_NotValid_ThrowsException()
+    {
+        const string username = null;
+        const string email = null;
+        const string password = "newPassword";
+
+        var account = new CreateAccountViewModel
+        {
+            Username = username,
+            Email = email,
+            Password = password
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("accounts/", account);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 
     [Fact]
     public async Task UpdateAnAccount_WhenNewAccountDetails_ValidAndPresent_ReturnsOk()
@@ -91,9 +126,10 @@ public class AccountControllerTests
         const string newUsername = "newUsername";
         const string newEmail = "newEmail@newEmail.com";
 
-        var account = new UpdateAccountViewModel
+        UpdateAccountViewModel account = new UpdateAccountViewModel
         {
             Username = newUsername,
+            Email = newEmail
         };
 
         var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
@@ -109,6 +145,23 @@ public class AccountControllerTests
         result.Id.Should().Be(id);
         result.Username.Should().Be("newUsername");
         result.Email.Should().Be("newEmail@newEmail.com");
+    }
+    
+    [Fact]
+    public async Task UpdateAnAccount_WhenNewAccountDetails_NotValid_ReturnsOk()
+    {
+        const int id = 2;
+        const string newUsername = null;
+        const string newEmail = null;
+
+        UpdateAccountViewModel account = new UpdateAccountViewModel
+        {
+            Username = newUsername,
+            Email = newEmail
+        };
+
+        var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
     [Fact]

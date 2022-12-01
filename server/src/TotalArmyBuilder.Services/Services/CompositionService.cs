@@ -68,7 +68,7 @@ public class CompositionService : ICompositionService
             .Get<Composition>()
             .FirstOrDefault(new CompositionByIdSpec(id));
 
-        if (currentComposition == null) throw new NotFoundException();
+        if (currentComposition == null) throw new NotFoundException("Composition Not Found");
 
         _mapper.Map(composition, currentComposition);
 
@@ -81,7 +81,7 @@ public class CompositionService : ICompositionService
             .Get<Composition>()
             .FirstOrDefault(new CompositionByIdSpec(id));
 
-        if (currentComposition == null) throw new NotFoundException();
+        if (currentComposition == null) throw new NotFoundException("Composition Not Found");
 
         _database.Delete(currentComposition);
         _database.SaveChanges();

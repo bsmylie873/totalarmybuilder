@@ -51,6 +51,14 @@ public class CompositionControllerTests
         result.Wins.Should().Be(1);
         result.Losses.Should().Be(1);
     }
+    
+    [Fact]
+    public async Task GetACompositionById_WhenCompositionNotPresent_ThrowException()
+    {
+        const int id = 6426;
+        var response = await _httpClient.GetAsync($"compositions/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 
     [Fact]
     public async Task GetCompositionUnitsById_WhenCompositionUnits_Present_ReturnsOk()
@@ -66,6 +74,14 @@ public class CompositionControllerTests
         result[0].Name.Should().Be("unit1");
         result[0].Cost.Should().Be(1);
         result[0].AvatarId.Should().Be(1);
+    }
+    
+    [Fact]
+    public async Task GetACompositionUnitsById_WhenCompositionUnitsNotPresent_ThrowException()
+    {
+        const int id = 462;
+        var response = await _httpClient.GetAsync($"compositions/{id}/units/");
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 
     [Fact]
@@ -120,6 +136,59 @@ public class CompositionControllerTests
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
+    
+    [Fact]
+    public async Task CreateAComposition_WhenCompositionDetails_NotValid_ThrowsException()
+    {
+        const string name = null;
+        const int battleType = 1;
+        const int factionId = 4;
+        const int avatarId = 56;
+        var dateCreated = DateTime.UtcNow;
+        const int wins = 0;
+        const int losses = 0;
+
+        var accountComposition = new AccountComposition
+        {
+            Id = 100,
+            AccountId = 1,
+            CompositionId = 56
+        };
+
+        var unit1 = new Unit
+        {
+            Id = 231,
+            Name = "name231"
+        };
+
+        var compositionUnit = new CompositionUnit
+        {
+            Id = 756,
+            CompositionId = unit1.Id,
+            UnitId = unit1.Id
+        };
+
+        var compositionUnits = new List<CompositionUnit> { compositionUnit };
+
+        var accountCompositions = new List<AccountComposition> { accountComposition };
+
+        var composition = new Composition
+        {
+            Name = name,
+            BattleType = battleType,
+            FactionId = factionId,
+            AvatarId = avatarId,
+            DateCreated = dateCreated,
+            Wins = wins,
+            Losses = losses,
+            AccountCompositions = accountCompositions,
+            CompositionUnits = compositionUnits
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("compositions/", composition);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 
     [Fact]
     public async Task UpdateAComposition_WhenNewCompositionDetails_ValidAndPresent_ReturnsOk()
@@ -127,9 +196,8 @@ public class CompositionControllerTests
         const int id = 2;
         const string newName = "new name";
 
-        var composition = new UpdateCompositionViewModel
+        UpdateCompositionViewModel composition = new UpdateCompositionViewModel
         {
-            Id = 2,
             Name = newName,
             BattleType = 1,
             FactionId = 2,
@@ -138,7 +206,42 @@ public class CompositionControllerTests
             Losses = 2
         };
 
-        var response = await _httpClient.PutAsJsonAsync($"compositions/{id}", composition);
+        var response = await _httpClient.PatchAsJsonAsync($"compositions/{id}", composition);
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        var getResponse = await _httpClient.GetAsync($"compositions/{id}");
+        getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var value = await getResponse.Content.ReadAsStringAsync();
+
+        var result = value.VerifyDeSerialize<CompositionDetailViewModel>();
+
+        result.Id.Should().Be(2);
+        result.Name.Should().Be("new name");
+        result.BattleType.Should().Be(1);
+        result.FactionId.Should().Be(2);
+        result.AvatarId.Should().Be(2);
+        result.Wins.Should().Be(2);
+        result.Losses.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task UpdateAComposition_WhenNewCompositionDetails_NotValid_ThrowsException()
+    {
+        const int id = 2;
+        const string newName = "new name";
+
+        UpdateCompositionViewModel composition = new UpdateCompositionViewModel
+        {
+            Name = newName,
+            BattleType = 1,
+            FactionId = 2,
+            AvatarId = 2,
+            Wins = 2,
+            Losses = 2
+        };
+
+        var response = await _httpClient.PatchAsJsonAsync($"compositions/{id}", composition);
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
         var getresponse = await _httpClient.GetAsync($"compositions/{id}");
@@ -156,7 +259,7 @@ public class CompositionControllerTests
         result.Wins.Should().Be(2);
         result.Losses.Should().Be(2);
     }
-
+    
     [Fact]
     public async Task DeleteAComposition_WhenCompositionFound_ThenDeleted_ReturnsOk()
     {

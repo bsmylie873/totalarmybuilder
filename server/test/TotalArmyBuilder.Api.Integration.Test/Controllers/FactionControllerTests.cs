@@ -31,7 +31,7 @@ public class FactionControllerTests
     }
 
     [Fact]
-    public async Task GetAFactionById_WhenCompositionPresent_ReturnsOk()
+    public async Task GetAFactionById_WhenFactionPresent_ReturnsOk()
     {
         const int id = 1;
         var response = await _httpClient.GetAsync($"/factions/{id}");
@@ -42,6 +42,14 @@ public class FactionControllerTests
 
         result.Id.Should().Be(id);
         result.Name.Should().Be("faction1");
+    }
+    
+    [Fact]
+    public async Task GetAFactionById_WhenFactionNotPresent_ThrowsException()
+    {
+        const int id = 513;
+        var response = await _httpClient.GetAsync($"/factions/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -58,5 +66,13 @@ public class FactionControllerTests
         result[0].Name.Should().Be("unit1");
         result[0].Cost.Should().Be(1);
         result[0].AvatarId.Should().Be(1);
+    }
+    
+    [Fact]
+    public async Task GetFactionUnitsById_WhenFactionUnits_NotPresent_ThrowsException()
+    {
+        const int id = 513;
+        var response = await _httpClient.GetAsync($"/factions/{id}/units/");
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 }

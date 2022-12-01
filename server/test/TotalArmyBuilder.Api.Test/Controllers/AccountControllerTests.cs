@@ -195,12 +195,15 @@ public class AccountControllerTests
         const int id = 2;
         var account = new AccountDto
         {
-            Id = id,
             Username = username,
             Email = email
         };
 
-        var updateAccountViewModel = new UpdateAccountViewModel();
+        var updateAccountViewModel = new UpdateAccountViewModel
+        {
+            Username = "test",
+            Email = "test"
+        };
 
         _mapper.Map<AccountDto>(updateAccountViewModel).Returns(account);
 

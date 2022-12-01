@@ -29,7 +29,7 @@ public class FactionsController : TotalArmyBaseController
     public ActionResult<FactionDetailViewModel> GetFactionById(int id)
     {
         var faction = _service.GetFactionById(id);
-        return OkOrNoContent(_mapper.Map<FactionDetailViewModel>(faction));
+        return OkOrNoNotFound(_mapper.Map<FactionDetailViewModel>(faction));
     }
 
     [HttpGet("{id}/units/", Name = "GetFactionUnits")]
