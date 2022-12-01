@@ -56,9 +56,8 @@ public class CompositionsController : TotalArmyBaseController
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateComposition(int id, [FromBody] UpdateCompositionViewModel compositionDetails)
     {
-        var existingComposition = _service.GetCompositionById(id);
-        _mapper.Map(compositionDetails, existingComposition);
-        _service.UpdateComposition(id, existingComposition);
+        var composition = _mapper.Map<CompositionDto>(compositionDetails);
+        _service.UpdateComposition(id, composition);
         return NoContent();
     }
 

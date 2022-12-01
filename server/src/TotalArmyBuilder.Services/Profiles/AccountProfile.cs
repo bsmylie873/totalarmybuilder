@@ -19,6 +19,6 @@ public class AccountProfile : Profile
 
     private void ConfigureDtoToDomainModel()
     {
-        CreateMap<AccountDto, Account>();
+        CreateMap<AccountDto, Account>().ForMember(d => d.Id, o => o.Ignore());
     }
 }
