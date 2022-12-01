@@ -19,7 +19,7 @@ public class CreateCompositionViewModelValidator : AbstractValidator<CreateCompo
     public CreateCompositionViewModelValidator()
     {
         RuleFor(x => x.Id).NotNull();
-        When(x => !string.IsNullOrWhiteSpace(x.Name), () => { RuleFor(x => x.Name).Length(5, 100).NotEmpty().WithMessage("Username must be between 5 and 100 characters long."); });
+        When(x => !string.IsNullOrWhiteSpace(x.Name), () => { RuleFor(x => x.Name).Length(5, 100).NotEmpty().WithMessage("Name must be between 5 and 100 characters long."); });
         RuleFor(x => x.BattleType).InclusiveBetween(0, 2).NotNull().WithMessage("Battle Type must be valid.");
         RuleFor(x => x.FactionId).NotNull().WithMessage("Faction Id must not be null.");
         RuleFor(x => x.AvatarId).NotNull().WithMessage("Avatar Id must not be null.");

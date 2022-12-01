@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using TotalArmyBuilder.Api.Integration.Test.Base;
+using TotalArmyBuilder.Api.Integration.Test.Models;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
@@ -102,11 +103,11 @@ public class AccountControllerTests
     }
     
     [Fact]
-    public async Task CreateAnAccount_WhenAccountDetails_NotValid_ThrowsException()
+    public async Task CreateAnAccount_WhenAccountDetails_NullParams_ThrowsException()
     {
         const string username = null;
         const string email = null;
-        const string password = "newPassword";
+        const string password = null;
 
         var account = new CreateAccountViewModel
         {
@@ -117,7 +118,44 @@ public class AccountControllerTests
 
         var response = await _httpClient.PostAsJsonAsync("accounts/", account);
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        
+        var value = await response.Content.ReadAsStringAsync();
+        
+        var result = value.VerifyDeSerialize<ValidationModel>();
+        result.Errors.CheckIfErrorPresent("Username", "The Username field is required.");
+        result.Errors.CheckIfErrorPresent("Email", "The Email field is required.");
+        result.Errors.CheckIfErrorPresent("Password", "The Password field is required.");
+
+        _testOutputHelper.WriteLine(value);
     }
+    
+    [Fact]
+    public async Task CreateAnAccount_WhenAccountDetails_InvalidParams_ThrowsException()
+    {
+        const string username = "null";
+        const string email = "null";
+        const string password = "null";
+
+        var account = new CreateAccountViewModel
+        {
+            Username = username,
+            Email = email,
+            Password = password
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("accounts/", account);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        
+        var value = await response.Content.ReadAsStringAsync();
+        
+        var result = value.VerifyDeSerialize<ValidationModel>();
+        result.Errors.CheckIfErrorPresent("Username", "'Username' must be between 5 and 100 characters. You entered 4 characters.");
+        result.Errors.CheckIfErrorPresent("Email", "'Email' is not a valid email address.");
+        result.Errors.CheckIfErrorPresent("Password", "'Password' must be between 8 and 50 characters. You entered 4 characters.");
+
+        _testOutputHelper.WriteLine(value);
+    }
+
 
     [Fact]
     public async Task UpdateAnAccount_WhenNewAccountDetails_ValidAndPresent_ReturnsOk()
@@ -148,7 +186,7 @@ public class AccountControllerTests
     }
     
     [Fact]
-    public async Task UpdateAnAccount_WhenNewAccountDetails_NotValid_ReturnsOk()
+    public async Task UpdateAnAccount_WhenNewAccountDetails_NullParams_ReturnsOk()
     {
         const int id = 2;
         const string newUsername = null;
@@ -162,6 +200,55 @@ public class AccountControllerTests
 
         var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        
+        var value = await response.Content.ReadAsStringAsync();
+        
+        var result = value.VerifyDeSerialize<ValidationModel>();
+        result.Errors.CheckIfErrorPresent("NoValue", "At least one parameter required.");
+
+        _testOutputHelper.WriteLine(value);
+    }
+    
+    [Fact]
+    public async Task UpdateAnAccount_WhenNewAccountDetails_InvalidParams_ReturnsOk()
+    {
+        const int id = 2;
+        const string newUsername = "null";
+        const string newEmail = "null";
+
+        UpdateAccountViewModel account = new UpdateAccountViewModel
+        {
+            Username = newUsername,
+            Email = newEmail
+        };
+
+        var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        
+        var value = await response.Content.ReadAsStringAsync();
+        
+        var result = value.VerifyDeSerialize<ValidationModel>();
+        result.Errors.CheckIfErrorPresent("Username", "'Username' must be between 5 and 100 characters. You entered 4 characters.");
+        result.Errors.CheckIfErrorPresent("Email", "'Email' is not a valid email address.");
+
+        _testOutputHelper.WriteLine(value);
+    }
+    
+    [Fact]
+    public async Task UpdateAnAccount_WhenId_IsInvalid_ReturnsOk()
+    {
+        const int id = 513;
+        const string newUsername = "username";
+        const string newEmail = "email@email.com";
+
+        UpdateAccountViewModel account = new UpdateAccountViewModel
+        {
+            Username = newUsername,
+            Email = newEmail
+        };
+
+        var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
     }
 
     [Fact]
@@ -171,5 +258,14 @@ public class AccountControllerTests
 
         var response = await _httpClient.DeleteAsync($"accounts/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+    
+    [Fact]
+    public async Task DeleteAnAccount_WhenAccountNotFound_ThrowsException()
+    {
+        const int id = 315;
+
+        var response = await _httpClient.DeleteAsync($"accounts/{id}");
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
     }
 }

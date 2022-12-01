@@ -1,4 +1,5 @@
 using AutoMapper;
+using TotalArmyBuilder.Api.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Factions;
 using TotalArmyBuilder.Service.DTOs;
 
@@ -13,12 +14,8 @@ public class FactionProfile : Profile
 
     private void ConfigureDTOToViewModel()
     {
-        CreateMap<FactionDto, FactionViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<FactionDto, FactionDetailViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<FactionDto, FactionViewModel>().IgnoreAllNull();
+        CreateMap<FactionDto, FactionDetailViewModel>().IgnoreAllNull();
     }
 
     private void ConfigureCreateModelToDTO()

@@ -1,4 +1,5 @@
 using AutoMapper;
+using TotalArmyBuilder.Api.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Units;
 using TotalArmyBuilder.Service.DTOs;
 
@@ -13,12 +14,8 @@ public class UnitProfile : Profile
 
     private void ConfigureDtoToViewModel()
     {
-        CreateMap<UnitDto, UnitViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<UnitDto, UnitDetailViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<UnitDto, UnitViewModel>().IgnoreAllNull();
+        CreateMap<UnitDto, UnitDetailViewModel>().IgnoreAllNull();
     }
 
     private void ConfigureCreateModelToDto()

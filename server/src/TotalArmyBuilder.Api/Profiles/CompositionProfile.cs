@@ -1,4 +1,5 @@
 using AutoMapper;
+using TotalArmyBuilder.Api.Extensions;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
 using TotalArmyBuilder.Service.DTOs;
 
@@ -14,21 +15,13 @@ public class CompositionProfile : Profile
 
     private void ConfigureDtoToViewModel()
     {
-        CreateMap<CompositionDto, CompositionViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<CompositionDto, CompositionDetailViewModel>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<CompositionDto, CompositionViewModel>().IgnoreAllNull();
+        CreateMap<CompositionDto, CompositionDetailViewModel>().IgnoreAllNull();
     }
 
     private void ConfigureCreateModelToDto()
     {
-        CreateMap<CreateCompositionViewModel, CompositionDto>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
-        CreateMap<UpdateCompositionViewModel, CompositionDto>().ForAllMembers(
-            opts =>
-                opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<CreateCompositionViewModel, CompositionDto>().IgnoreAllNull();
+        CreateMap<UpdateCompositionViewModel, CompositionDto>().IgnoreAllNull();
     }
 }

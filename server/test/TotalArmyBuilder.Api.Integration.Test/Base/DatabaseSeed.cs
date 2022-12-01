@@ -110,9 +110,19 @@ public static class DatabaseSeed
             UnitId = 3,
             CompositionId = 2
         };
+        
+        var compositionUnit5 = new CompositionUnit
+        {
+            Id = 5,
+            UnitId = 3,
+            CompositionId = 3
+        };
 
         var compositionUnits1 = new List<CompositionUnit> { compositionUnit1, compositionUnit2, compositionUnit3 };
         var compositionUnits2 = new List<CompositionUnit> { compositionUnit4 };
+        var compositionUnits3 = new List<CompositionUnit> { compositionUnit5 };
+        var compositionUnits4 = new List<CompositionUnit> {  };
+        var compositionUnits5 = new List<CompositionUnit> {  };
 
         var composition1 = new Composition
         {
@@ -139,6 +149,45 @@ public static class DatabaseSeed
             Losses = 2,
             CompositionUnits = compositionUnits2
         };
+        
+        var composition3 = new Composition
+        {
+            Id = 3,
+            Name = "composition3",
+            BattleType = 1,
+            FactionId = 2,
+            AvatarId = 3,
+            DateCreated = DateTime.MinValue,
+            Wins = 3,
+            Losses = 3,
+            CompositionUnits = compositionUnits3
+        };
+        
+        var composition4 = new Composition
+        {
+            Id = 4,
+            Name = "composition4",
+            BattleType = 1,
+            FactionId = 4,
+            AvatarId = 4,
+            DateCreated = DateTime.MinValue,
+            Wins = 4,
+            Losses = 4,
+            CompositionUnits = compositionUnits4
+        };
+        
+        var composition5 = new Composition
+        {
+            Id = 5,
+            Name = "composition5",
+            BattleType = 1,
+            FactionId = 5,
+            AvatarId = 5,
+            DateCreated = DateTime.MinValue,
+            Wins = 5,
+            Losses = 5,
+            CompositionUnits = compositionUnits5
+        };
 
         var account1 = new Account
         {
@@ -154,6 +203,22 @@ public static class DatabaseSeed
             Username = "username2",
             Email = "email2@email.com",
             Password = "password2"
+        };
+        
+        var account3 = new Account
+        {
+            Id = 3,
+            Username = "username3",
+            Email = "email3@email.com",
+            Password = "password3"
+        };
+        
+        var account4 = new Account
+        {
+            Id = 4,
+            Username = "username4",
+            Email = "email4@email.com",
+            Password = "password4"
         };
 
         var account5 = new Account
@@ -177,16 +242,32 @@ public static class DatabaseSeed
             AccountId = 2,
             CompositionId = 2
         };
+        
+        var accountComposition3 = new AccountComposition
+        {
+            Id = 3,
+            AccountId = 2,
+            CompositionId = 3
+        };
+        
+        var accountComposition4 = new AccountComposition
+        {
+            Id = 4,
+            AccountId = 4,
+            CompositionId = 4
+        };
 
         var accountComposition5 = new AccountComposition
         {
             Id = 5,
-            AccountId = 5,
+            AccountId = 4,
             CompositionId = 5
         };
 
         var accountCompositions1 = new List<AccountComposition> { accountComposition1 };
         var accountCompositions2 = new List<AccountComposition> { accountComposition2 };
+        var accountCompositions3 = new List<AccountComposition> { accountComposition3 };
+        var accountCompositions4 = new List<AccountComposition> { accountComposition4 };
         var accountCompositions5 = new List<AccountComposition> { accountComposition5 };
 
         database.Accounts.Add(new Account
@@ -207,6 +288,24 @@ public static class DatabaseSeed
             AccountCompositions = accountCompositions2
         });
 
+        database.Accounts.Add(new Account
+        {
+            Id = account3.Id,
+            Username = account3.Username,
+            Email = account3.Email,
+            Password = account3.Password,
+            AccountCompositions = null
+        });
+        
+        database.Accounts.Add(new Account
+        {
+            Id = account4.Id,
+            Username = account4.Username,
+            Email = account4.Email,
+            Password = account4.Password,
+            AccountCompositions = accountCompositions4
+        });
+        
         database.Accounts.Add(new Account
         {
             Id = account5.Id,
@@ -243,9 +342,54 @@ public static class DatabaseSeed
             AccountCompositions = accountCompositions2,
             CompositionUnits = compositionUnits2
         });
+        
+        database.Compositions.Add(new Composition
+        {
+            Id = composition3.Id,
+            Name = composition3.Name,
+            BattleType = composition3.BattleType,
+            FactionId = composition3.FactionId,
+            AvatarId = composition3.AvatarId,
+            DateCreated = composition3.DateCreated,
+            Wins = composition3.Wins,
+            Losses = composition3.Losses,
+            AccountCompositions = accountCompositions3,
+            CompositionUnits = compositionUnits3
+        });
+        
+        database.Compositions.Add(new Composition
+        {
+            Id = composition4.Id,
+            Name = composition4.Name,
+            BattleType = composition4.BattleType,
+            FactionId = composition4.FactionId,
+            AvatarId = composition4.AvatarId,
+            DateCreated = composition4.DateCreated,
+            Wins = composition4.Wins,
+            Losses = composition4.Losses,
+            AccountCompositions = accountCompositions4,
+            CompositionUnits = compositionUnits4
+        });
+        
+        database.Compositions.Add(new Composition
+        {
+            Id = composition5.Id,
+            Name = composition5.Name,
+            BattleType = composition5.BattleType,
+            FactionId = composition5.FactionId,
+            AvatarId = composition5.AvatarId,
+            DateCreated = composition5.DateCreated,
+            Wins = composition5.Wins,
+            Losses = composition5.Losses,
+            AccountCompositions = accountCompositions5,
+            CompositionUnits = compositionUnits5
+        });
 
         database.AccountCompositions.Add(accountComposition1);
         database.AccountCompositions.Add(accountComposition2);
+        database.AccountCompositions.Add(accountComposition3);
+        database.AccountCompositions.Add(accountComposition4);
+        database.AccountCompositions.Add(accountComposition5);
 
         database.Factions.Add(faction1);
         database.Factions.Add(faction2);
@@ -267,6 +411,7 @@ public static class DatabaseSeed
         database.CompositionUnits.Add(compositionUnit2);
         database.CompositionUnits.Add(compositionUnit3);
         database.CompositionUnits.Add(compositionUnit4);
+        database.CompositionUnits.Add(compositionUnit5);
 
         database.SaveChanges();
     }
