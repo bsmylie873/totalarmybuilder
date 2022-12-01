@@ -213,6 +213,8 @@ public class CompositionControllerTests
         };
 
         var updateCompositionViewModel = new UpdateCompositionViewModel();
+        
+        var existingAcc = _service.GetCompositionById(id);
 
         _mapper.Map<CompositionDto>(updateCompositionViewModel).Returns(composition);
 
@@ -224,8 +226,9 @@ public class CompositionControllerTests
         // Assert
         actionResult.AssertResult<NoContentResult>();
 
-        _service.Received(1).UpdateComposition(id, composition);
-        _mapper.Received(1).Map<CompositionDto>(updateCompositionViewModel);
+        _service.Received(2).GetCompositionById(id);
+        _service.Received(1).UpdateComposition(id, existingAcc);
+        //_mapper.Received(1).Map<CompositionDto>(updateCompositionViewModel);
     }
 
     [Fact]

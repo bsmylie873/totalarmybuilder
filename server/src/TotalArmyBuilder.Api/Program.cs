@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using FluentValidation.AspNetCore;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Interfaces;
@@ -47,6 +48,7 @@ app.MapControllers();
 
 app.Run();
 
+[ExcludeFromCodeCoverage]
 public partial class Program
 {
 }

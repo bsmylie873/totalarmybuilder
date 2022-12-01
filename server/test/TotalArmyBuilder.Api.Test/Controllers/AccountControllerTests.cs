@@ -199,11 +199,9 @@ public class AccountControllerTests
             Email = email
         };
 
-        var updateAccountViewModel = new UpdateAccountViewModel
-        {
-            Username = "test",
-            Email = "test"
-        };
+        var updateAccountViewModel = new UpdateAccountViewModel();
+
+        var existingAcc = _service.GetAccountById(id);
 
         _mapper.Map<AccountDto>(updateAccountViewModel).Returns(account);
 
@@ -215,8 +213,10 @@ public class AccountControllerTests
         // Assert
         actionResult.AssertResult<NoContentResult>();
 
-        _service.Received(1).UpdateAccount(id, account);
-        _mapper.Received(1).Map<AccountDto>(updateAccountViewModel);
+        _service.Received(2).GetAccountById(id);
+        _service.Received(1).UpdateAccount(id, existingAcc);
+        //_mapper.Received(1).Map<AccountDto>(updateAccountViewModel);
+        //_mapper.Received(1).Map<UpdateAccountViewModel, AccountDto>(updateAccountViewModel);
     }
 
     [Fact]
