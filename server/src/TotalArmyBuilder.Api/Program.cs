@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using FluentValidation.AspNetCore;
+using TotalArmyBuilder.Api;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Service.Interfaces;
@@ -17,16 +18,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddFluentValidation(s => s.RegisterValidatorsFromAssemblyContaining<Program>());
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<ITotalArmyDatabase, TotalArmyContext>(_ =>
-    new TotalArmyContext("Server=localhost;Port=5432;Database=tw-army-builder;User Id=admin;Password=password;"));
+    new TotalArmyContext(EnvironmentVariables.DbConnectionString));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICompositionService, CompositionService>();
 builder.Services.AddScoped<IFactionService, FactionService>();
 builder.Services.AddScoped<IUnitService, UnitService>();
-
 builder.Services.AddAutoMapper(config => config.AllowNullCollections = true, typeof(Program).Assembly,
     typeof(AccountService).Assembly);
 builder.Services.AddAutoMapper(typeof(AccountProfile));
-
+builder.Services.AddHealthChecks();
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
 
@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.MapHealthChecks("/health");
 
 app.UseAuthorization();
 
