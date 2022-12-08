@@ -1,6 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TotalArmyBuilder.Api;
+using TotalArmyBuilder.Api.Authentication;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Service.Interfaces;
@@ -10,6 +13,16 @@ using TotalArmyBuilder.Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddAuthentication(string.Empty)
+    .AddScheme<AuthenticationSchemeOptions, AccessAuthenticationFilter>(string.Empty, options => {});
+
+builder.Services.AddAuthorization(options => 
+    options.AddPolicy(string.Empty, policy =>
+    {
+        policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+    }));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,7 +43,6 @@ builder.Services.AddHealthChecks();
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,11 +52,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHealthChecks("/health");
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
+
+app.MapHealthChecks("/health");
 
 app.Run();
 
