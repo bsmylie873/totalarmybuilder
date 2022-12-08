@@ -18,11 +18,12 @@ public class AccessAuthenticationFilter : AuthenticationHandler<AuthenticationSc
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var header = _contextAccessor.HttpContext?.Request.Headers["accessToken"].ToString();
-        var claims = new[] { new Claim(ClaimTypes.Upn, "brandon.smylie@unosquare.com"), new Claim(ClaimTypes.Name, "John Mahon")};
+        var claims = new[] { new Claim(ClaimTypes.Upn, "brandon.smylie@unosquare.com"), new Claim(ClaimTypes.Name, "Brandon Smylie")};
         var identity = new ClaimsIdentity(claims, "AccessToken");
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, "AccessToken");
 
-        return Task.FromResult(AuthenticateResult.Success(ticket));
+        //return Task.FromResult(AuthenticateResult.Success(ticket));
+        return Task.FromResult(AuthenticateResult.Fail("Failed"));
     }
 }

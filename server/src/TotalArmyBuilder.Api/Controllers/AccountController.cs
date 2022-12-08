@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
@@ -28,6 +29,7 @@ public class AccountsController : TotalArmyBaseController
     }
 
     [HttpGet("{id}", Name = "GetAccountById")]
+    [AllowAnonymous]
     public ActionResult<AccountDetailViewModel> GetAccountById(int id)
     {
         var account = _service.GetAccountById(id);
@@ -46,16 +48,23 @@ public class AccountsController : TotalArmyBaseController
     public ActionResult CreateAccount([FromBody] CreateAccountViewModel accountDetails)
     {
         var account = _mapper.Map<AccountDto>(accountDetails);
+        account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
         _service.CreateAccount(account);
         return StatusCode((int)HttpStatusCode.Created);
     }
 
     [HttpPatch]
+    [AllowAnonymous]
     [Route("{id}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public ActionResult UpdateAccount(int id, [FromBody] UpdateAccountViewModel accountDetails)
     {
         var account = _mapper.Map<AccountDto>(accountDetails);
+
+        if (account.Password != null)
+        {
+            account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+        }
         _service.UpdateAccount(id, account);
         return NoContent();
     }
