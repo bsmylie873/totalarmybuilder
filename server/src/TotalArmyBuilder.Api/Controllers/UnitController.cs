@@ -7,7 +7,7 @@ using TotalArmyBuilder.Service.Interfaces;
 
 namespace TotalArmyBuilder.Api.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UnitsController : TotalArmyBaseController
 {
     private readonly IMapper _mapper;

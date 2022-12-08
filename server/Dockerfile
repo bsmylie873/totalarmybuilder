@@ -6,7 +6,7 @@ RUN dotnet restore src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj
 RUN dotnet publish src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj -c $NETENV -o /app --no-restore
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 WORKDIR /app
 COPY --from=build /app ./
 
