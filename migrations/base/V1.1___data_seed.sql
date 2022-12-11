@@ -307,6 +307,9 @@ VALUES (34);
 INSERT INTO heroes(unit_id)
 VALUES (35);
 
+INSERT INTO accounts(username, email, password)
+VALUES('JohnDoe', 'jdoe2002@example.com', '$2a$11$aI7b3zWnfwqoOHKl6xU8i.L0X7hxcqZYaGeJlWIz1xkjSdWoEmUYa');
+
 SET
 session_replication_role = 'origin';
 

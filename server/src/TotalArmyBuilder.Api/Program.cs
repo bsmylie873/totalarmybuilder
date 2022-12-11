@@ -9,6 +9,8 @@ using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Service.Interfaces;
 using TotalArmyBuilder.Service.Profiles;
 using TotalArmyBuilder.Service.Services;
+using AuthenticationService = TotalArmyBuilder.Service.Services.AuthenticationService;
+using IAuthenticationService = TotalArmyBuilder.Service.Interfaces.IAuthenticationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICompositionService, CompositionService>();
 builder.Services.AddScoped<IFactionService, FactionService>();
 builder.Services.AddScoped<IUnitService, UnitService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddAutoMapper(config => config.AllowNullCollections = true, typeof(Program).Assembly,
     typeof(AccountService).Assembly);
 builder.Services.AddAutoMapper(typeof(AccountProfile));

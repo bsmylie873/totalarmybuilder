@@ -17,14 +17,15 @@ namespace TotalArmyBuilder.Api.Controllers;
 public class AuthenticationController : TotalArmyBaseController
 {
     private readonly IMapper _mapper;
-    private readonly IAuthenticateService _service;
+    private readonly IAuthenticationService _service;
 
-    public AuthenticationController(IMapper mapper, IAuthenticateService service)
+    public AuthenticationController(IMapper mapper, IAuthenticationService service)
     {
         (_mapper, _service) = (mapper, service);
     }
     
     [HttpPost]
+    [AllowAnonymous]
     public ActionResult<AuthenticationResultViewModel> Authenticate([FromBody] AuthenticationRequestViewModel authenticationRequestViewModel)
     {
         var account =
@@ -40,7 +41,7 @@ public class AuthenticationController : TotalArmyBaseController
     
     private string GenerateToken(AccountDto account, int expirationTimeInMinutes)
     {
-        var secretKey = Encoding.UTF8.GetBytes("JWT:Key");
+        var secretKey = Encoding.UTF8.GetBytes("JWTMySonTheDayYouWereBorn");
         var securityKey = new SymmetricSecurityKey(secretKey);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
         var expiryTime = DateTime.UtcNow.AddMinutes(expirationTimeInMinutes);
