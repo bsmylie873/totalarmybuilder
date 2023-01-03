@@ -71,6 +71,12 @@ public class AccountService : IAccountService
             .FirstOrDefault(new AccountByIdSpec(id));
 
         if (currentAccount == null) throw new NotFoundException("Account Not Found");
+        
+        if (account.Password != null)
+        {
+            account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+            Console.WriteLine(account.Password);
+        }
 
         _mapper.Map(account, currentAccount);
         _database.SaveChanges();

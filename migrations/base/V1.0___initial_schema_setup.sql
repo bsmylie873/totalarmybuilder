@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS accounts
 ) UNIQUE NOT NULL,
     password VARCHAR
 (
-    50
+    100
 ) NOT NULL
     );
 
