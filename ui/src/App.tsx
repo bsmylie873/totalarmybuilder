@@ -1,57 +1,86 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 
-const intialReducerState = {
-  value: 50,
-};
-
-const reducer = (state: any, action: any) => {
-  switch(action.type){
-    case "ofTest":
-      return {...state, value: action.value};
-    case "reset":
-      return intialReducerState;
-    default:
-      return state;
-  }
-}
+import "./styles.css";
 
 function App() {
-  const [x, setX] = useState(0);
-  const [reducerState, dispatch] = useReducer(reducer, intialReducerState);
-  const add = () => {
-    setX((prevX) => prevX+5);
-    dispatch({ type: "ofTest", value: 666});
-  } 
-  const reset = () => {
-    dispatch({ type: "reset"});
-  } 
+  // React States
+  const [errorMessages, setErrorMessages] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  useEffect(() => {
-    console.log(x);
-  }, [])
+  // User Login info
+  const database = [
+    {
+      username: "user1",
+      password: "pass1"
+    },
+    {
+      username: "user2",
+      password: "pass2"
+    }
+  ];
 
+  const errors = {
+    uname: "invalid username",
+    pass: "invalid password"
+  };
 
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
+    //Prevent page reload
+    event.preventDefault();
 
+    var { uname, pass } = document.forms[0];
+
+    // Find user login info
+    const userData = database.find((user) => user.username === uname.value);
+
+    // Compare user info
+    if (userData) {
+      if (userData.password !== pass.value) {
+        // Invalid password
+        setErrorMessages({ name: "pass", message: errors.pass });
+      } else {
+        setIsSubmitted(true);
+      }
+    } else {
+      // Username not found
+      setErrorMessages({ name: "uname", message: errors.uname });
+    }
+  };
+
+  // Generate JSX code for error message
+  const renderErrorMessage = (name: string) =>
+    name === errorMessages && (
+      <div className="error">{errorMessages}</div>
+    );
+
+  // JSX code for login form
+  const renderForm = (
+    <div className="form">
+      <form onSubmit={handleSubmit}>
+        <div className="input-container">
+          <label>Username </label>
+          <input type="text" name="uname" required />
+          {renderErrorMessage("uname")}
+        </div>
+        <div className="input-container">
+          <label>Password </label>
+          <input type="password" name="pass" required />
+          {renderErrorMessage("pass")}
+        </div>
+        <div className="button-container">
+          <input type="submit" />
+        </div>
+      </form>
+    </div>
+  );
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          reducerState {reducerState.value}
-        </p>
-        <button
-          className="App-link"
-          onClick={() => add()}
-        >
-          New Gext {x}
-        </button>
-        <button
-          className="App-link"
-          onClick={() => reset()}
-        >
-          Reset
-        </button>
-      </header>
+    <div className="app">
+      <div className="login-form">
+        <div className="title">Sign In</div>
+        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
+      </div>
     </div>
   );
 }
