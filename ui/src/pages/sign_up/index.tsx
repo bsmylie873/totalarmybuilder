@@ -1,24 +1,32 @@
-import { Container, Stack, TextField, Button, Grid } from "@mui/material";
+import { Container, Stack, TextField, Button } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Title } from "../../components";
 
-const Login = () => {
+const Sign_up = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
   const authentication = async () => {
-    navigate("/home");
+    navigate("/login");
   };
 
   return (
     <>
-      <Title title="Login" />
+      <Title title="Create A New Account" />
       <Container fixed>
         {
           <Stack spacing={2} style={{ marginTop: 50 }}>
+            <TextField
+              required
+              id="outlined-required"
+              label="Username"
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+            />
             <TextField
               required
               id="outlined-required"
@@ -30,26 +38,18 @@ const Login = () => {
               required
               id="outlined-required"
               label="Password"
-              type="password"
               onChange={(e) => setPassword(e.target.value)}
-              onKeyUp={(e) => {
-                if (e.key === "Enter") {
-                  authentication();
-                }
-              }}
+              value={password}
+            />
+            <TextField
+              required
+              id="outlined-required"
+              label="Confirm Password"
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
             <Button variant="contained" onClick={() => authentication()}>
-              Login
-            </Button>
-            <Button variant="contained" onClick={() => navigate("/signup")}>
-              Sign Up
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => navigate("/passwordreset")}
-            >
-              Forgot Password?
+              Create Account
             </Button>
           </Stack>
         }
@@ -58,4 +58,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Sign_up;
