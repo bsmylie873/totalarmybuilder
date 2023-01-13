@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import {
   AccountDetails,
   Blog,
-  CompositionCreation,
+  Composition,
   Home,
   Login,
   MyBuilds,
@@ -20,12 +20,12 @@ function App() {
     <>
       <Layout>
         <Routes>
-          <Route path="/accountdetails" element={<AccountDetails />} />
-          <Route path="/blog" element={<Blog />} />
           <Route
-            path="/compositioncreation"
-            element={<CompositionCreation />}
+            path="/accountdetails/:accountId"
+            element={<AccountDetails />}
           />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/composition/:compositionId" element={<Composition />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/mybuilds" element={<MyBuilds />} />

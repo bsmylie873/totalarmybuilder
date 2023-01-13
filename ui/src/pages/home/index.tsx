@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import BookIcon from "@mui/icons-material/Book";
 import FestivalIcon from "@mui/icons-material/Festival";
+import ListIcon from "@mui/icons-material/List";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
@@ -113,7 +114,7 @@ const Home = () => {
           <Stack spacing={8} style={{ marginTop: 100 }}>
             <Button
               variant="contained"
-              startIcon={<FestivalIcon />}
+              startIcon={<ListIcon />}
               onClick={() => navigate("/mybuilds")}
             >
               My Builds

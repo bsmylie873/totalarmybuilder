@@ -1,17 +1,22 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+import { Box, Button } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
-  GridToolbar,
-  GridValueGetterParams,
+  GridRenderCellParams,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import type {} from "@mui/x-data-grid/themeAugmentation";
+import { Link } from "react-router-dom";
 
 const columns: GridColDef[] = [
   {
     field: "id",
     headerName: "Id",
+    hide: true,
     editable: false,
   },
   {
@@ -22,6 +27,7 @@ const columns: GridColDef[] = [
   {
     field: "author",
     headerName: "Author",
+    hide: true,
     editable: false,
   },
   {
@@ -40,6 +46,21 @@ const columns: GridColDef[] = [
     type: "number",
     editable: false,
   },
+  {
+    disableColumnMenu: true,
+    flex: 0.15,
+    sortable: false,
+    field: "actions",
+    headerName: "Actions",
+    renderCell: (params: GridRenderCellParams): React.ReactElement => {
+      const navigationTarget = `/composition/${params.id}`;
+      return (
+        <Button component={Link} color="inherit" to={navigationTarget}>
+          View
+        </Button>
+      );
+    },
+  },
 ];
 
 const rows = [
@@ -53,18 +74,30 @@ const rows = [
   },
 ];
 
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+    </GridToolbarContainer>
+  );
+}
+
 export default function CompositionGrid() {
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
-      <DataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
-        disableSelectionOnClick
-        components={{ Toolbar: GridToolbar }}
-      />
-    </Box>
+    <div style={{ display: "flex", height: "100%" }}>
+      <div style={{ flexGrow: 2 }}>
+        <DataGrid
+          autoHeight
+          rows={rows}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+          disableSelectionOnClick
+          components={{ Toolbar: CustomToolbar }}
+        />
+      </div>
+    </div>
   );
 }

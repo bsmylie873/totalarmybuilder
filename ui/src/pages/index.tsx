@@ -1,6 +1,6 @@
 export { default as AccountDetails } from "./account_details";
 export { default as Blog } from "./blog";
-export { default as CompositionCreation } from "./composition_creation";
+export { default as Composition } from "./composition";
 export { default as Home } from "./home";
 export { default as Login } from "./login";
 export { default as MyBuilds } from "./mybuilds";
