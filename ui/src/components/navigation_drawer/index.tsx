@@ -63,7 +63,7 @@ export default function NavigationDrawer() {
             <ListItemText primary="My Builds"></ListItemText>
           </ListItemButton>
 
-          <ListItemButton href="/composition">
+          <ListItemButton href="/composition/new">
             <FestivalIcon></FestivalIcon>
             <ListItemText primary="Create a new build"></ListItemText>
           </ListItemButton>

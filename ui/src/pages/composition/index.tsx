@@ -1,4 +1,4 @@
-import { Stack, TextField } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useParams } from "react-router-dom";
 import {
   BattleTypeSelection,

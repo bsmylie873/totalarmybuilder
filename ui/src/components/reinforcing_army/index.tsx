@@ -1,12 +1,15 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import FolderIcon from "@mui/icons-material/Folder";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
-import { Autocomplete, List, Stack, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  TextField,
+} from "@mui/material";
 
 function renderRow(props: ListChildComponentProps) {
   const { index, style } = props;

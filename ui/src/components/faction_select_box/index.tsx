@@ -1,23 +1,28 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import { FixedSizeList, ListChildComponentProps } from "react-window";
-import { Autocomplete, List, MenuItem, Stack, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { Faction } from "../../types/faction";
+import useSWR from "swr";
 
 const factions = [
   {
-    value: "Beastmen",
-    label: "Beastmen",
+    id: 1,
+    name: "Beastmen",
   },
   {
-    value: "Bretonnia",
-    label: "Bretonnia",
+    id: 2,
+    name: "Bretonnia",
   },
 ];
 
 export default function FactionSelection() {
+  function getFactions() {
+    return fetch("/factions/").then((response) => response.json());
+  }
+
+  const { data, error, isLoading } = useSWR(["factions"], getFactions);
+
+  console.log(data);
   return (
     <div>
       <TextField
@@ -27,9 +32,9 @@ export default function FactionSelection() {
         defaultValue="Beastmen"
         helperText="Please select your faction"
       >
-        {factions.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
+        {factions.map((option: Faction) => (
+          <MenuItem key={option.id} value={option.name}>
+            {option.name}
           </MenuItem>
         ))}
       </TextField>

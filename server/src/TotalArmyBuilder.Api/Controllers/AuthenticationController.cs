@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TotalArmyBuilder.Api.Controllers.Base;
@@ -14,6 +15,7 @@ namespace TotalArmyBuilder.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors]
 public class AuthenticationController : TotalArmyBaseController
 {
     private readonly IMapper _mapper;
@@ -35,7 +37,8 @@ public class AuthenticationController : TotalArmyBaseController
 
         return new AuthenticationResultViewModel
         {
-            AccessToken = GenerateToken(account, 600)
+            AccessToken = GenerateToken(account, 20), 
+            RefreshToken = GenerateToken(account, 18000)
         };
     }
     

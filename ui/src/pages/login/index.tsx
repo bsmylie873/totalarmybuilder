@@ -1,16 +1,30 @@
 import { Container, Stack, TextField, Button, Grid } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Title } from "../../components";
+import { NavigationRoutes, StorageTypes } from "../../constants";
+import { AuthContext } from "../../contexts";
+import { AuthenticationService, StorageService } from "../../services";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { dispatch } = AuthContext.useLogin();
 
   const navigate = useNavigate();
 
   const authentication = async () => {
-    navigate("/home");
+    const response = await AuthenticationService.authenticate(email, password);
+    if (response.status === 200) {
+      const loginResult = await response.json();
+      StorageService.setLocalStorage(loginResult, StorageTypes.AUTH);
+      StorageService.setLocalStorage(email, StorageTypes.EMAIL);
+      dispatch({
+        type: "authentication",
+        ...loginResult,
+      });
+      navigate(NavigationRoutes.Home);
+    }
   };
 
   return (
@@ -47,7 +61,7 @@ const Login = () => {
             </Button>
             <Button
               variant="contained"
-              onClick={() => navigate("/passwordreset")}
+              onClick={() => navigate("/passwordresetrequest")}
             >
               Forgot Password?
             </Button>

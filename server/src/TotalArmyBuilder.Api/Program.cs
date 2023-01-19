@@ -46,6 +46,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +55,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(
+    o => o
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin()
+);
 
 app.UseAuthentication();
 

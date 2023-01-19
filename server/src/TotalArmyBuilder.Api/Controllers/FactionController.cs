@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.Factions;
