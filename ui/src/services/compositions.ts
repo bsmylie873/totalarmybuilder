@@ -3,7 +3,7 @@ import {FetchUtils} from "../utils";
 
 const createComposition = async (newComposition: Composition) => {
     const {name, battleType, factionId, avatarId, unitList} = newComposition;
-    return await FetchUtils.fetchInstance("api/compositions", {
+    return await FetchUtils.fetchInstance("compositions", {
         method: "POST",
         body: JSON.stringify({
             name,
@@ -17,7 +17,7 @@ const createComposition = async (newComposition: Composition) => {
 
 const updateComposition = async (updateComposition: Composition) => {
     const {id, name, battleType, factionId, avatarId, unitList} = updateComposition;
-    return await FetchUtils.fetchInstance(`api/compositions/${id}`, {
+    return await FetchUtils.fetchInstance(`compositions/${id}`, {
         method: "PATCH",
         body: JSON.stringify({
             id,
@@ -31,19 +31,19 @@ const updateComposition = async (updateComposition: Composition) => {
 };
 
 const deleteComposition = async (compositionId: string) => {
-    return await FetchUtils.fetchInstance(`api/compositions/${compositionId}`, {
+    return await FetchUtils.fetchInstance(`compositions/${compositionId}`, {
         method: "DELETE",
     });
 };
 
 const getComposition = async (compositionId: string) => {
-    return await FetchUtils.fetchInstance(`api/compositions/${compositionId}`, {
+    return await FetchUtils.fetchInstance(`compositions/${compositionId}`, {
         method: "GET",
     });
 };
 
 const getCompositionUnits = async (compositionId: string) => {
-    return await FetchUtils.fetchInstance(`api/compositions/${compositionId}/units`, {
+    return await FetchUtils.fetchInstance(`compositions/${compositionId}/units`, {
         method: "GET",
     });
 };

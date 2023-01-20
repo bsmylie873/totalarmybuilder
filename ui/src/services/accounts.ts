@@ -3,7 +3,7 @@ import {FetchUtils} from "../utils/";
 
 const createAccount = async (newAccount: Account) => {
     const {username, email, password} = newAccount;
-    return await FetchUtils.fetchInstance("api/accounts", {
+    return await FetchUtils.fetchInstance("accounts", {
         method: "POST",
         body: JSON.stringify({
             username,
@@ -15,7 +15,7 @@ const createAccount = async (newAccount: Account) => {
 
 const updateAccount = async (updateAccount: Account) => {
     const {id, username, email, password} = updateAccount;
-    return await FetchUtils.fetchInstance(`api/accounts/${id}`, {
+    return await FetchUtils.fetchInstance(`accounts/${id}`, {
         method: "PATCH",
         body: JSON.stringify({
             username,
@@ -26,19 +26,19 @@ const updateAccount = async (updateAccount: Account) => {
 };
 
 const deleteAccount = async (accountId: string) => {
-    return await FetchUtils.fetchInstance(`api/accounts/${accountId}`, {
+    return await FetchUtils.fetchInstance(`accounts/${accountId}`, {
         method: "DELETE",
     });
 };
 
 const getAccount = async (accountId: string) => {
-    return await FetchUtils.fetchInstance(`api/accounts/${accountId}`, {
+    return await FetchUtils.fetchInstance(`accounts/${accountId}`, {
         method: "GET",
     });
 };
 
 const getAccountCompositions = async (accountId: string) => {
-    return await FetchUtils.fetchInstance(`api/accounts/${accountId}/compositions`, {
+    return await FetchUtils.fetchInstance(`accounts/${accountId}/compositions`, {
         method: "GET",
     });
 };

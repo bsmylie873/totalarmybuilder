@@ -1,17 +1,45 @@
-import { Container, Stack, TextField, Button } from "@mui/material";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Title } from "../../components";
+import React, { useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AccountService } from "../../services";
+import { Account } from "../../types/account";
+import { TextField, Button } from "@mui/material";
+import { Container, Stack } from "@mui/system";
 
-const Sign_up = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface NewAccount extends Account {
+  confirmPassword: string;
+}
+
+const initialAccount: NewAccount = {
+  email: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+  avatar: "",
+};
+
+const accountReducer = (state: NewAccount, action: any) => {
+  switch (action.type) {
+    case "Update":
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+    default:
+      return state;
+  }
+};
+
+const SignUp = () => {
+  const [newUser, dispatch] = useReducer(accountReducer, initialAccount);
 
   const navigate = useNavigate();
 
-  const authentication = async () => {
-    navigate("/login");
+  const onAddAccount = async () => {
+    const response = await AccountService.createAccount(newUser);
+    if (response.status === 201) {
+      navigate("/login");
+    }
   };
 
   return (
@@ -24,31 +52,55 @@ const Sign_up = () => {
               required
               id="outlined-required"
               label="Username"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "username",
+                })
+              }
+              value={newUser.username}
             />
             <TextField
               required
               id="outlined-required"
               label="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "email",
+                })
+              }
+              value={newUser.email}
             />
             <TextField
               required
               id="outlined-required"
               label="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "password",
+                })
+              }
+              value={newUser.password}
             />
             <TextField
               required
               id="outlined-required"
               label="Confirm Password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "confirmPassword",
+                })
+              }
+              value={newUser.confirmPassword}
             />
-            <Button variant="contained" onClick={() => authentication()}>
+            <Button variant="contained" onClick={() => onAddAccount()}>
               Create Account
             </Button>
           </Stack>
@@ -57,5 +109,4 @@ const Sign_up = () => {
     </>
   );
 };
-
-export default Sign_up;
+export default SignUp;

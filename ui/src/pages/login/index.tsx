@@ -56,12 +56,15 @@ const Login = () => {
             <Button variant="contained" onClick={() => authentication()}>
               Login
             </Button>
-            <Button variant="contained" onClick={() => navigate("/signup")}>
+            <Button
+              variant="contained"
+              onClick={() => navigate(NavigationRoutes.SignUp)}
+            >
               Sign Up
             </Button>
             <Button
               variant="contained"
-              onClick={() => navigate("/passwordresetrequest")}
+              onClick={() => navigate(NavigationRoutes.PasswordResetRequest)}
             >
               Forgot Password?
             </Button>

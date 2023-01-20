@@ -2,19 +2,19 @@ import { Faction } from "../types/faction";
 import {FetchUtils} from "../utils";
 
 const getFactions = async () => {
-    return await FetchUtils.fetchInstance(`api/factions`, {
+    return await FetchUtils.fetchInstance(`factions`, {
         method: "GET",
     });
 };
 
 const getFaction = async (factionId: string) => {
-    return await FetchUtils.fetchInstance(`api/factions/${factionId}`, {
+    return await FetchUtils.fetchInstance(`factions/${factionId}`, {
         method: "GET",
     });
 };
 
 const getFactionUnits = async (factionId: string) => {
-    return await FetchUtils.fetchInstance(`api/factions/${factionId}/units`, {
+    return await FetchUtils.fetchInstance(`factions/${factionId}/units`, {
         method: "GET",
     });
 };

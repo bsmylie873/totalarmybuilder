@@ -146,7 +146,7 @@ function getCompositionById() {
 }
 
 function getUnitsByFaction() {
-  return fetch("/faction/${id}").then((response) => response.json());
+  return fetch("/${id}/units").then((response) => response.json());
 }
 
 export default function PrimaryUnitList() {

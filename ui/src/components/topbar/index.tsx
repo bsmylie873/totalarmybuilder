@@ -4,13 +4,17 @@ import {
   Box,
   IconButton,
   InputBase,
+  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NavigationDrawer from "../navigation_drawer";
-import { useState } from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+import { NavigationRoutes } from "../../constants";
+import { AuthContext } from "../../contexts";
 
 const Search = styled("div")(({ theme }) => ({
   padding: 1,
@@ -46,6 +50,16 @@ export default function PrimarySearchAppBar() {
     requestSearch(searched);
   }; */
 
+  const navigate = useNavigate();
+
+  const { dispatch } = AuthContext.useLogin();
+
+  const handleLogOut = () => {
+    localStorage.clear();
+    dispatch({ type: "logout" });
+    navigate(NavigationRoutes.Login);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <MuiAppBar position="static">
@@ -72,7 +86,7 @@ export default function PrimarySearchAppBar() {
           <IconButton type="submit" aria-label="search">
             <SearchIcon style={{ fill: "white" }} />
           </IconButton>
-          <Box>
+          <Stack direction="row">
             <IconButton
               href="/accountdetails"
               size="large"
@@ -82,7 +96,16 @@ export default function PrimarySearchAppBar() {
             >
               <AccountCircle />
             </IconButton>
-          </Box>
+            <IconButton
+              onClick={handleLogOut}
+              size="large"
+              edge="end"
+              aria-label="log out"
+              color="inherit"
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Stack>
         </Toolbar>
       </MuiAppBar>
     </Box>

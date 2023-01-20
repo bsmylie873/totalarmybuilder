@@ -40,7 +40,6 @@ const authenticatedRoutes = () => {
         element={<PasswordReset />}
       />
       <Route path={NavigationRoutes.Search} element={<Search />} />
-      <Route path={NavigationRoutes.SignUp} element={<SignUp />} />
       <Route path={NavigationRoutes.Tutorial} element={<Tutorial />} />
       <Route path="*" element={<Navigate to={NavigationRoutes.Home} />} />
     </>
@@ -55,6 +54,7 @@ const unauthenticatedRoutes = () => {
         path={NavigationRoutes.PasswordResetRequest}
         element={<PasswordResetRequest />}
       />
+      <Route path={NavigationRoutes.SignUp} element={<SignUp />} />
       <Route path="*" element={<Navigate to={NavigationRoutes.Login} />} />
     </>
   );

@@ -1,19 +1,42 @@
 import { Container, Stack, TextField, Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Title } from "../../components";
+import { AccountService } from "../../services";
+import { Account } from "../../types/account";
+import { EditText, EditTextarea } from "react-edit-text";
 
-const Account_details = () => {
+const currentAccount: Account = {
+  email: "",
+  username: "",
+  password: "",
+  avatar: "",
+};
+
+const accountReducer = (state: Account, action: any) => {
+  switch (action.type) {
+    case "Update":
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+    default:
+      return state;
+  }
+};
+
+const AccountDetails = () => {
   const { accountId } = useParams<{ accountId: string }>();
   console.log(accountId);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [existingUser, dispatch] = useReducer(accountReducer, currentAccount);
 
   const navigate = useNavigate();
 
-  const authentication = async () => {
-    navigate("/home");
+  const onEditAccount = async () => {
+    const response = await AccountService.createAccount(existingUser);
+    if (response.status === 201) {
+      navigate("/home");
+    }
   };
 
   return (
@@ -22,33 +45,51 @@ const Account_details = () => {
       <Container fixed>
         {
           <Stack spacing={2} style={{ marginTop: 50 }}>
+            <EditText
+              name="textbox3"
+              defaultValue="I am an editable text with an edit button"
+              editButtonProps={{ style: { marginLeft: "5px", width: 16 } }}
+              showEditButton
+            />
+
             <TextField
               required
               id="outlined-required"
               label="Username"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "username",
+                })
+              }
+              value={existingUser.username}
             />
             <TextField
               required
               id="outlined-required"
               label="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "email",
+                })
+              }
+              value={existingUser.email}
             />
             <TextField
               required
               id="outlined-required"
               label="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-            <TextField
-              required
-              id="outlined-required"
-              label="Confirm Password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              onChange={(e) =>
+                dispatch({
+                  value: e.target.value,
+                  type: "Update",
+                  field: "password",
+                })
+              }
+              value={existingUser.password}
             />
             <Button variant="contained" onClick={() => authentication()}>
               Create Account
@@ -63,4 +104,7 @@ const Account_details = () => {
   );
 };
 
-export default Account_details;
+export default AccountDetails;
+function authentication(): void {
+  throw new Error("Function not implemented.");
+}
