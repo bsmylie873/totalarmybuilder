@@ -1,11 +1,13 @@
 import * as React from "react";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import ClearIcon from "@mui/icons-material/Clear";
+import AddIcon from "@mui/icons-material/Add";
 import NorthIcon from "@mui/icons-material/North";
 import ShieldIcon from "@mui/icons-material/Shield";
 import { Composition } from "../../types/composition";
+import InputAdornment from "@mui/material/InputAdornment";
 import { Unit } from "../../types/unit";
-import useSWR from "swr";
+
 import {
   Autocomplete,
   Avatar,
@@ -28,31 +30,12 @@ import {
   UnitsService,
 } from "../../services";
 
-function getInitialState() {}
-
-function addItem(unit: any) {}
-
-function deleteItem(args: any) {}
-
-const options = [
-  { label: "Archers" },
-  { label: "Spearmen" },
-  { label: "Swordsmen" },
-];
-
-interface props {
-  unit: Unit;
-}
-
-function getCompositionById() {
-  return fetch("/composition/${id}").then((response) => response.json());
-}
-
 export default function PrimaryUnitList() {
-  const [dropdownData, setDropDownData] = useState([]);
-  const [unitListData, setUnitListData] = useState([]);
-  const [compositionData, setCompositionData] = useState([]);
-  const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
+  const [dropdownData, setDropDownData] = useState<Unit[]>([]);
+  const [unitListData, setUnitListData] = useState<Unit[]>([]);
+  const [compositionData, setCompositionData] = useState();
+  const [armyList, setArmyList] = useState<Unit[]>(unitListData);
+  const [selectedUnit, setSelectedUnit] = useState<Unit>();
   let { compositionId } = useParams();
 
   async function translateFactionIds(faction: number) {
@@ -93,7 +76,7 @@ export default function PrimaryUnitList() {
           budget: x.budget,
         };
       });
-      setCompositionData(compositionMapped);
+      setCompositionData(composition);
     }
   }
 
@@ -113,6 +96,16 @@ export default function PrimaryUnitList() {
       setUnitListData(compositionUnitsMapped);
     }
   }
+
+  const addUnit = (selectedUnit: any) => {
+    setArmyList([...armyList, selectedUnit]);
+  };
+
+  const deleteUnitByIndex = (index: number) => {
+    setArmyList((oldValues) => {
+      return oldValues.filter((_, i) => i !== index);
+    });
+  };
 
   useEffect(() => {
     getCompositionData();
@@ -137,6 +130,16 @@ export default function PrimaryUnitList() {
         label="Select"
         sx={{ width: "100%" }}
         helperText="Please select some units..."
+        onSelect={() => addUnit(selectedUnit)}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton aria-label="addUnit" onClick={addUnit} edge="start">
+                +
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       >
         {dropdownData.map((option: Unit) => (
           <MenuItem key={option.id} value={option.name}>
@@ -154,7 +157,11 @@ export default function PrimaryUnitList() {
                 </ListItemAvatar>
                 <ListItemText primary={item.name} />
               </ListItemButton>
-              <IconButton edge="end" aria-label="delete">
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => deleteUnitByIndex(item.id)}
+              >
                 <ClearIcon />
               </IconButton>
             </ListItem>

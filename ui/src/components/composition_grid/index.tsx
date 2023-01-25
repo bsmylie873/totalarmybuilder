@@ -3,6 +3,8 @@ import { Button } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
+  GridFilterModel,
+  GridLinkOperator,
   GridRenderCellParams,
   GridToolbarColumnsButton,
   GridToolbarContainer,
@@ -10,7 +12,7 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import type {} from "@mui/x-data-grid/themeAugmentation";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CompositionService, FactionService } from "../../services";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -98,6 +100,7 @@ function CustomToolbar() {
 
 export default function CompositionGrid() {
   const [gridData, setGridData] = useState([]);
+  const { searchValue } = useParams();
 
   async function translateFactionIds(faction: number) {
     var factionResponse = FactionService.getFaction(faction);
@@ -155,6 +158,19 @@ export default function CompositionGrid() {
           rowsPerPageOptions={[10]}
           disableSelectionOnClick
           components={{ Toolbar: CustomToolbar }}
+          initialState={{
+            filter: {
+              filterModel: {
+                items: [
+                  {
+                    columnField: "name",
+                    operatorValue: "contains",
+                    value: searchValue,
+                  },
+                ],
+              },
+            },
+          }}
         />
       </div>
     </div>

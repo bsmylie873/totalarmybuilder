@@ -15,8 +15,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { NavigationRoutes, StorageTypes } from "../../constants";
 import { AuthContext } from "../../contexts";
-import { StorageService } from "../../services";
-import { LoginUtils } from "../../utils";
+import { useState } from "react";
+import { Composition } from "../../types/composition";
 
 const Search = styled("div")(({ theme }) => ({
   padding: 1,
@@ -37,20 +37,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-  /* const [searched, setSearched] = useState<string>("");
-  const [rows, setRows] = useState<compositions[]>(originalRows);
+  const [searched, setSearched] = useState<string>("");
+  const [rows, setRows] = useState<Composition[]>();
 
-  const requestSearch = (searchedVal: string) => {
-    const filteredRows = originalRows.filter((row) => {
-      return row.name.toLowerCase().includes(searchedVal.toLowerCase());
-    });
-    setRows(filteredRows);
+  let requestSearch = (searchedVal: string) => {
+    var lowerCase = searchedVal.toLowerCase();
+    setSearched(lowerCase);
   };
 
   const cancelSearch = () => {
     setSearched("");
     requestSearch(searched);
-  }; */
+  };
 
   const { dispatch } = AuthContext.useLogin();
 
@@ -84,9 +82,6 @@ export default function PrimarySearchAppBar() {
               fullWidth={true}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              // value={searched}
-              // onChange={(searchVal) => requestSearch(searchVal)}
-              // onCancelSearch={() => cancelSearch()}
             />
           </Search>
           <IconButton type="submit" aria-label="search">

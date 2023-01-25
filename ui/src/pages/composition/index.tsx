@@ -7,6 +7,8 @@ import {
   PrimaryUnitList,
   SecondaryUnitList,
 } from "../../components";
+import Button from "@mui/material/Button";
+import { Box } from "@mui/system";
 
 const Composition = () => {
   const { compositionId } = useParams<{ compositionId: string }>();
@@ -26,6 +28,22 @@ const Composition = () => {
       <PrimaryUnitList />
       <br></br>
       <SecondaryUnitList />
+      <Stack direction="row" spacing={2}></Stack>
+      <Box
+        display="flex"
+        justifyContent="space-around"
+        alignItems="flex-end"
+        width="100%"
+        margin={5}
+        alignSelf="center"
+      >
+        <Button variant="contained" color="success">
+          Save
+        </Button>
+        <Button variant="outlined" color="error">
+          Cancel
+        </Button>
+      </Box>
     </>
   );
 };
