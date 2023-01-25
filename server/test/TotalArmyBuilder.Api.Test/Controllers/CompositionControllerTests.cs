@@ -31,7 +31,7 @@ public class CompositionControllerTests
 
     [Theory]
     [AutoData]
-    public void GetCompositions_MappedAndReturned(string name, int battleType, int factionId)
+    public void GetCompositions_MappedAndReturned(string name, string battleType, int factionId, int budget)
     {
         // Arrange
         const int id = 1;
@@ -40,7 +40,8 @@ public class CompositionControllerTests
             Id = id,
             Name = name,
             BattleType = battleType,
-            FactionId = factionId
+            FactionId = factionId,
+            Budget = budget
         };
 
         const int id2 = 2;
@@ -49,7 +50,8 @@ public class CompositionControllerTests
             Id = id2,
             Name = name,
             BattleType = battleType,
-            FactionId = factionId
+            FactionId = factionId,
+            Budget = budget
         };
 
         var compositionList = new List<CompositionDto>
@@ -62,20 +64,20 @@ public class CompositionControllerTests
             new()
         };
 
-        _service.GetCompositions(name, battleType, factionId).Returns(compositionList);
+        _service.GetCompositions(name, battleType, factionId, budget).Returns(compositionList);
         _mapper.Map<IList<CompositionViewModel>>(compositionList).Returns(compositionViewModels);
 
         var controller = RetrieveController();
 
         // Act
-        var actionResult = controller.GetCompositions(name, battleType, factionId);
+        var actionResult = controller.GetCompositions(name, battleType, factionId, budget);
 
         // Assert
         var result = actionResult.AssertObjectResult<IList<CompositionViewModel>, OkObjectResult>();
 
         result.Should().BeSameAs(compositionViewModels);
 
-        _service.Received(1).GetCompositions(name, battleType, factionId);
+        _service.Received(1).GetCompositions(name, battleType, factionId, budget);
         _mapper.Received(1).Map<IList<CompositionViewModel>>(compositionList);
     }
 
@@ -161,7 +163,7 @@ public class CompositionControllerTests
 
     [Theory]
     [AutoData]
-    public void CreateComposition_MappedAndSaved(string name, int battleType, int factionId, int avatarId)
+    public void CreateComposition_MappedAndSaved(string name, string battleType, int factionId, int avatarId, int budget)
     {
         // Arrange
         const int id = 1;
@@ -172,6 +174,7 @@ public class CompositionControllerTests
             BattleType = battleType,
             FactionId = factionId,
             AvatarId = avatarId,
+            Budget = budget,
             DateCreated = DateTime.Now,
             Wins = 0,
             Losses = 0
@@ -195,8 +198,8 @@ public class CompositionControllerTests
 
     [Theory]
     [AutoData]
-    public void UpdateComposition_WhenCalledWithValidViewModel_MappedAndSaved(string name, int battleType,
-        int factionId, int avatarId, DateTime dateCreated, int wins, int losses)
+    public void UpdateComposition_WhenCalledWithValidViewModel_MappedAndSaved(string name, string battleType,
+        int factionId, int avatarId, int budget, DateTime dateCreated, int wins, int losses)
     {
         // Arrange
         const int id = 1;
@@ -207,6 +210,7 @@ public class CompositionControllerTests
             BattleType = battleType,
             FactionId = factionId,
             AvatarId = avatarId,
+            Budget = budget,
             DateCreated = dateCreated,
             Wins = wins,
             Losses = losses

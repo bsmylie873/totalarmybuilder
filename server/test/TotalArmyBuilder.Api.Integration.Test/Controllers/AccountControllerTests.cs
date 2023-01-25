@@ -71,7 +71,7 @@ public class AccountControllerTests
         var result = value.VerifyDeSerialize<IList<CompositionViewModel>>();
 
         result[0].Name.Should().Be("composition1");
-        result[0].BattleType.Should().Be(1);
+        result[0].BattleType.Should().Be("Land Battles");
         result[0].FactionId.Should().Be(1);
         result[0].AvatarId.Should().Be(1);
     }

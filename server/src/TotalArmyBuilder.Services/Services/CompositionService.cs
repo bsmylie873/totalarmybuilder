@@ -20,11 +20,11 @@ public class CompositionService : ICompositionService
         (_database, _mapper) = (database, mapper);
     }
 
-    public IList<CompositionDto> GetCompositions(string? name, int? battleType, int? factionId)
+    public IList<CompositionDto> GetCompositions(string? name, string? battleType, int? factionId, int? budget)
     {
         var compositionQuery = _database
             .Get<Composition>()
-            .Where(new CompositionSearchSpec(name, battleType, factionId));
+            .Where(new CompositionSearchSpec(name, battleType, factionId, budget));
 
         return _mapper
             .ProjectTo<CompositionDto>(compositionQuery)

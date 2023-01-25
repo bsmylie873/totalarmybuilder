@@ -13,8 +13,10 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NavigationDrawer from "../navigation_drawer";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import { NavigationRoutes } from "../../constants";
+import { NavigationRoutes, StorageTypes } from "../../constants";
 import { AuthContext } from "../../contexts";
+import { StorageService } from "../../services";
+import { LoginUtils } from "../../utils";
 
 const Search = styled("div")(({ theme }) => ({
   padding: 1,
@@ -50,9 +52,13 @@ export default function PrimarySearchAppBar() {
     requestSearch(searched);
   }; */
 
+  const { dispatch } = AuthContext.useLogin();
+
   const navigate = useNavigate();
 
-  const { dispatch } = AuthContext.useLogin();
+  const handleAccountDetails = () => {
+    navigate(NavigationRoutes.AccountDetails);
+  };
 
   const handleLogOut = () => {
     localStorage.clear();
@@ -88,7 +94,7 @@ export default function PrimarySearchAppBar() {
           </IconButton>
           <Stack direction="row">
             <IconButton
-              href="/accountdetails"
+              onClick={handleAccountDetails}
               size="large"
               edge="end"
               aria-label="account of current user"

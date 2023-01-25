@@ -4,7 +4,7 @@ namespace TotalArmyBuilder.Service.Interfaces;
 
 public interface ICompositionService
 {
-    IList<CompositionDto> GetCompositions(string? name = null, int? battleType = null, int? factionId = null);
+    IList<CompositionDto> GetCompositions(string? name = null, string? battleType = null, int? factionId = null, int? budget = null);
     CompositionDto GetCompositionById(int id);
     IList<UnitDto> GetCompositionUnits(int id);
     void CreateComposition(CompositionDto composition);

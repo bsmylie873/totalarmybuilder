@@ -35,6 +35,18 @@ const getAccountId = (accessToken: string) => {
 
     const {sub} = jwtDecode(accessToken) as any;
 
+    console.log(accessToken)
+
+    return sub;
+};
+
+const getAccountIdRefresh = (refreshToken: string) => {
+    if (!refreshToken) return false;
+
+    const {sub} = jwtDecode(refreshToken) as any;
+
+    if (sub == undefined) return false;
+
     return sub;
 };
 
@@ -43,6 +55,7 @@ const LoginUtils = {
     getEmail,
     getAccountUsernameDisplay,
     getAccountId,
+    getAccountIdRefresh
 };
 
 export default LoginUtils;

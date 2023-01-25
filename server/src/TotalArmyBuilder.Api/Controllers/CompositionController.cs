@@ -23,9 +23,9 @@ public class CompositionsController : TotalArmyBaseController
 
     [HttpGet]
     public ActionResult<IList<CompositionViewModel>> GetCompositions([FromQuery] string? name,
-        [FromQuery] int? battleTypeId, [FromQuery] int? factionId)
+        [FromQuery] string? battleTypeId, [FromQuery] int? factionId, [FromQuery] int? budget)
     {
-        var compositions = _service.GetCompositions(name, battleTypeId, factionId);
+        var compositions = _service.GetCompositions(name, battleTypeId, factionId, budget);
         return OkOrNoContent(_mapper.Map<IList<CompositionViewModel>>(compositions));
     }
 

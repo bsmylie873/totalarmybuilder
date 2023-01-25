@@ -15,121 +15,24 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  MenuItem,
   Stack,
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+  CompositionService,
+  FactionService,
+  UnitsService,
+} from "../../services";
 
 function getInitialState() {}
 
 function addItem(unit: any) {}
 
 function deleteItem(args: any) {}
-
-const unitList = [
-  {
-    id: 1,
-    name: "Spearmen",
-    icon: <NorthIcon />,
-  },
-  {
-    id: 2,
-    name: "Swordsmen",
-    icon: <ShieldIcon />,
-  },
-  {
-    id: 3,
-    name: "Archers",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 4,
-    name: "Archers2",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 5,
-    name: "Archers3",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 6,
-    name: "Archers4",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 7,
-    name: "Archers5",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 8,
-    name: "Archers6",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 9,
-    name: "Archers7",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 10,
-    name: "Archers8",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 11,
-    name: "Spearmen1",
-    icon: <NorthIcon />,
-  },
-  {
-    id: 12,
-    name: "Swordsmen2",
-    icon: <ShieldIcon />,
-  },
-  {
-    id: 13,
-    name: "Archers66",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 14,
-    name: "Archers77",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 15,
-    name: "Archers",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 16,
-    name: "Archers88",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 17,
-    name: "Archers99",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 18,
-    name: "Archers11",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 19,
-    name: "Archers22",
-    icon: <ArrowOutwardIcon />,
-  },
-  {
-    id: 20,
-    name: "Archers33",
-    icon: <ArrowOutwardIcon />,
-  },
-];
 
 const options = [
   { label: "Archers" },
@@ -145,19 +48,77 @@ function getCompositionById() {
   return fetch("/composition/${id}").then((response) => response.json());
 }
 
-function getUnitsByFaction() {
-  return fetch("/${id}/units").then((response) => response.json());
-}
-
 export default function PrimaryUnitList() {
+  const [dropdownData, setDropDownData] = useState([]);
+  const [unitListData, setUnitListData] = useState([]);
+  const [compositionData, setCompositionData] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
-  const { compositionId } = useParams();
-  const { data, error, isLoading } = useSWR(
-    ["compositions", compositionId],
-    getCompositionById
-  );
-  const currentComposition: Composition = data;
-  if (isLoading) return <div>Loading</div>;
+  let { compositionId } = useParams();
+
+  async function translateFactionIds(faction: number) {
+    var factionResponse = FactionService.getFaction(faction);
+    const factions = (await factionResponse).json();
+    return factions;
+  }
+
+  async function getUnitByFactionData() {
+    const factionUnitReponse = await FactionService.getFactionUnits(7);
+    if (factionUnitReponse.status === 200) {
+      const factionUnits = await factionUnitReponse.json();
+      const factionsUnitsMapped = factionUnits.flatMap((x: any) => {
+        return {
+          id: x.id,
+          name: x.name,
+          cost: x.cost,
+          avatarId: x.avatarId,
+        };
+      });
+      setDropDownData(factionsUnitsMapped);
+    }
+  }
+
+  async function getCompositionData() {
+    const compositionResponse = await CompositionService.getComposition(
+      compositionId as string
+    );
+    if (compositionResponse.status === 200) {
+      const composition = await compositionResponse.json();
+      const compositionMapped = composition.flatMap((x: any) => {
+        return {
+          id: x.id,
+          name: x.name,
+          author: x.author,
+          battleType: x.battleType,
+          faction: translateFactionIds(x.faction),
+          budget: x.budget,
+        };
+      });
+      setCompositionData(compositionMapped);
+    }
+  }
+
+  async function getCompositionUnitData() {
+    const compositionUnitResponse =
+      await CompositionService.getCompositionUnits(compositionId as string);
+    if (compositionUnitResponse.status === 200) {
+      const compositionUnits = await compositionUnitResponse.json();
+      const compositionUnitsMapped = compositionUnits.flatMap((x: any) => {
+        return {
+          id: x.id,
+          name: x.name,
+          cost: x.cost,
+          avatarId: x.avatarId,
+        };
+      });
+      setUnitListData(compositionUnitsMapped);
+    }
+  }
+
+  useEffect(() => {
+    getCompositionData();
+    getCompositionUnitData();
+    getUnitByFactionData();
+  }, []);
 
   return (
     <Stack
@@ -168,22 +129,24 @@ export default function PrimaryUnitList() {
         bgcolor: "background.paper",
       }}
     >
-      {/* <h1>{currentComposition.name}</h1> */}
+      <h1>{compositionData}</h1>
       <h4>Primary Army:</h4>
-      <Autocomplete
-        multiple={false}
-        onChange={(_event, newUnit) => {
-          setSelectedUnit(selectedUnit);
-        }}
-        disablePortal
+      <TextField
         id="primary-unit-selection"
-        options={options}
+        select
+        label="Select"
         sx={{ width: "100%" }}
-        renderInput={(params) => <TextField {...params} label="" />}
-      />
+        helperText="Please select some units..."
+      >
+        {dropdownData.map((option: Unit) => (
+          <MenuItem key={option.id} value={option.name}>
+            {option.name}
+          </MenuItem>
+        ))}
+      </TextField>
       <Box sx={{ height: 400, width: "100%", overflow: "auto" }}>
         <List dense>
-          {unitList.map((item: any) => (
+          {unitListData.map((item: any) => (
             <ListItem key={item.id}>
               <ListItemButton>
                 <ListItemAvatar>

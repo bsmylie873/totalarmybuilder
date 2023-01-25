@@ -1,28 +1,29 @@
 import { MenuItem, TextField } from "@mui/material";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Faction } from "../../types/faction";
-import useSWR from "swr";
-
-const factions = [
-  {
-    id: 1,
-    name: "Beastmen",
-  },
-  {
-    id: 2,
-    name: "Bretonnia",
-  },
-];
+import { FactionService } from "../../services";
 
 export default function FactionSelection() {
-  function getFactions() {
-    return fetch("/factions/").then((response) => response.json());
+  const [dropdownData, setDropDownData] = useState([]);
+
+  async function getFactionData() {
+    const factionResponse = await FactionService.getFactions();
+    if (factionResponse.status === 200) {
+      const factions = await factionResponse.json();
+      const factionsMapped = factions.flatMap((x: any) => {
+        return {
+          id: x.id,
+          name: x.name,
+        };
+      });
+      setDropDownData(factionsMapped);
+    }
   }
 
-  const { data, error, isLoading } = useSWR(["factions"], getFactions);
+  useEffect(() => {
+    getFactionData();
+  }, []);
 
-  console.log(data);
   return (
     <div>
       <TextField
@@ -32,7 +33,7 @@ export default function FactionSelection() {
         defaultValue="Beastmen"
         helperText="Please select your faction"
       >
-        {factions.map((option: Faction) => (
+        {dropdownData.map((option: Faction) => (
           <MenuItem key={option.id} value={option.name}>
             {option.name}
           </MenuItem>

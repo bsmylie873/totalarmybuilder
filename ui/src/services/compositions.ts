@@ -42,6 +42,12 @@ const getComposition = async (compositionId: string) => {
     });
 };
 
+const getCompositions = async () => {
+    return await FetchUtils.fetchInstance(`compositions`, {
+        method: "GET",
+    });
+};
+
 const getCompositionUnits = async (compositionId: string) => {
     return await FetchUtils.fetchInstance(`compositions/${compositionId}/units`, {
         method: "GET",
@@ -53,5 +59,6 @@ export default {
     updateComposition,
     deleteComposition,
     getComposition,
+    getCompositions,
     getCompositionUnits,
 };

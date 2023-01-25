@@ -6,6 +6,7 @@ export type Composition = {
     battleType: string,
     factionId: string,
     avatarId?: string,
+    budget: number,
     dateCreated: Date,
     wins: number,
     losses: number,

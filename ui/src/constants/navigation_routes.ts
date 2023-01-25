@@ -1,7 +1,7 @@
 import { PasswordResetRequest } from "../pages";
 
 const routes = {
-    AccountDetails: "/accountdetails/:accountId",
+    AccountDetails: "/accountdetails",
     Blog: "/blog",
     Composition: "/composition/:compositionId",
     Home: "/",

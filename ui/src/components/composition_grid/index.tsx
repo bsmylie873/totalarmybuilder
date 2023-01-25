@@ -11,7 +11,9 @@ import {
 } from "@mui/x-data-grid";
 import type {} from "@mui/x-data-grid/themeAugmentation";
 import { Link } from "react-router-dom";
-import useSWR from "swr";
+import { CompositionService, FactionService } from "../../services";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const columns: GridColDef[] = [
   {
@@ -41,7 +43,7 @@ const columns: GridColDef[] = [
     headerAlign: "center",
   },
   {
-    field: "battle_type",
+    field: "battleType",
     headerName: "Battle Type",
     editable: false,
     flex: 1,
@@ -84,107 +86,6 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: "Hungry Hungry Ogres",
-    author: "OgreTyrant985",
-    battle_type: "Land Battles",
-    faction: "Ogre Kingdoms",
-    budget: 9000,
-  },
-
-  {
-    id: 2,
-    name: "Chaos Knights Are Bad",
-    author: "bigchungus98",
-    battle_type: "Domination",
-    faction: "Warriors Of Chaos",
-    budget: 120000,
-  },
-
-  {
-    id: 3,
-    name: "Kislev Draft1",
-    author: "user8573666",
-    battle_type: "Domination",
-    faction: "Beastmen",
-    budget: 9000,
-  },
-
-  {
-    id: 4,
-    name: "New Build",
-    author: "admin",
-    battle_type: "Land Battles",
-    faction: "Beastmen",
-    budget: 100000000,
-  },
-
-  {
-    id: 5,
-    name: "The Empire ENDURES",
-    author: "SigmarSon32",
-    battle_type: "Domination",
-    faction: "The Empire",
-    budget: 9000,
-  },
-
-  {
-    id: 6,
-    name: "Malekith Carry build",
-    author: "jeep013",
-    battle_type: "Domination",
-    faction: "Dark Elves",
-    budget: 9000,
-  },
-
-  {
-    id: 7,
-    name: "Malus Carry build",
-    author: "jeep013",
-    battle_type: "Domination",
-    faction: "Dark Elves",
-    budget: 9000,
-  },
-
-  {
-    id: 8,
-    name: "Morathi Carry build",
-    author: "jeep013",
-    battle_type: "Domination",
-    faction: "Dark Elves",
-    budget: 9000,
-  },
-
-  {
-    id: 9,
-    name: "New Build testing build",
-    author: "admin",
-    battle_type: "Domination",
-    faction: "Grand Cathay",
-    budget: 9000,
-  },
-
-  {
-    id: 10,
-    name: "The French",
-    author: "ihatespeakingenglish",
-    battle_type: "Land Battles",
-    faction: "Bretonnia",
-    budget: 9000,
-  },
-
-  {
-    id: 11,
-    name: "KNOWLEDGE",
-    author: "freebirdsolo",
-    battle_type: "Land Battles",
-    faction: "Tzeentch",
-    budget: 9000,
-  },
-];
-
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -196,13 +97,40 @@ function CustomToolbar() {
 }
 
 export default function CompositionGrid() {
-  function getCompositions() {
-    return fetch("/compositions/").then((response) => response.json());
+  const [gridData, setGridData] = useState([]);
+
+  async function translateFactionIds(faction: number) {
+    var factionResponse = FactionService.getFaction(faction);
+    const factions = (await factionResponse).json();
+    return factions;
   }
 
-  const { data, error, isLoading } = useSWR(["compositions"], getCompositions);
+  const getCompositionsData = async () => {
+    const compositionsResponse = await CompositionService.getCompositions();
+    if (compositionsResponse.status === 200) {
+      const compositions = await compositionsResponse.json();
+      const compositionsMapped = compositions.flatMap((x: any) => {
+        return {
+          id: x.id,
+          name: x.name,
+          author: x.author,
+          battleType: x.battleType,
+          faction: translateFactionIds(x.faction),
+          budget: x.budget,
+        };
+      });
+      debugger;
+      setGridData(compositionsMapped);
+      toast.success("Data successfully loaded!");
+      console.log(compositionsMapped);
+    } else {
+      toast.error("No data found!");
+    }
+  };
 
-  console.log(data);
+  useEffect(() => {
+    getCompositionsData();
+  }, []);
 
   return (
     <div
@@ -221,7 +149,7 @@ export default function CompositionGrid() {
       >
         <DataGrid
           autoHeight
-          rows={rows}
+          rows={gridData}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[10]}

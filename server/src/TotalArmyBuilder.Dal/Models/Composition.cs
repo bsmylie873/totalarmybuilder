@@ -10,7 +10,7 @@ public class Composition
 
     [Column("name")] public string Name { get; set; }
 
-    [Column("battle_type")] public int BattleType { get; set; }
+    [Column("battle_type")] public string BattleType { get; set; }
 
     [Column("faction_id")] public int FactionId { get; set; }
     [ForeignKey(nameof(FactionId))] public Faction Faction { get; set; }
@@ -18,6 +18,8 @@ public class Composition
     [Column("avatar_id")] public int AvatarId { get; set; }
     [ForeignKey(nameof(AvatarId))] public Avatar Avatar { get; set; }
 
+    [Column("budget")] public int Budget { get; set; }
+    
     [Column("date_created")] public DateTime DateCreated { get; set; }
 
     [Column("wins")] public int Wins { get; set; }

@@ -128,7 +128,7 @@ public static class DatabaseSeed
         {
             Id = 1,
             Name = "composition1",
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 1,
             AvatarId = 1,
             DateCreated = DateTime.MinValue,
@@ -141,7 +141,7 @@ public static class DatabaseSeed
         {
             Id = 2,
             Name = "composition2",
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 2,
             AvatarId = 2,
             DateCreated = DateTime.MinValue,
@@ -154,7 +154,7 @@ public static class DatabaseSeed
         {
             Id = 3,
             Name = "composition3",
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 2,
             AvatarId = 3,
             DateCreated = DateTime.MinValue,
@@ -167,7 +167,7 @@ public static class DatabaseSeed
         {
             Id = 4,
             Name = "composition4",
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 4,
             AvatarId = 4,
             DateCreated = DateTime.MinValue,
@@ -180,7 +180,7 @@ public static class DatabaseSeed
         {
             Id = 5,
             Name = "composition5",
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 5,
             AvatarId = 5,
             DateCreated = DateTime.MinValue,

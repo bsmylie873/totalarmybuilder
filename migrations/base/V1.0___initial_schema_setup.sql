@@ -56,9 +56,10 @@ CREATE TABLE IF NOT EXISTS compositions
 (
     255
 ) UNIQUE NOT NULL,
-    battle_type INT not NULL,
+    battle_type VARCHAR(255) NOT NULL,
     faction_id INT NOT NULL,
     avatar_id INT NOT NULL,
+    budget INT NOT NULL,
     date_created TIMESTAMP NOT NULL,
     wins INT NOT NULL,
     losses INT NOT NULL,

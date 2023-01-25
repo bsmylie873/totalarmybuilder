@@ -1,100 +1,107 @@
 import { Container, Stack, TextField, Button } from "@mui/material";
-import React, { useReducer, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Title } from "../../components";
+import { useEffect, useState } from "react";
+import { LoginUtils } from "../../utils";
+import { useNavigate } from "react-router-dom";
 import { AccountService } from "../../services";
 import { Account } from "../../types/account";
-import { EditText, EditTextarea } from "react-edit-text";
-
-const currentAccount: Account = {
-  email: "",
-  username: "",
-  password: "",
-  avatar: "",
-};
-
-const accountReducer = (state: Account, action: any) => {
-  switch (action.type) {
-    case "Update":
-      return {
-        ...state,
-        [action.field]: action.value,
-      };
-    default:
-      return state;
-  }
-};
+import toast from "react-hot-toast";
+import { AuthContext } from "../../contexts";
+import { NavigationRoutes } from "../../constants";
 
 const AccountDetails = () => {
-  const { accountId } = useParams<{ accountId: string }>();
-  console.log(accountId);
-  const [existingUser, dispatch] = useReducer(accountReducer, currentAccount);
-
+  const [account, setAccount] = useState({
+    id: null,
+    username: "",
+    email: "",
+    password: null,
+    avatar: "",
+  });
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorState, setErrorState] = useState({
+    password: false,
+  });
   const navigate = useNavigate();
 
-  const onEditAccount = async () => {
-    const response = await AccountService.createAccount(existingUser);
-    if (response.status === 201) {
-      navigate("/home");
+  const { state } = AuthContext.useLogin();
+  const { dispatch } = AuthContext.useLogin();
+  const accountId = LoginUtils.getAccountId(state.accessToken);
+
+  const getAccountData = async (accountId: string) => {
+    const accountResponse = await AccountService.getAccount(accountId);
+    if (accountResponse.status === 200) {
+      const account = await accountResponse.json();
+      setAccount(account);
     }
   };
 
+  const editAccountClicked = async () => {
+    const formErrors = {
+      password: password === "",
+    };
+    setErrorState(formErrors);
+
+    if (!formErrors.password) {
+      var account: Account = {
+        id: accountId,
+        username: username,
+        email: email,
+        password: password,
+        avatar: "",
+      };
+      const response = await AccountService.updateAccount(account);
+      if (response.status == 200) {
+        setPassword("");
+        toast.success("Profile updated");
+        localStorage.clear();
+        dispatch({ type: "logout" });
+        navigate(NavigationRoutes.Login);
+      } else {
+        toast.error("Profile failed to update");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAccountData(accountId);
+  }, []);
+
   return (
     <>
-      <Title title="Account Details" />
       <Container fixed>
         {
-          <Stack spacing={2} style={{ marginTop: 50 }}>
-            <EditText
-              name="textbox3"
-              defaultValue="I am an editable text with an edit button"
-              editButtonProps={{ style: { marginLeft: "5px", width: 16 } }}
-              showEditButton
+          <Stack spacing={2}>
+            <br></br>
+            <h3>Current username: {account.username}</h3>
+            <TextField
+              id="outlined-required"
+              label="New username..."
+              type="text"
+              defaultValue={account.username}
+              onChange={(e) => setUsername(e.target.value)}
             />
-
+            <h3>Current email: {account.email}</h3>
+            <TextField
+              id="outlined-required"
+              label="New email..."
+              type="email"
+              defaultValue={account.email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <h3>Enter your new password:</h3>
             <TextField
               required
               id="outlined-required"
-              label="Username"
-              onChange={(e) =>
-                dispatch({
-                  value: e.target.value,
-                  type: "Update",
-                  field: "username",
-                })
-              }
-              value={existingUser.username}
+              label="New password:"
+              type="password"
+              defaultValue={account.password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <TextField
-              required
-              id="outlined-required"
-              label="Email"
-              onChange={(e) =>
-                dispatch({
-                  value: e.target.value,
-                  type: "Update",
-                  field: "email",
-                })
-              }
-              value={existingUser.email}
-            />
-            <TextField
-              required
-              id="outlined-required"
-              label="Password"
-              onChange={(e) =>
-                dispatch({
-                  value: e.target.value,
-                  type: "Update",
-                  field: "password",
-                })
-              }
-              value={existingUser.password}
-            />
-            <Button variant="contained" onClick={() => authentication()}>
-              Create Account
+            <Button variant="contained" onClick={() => editAccountClicked()}>
+              Edit Account
             </Button>
-            <Button variant="contained" onClick={() => authentication()}>
+            <Button variant="contained" onClick={() => navigate("/home")}>
               Cancel
             </Button>
           </Stack>
@@ -105,6 +112,3 @@ const AccountDetails = () => {
 };
 
 export default AccountDetails;
-function authentication(): void {
-  throw new Error("Function not implemented.");
-}

@@ -7,13 +7,13 @@ const getFactions = async () => {
     });
 };
 
-const getFaction = async (factionId: string) => {
+const getFaction = async (factionId: number) => {
     return await FetchUtils.fetchInstance(`factions/${factionId}`, {
         method: "GET",
     });
 };
 
-const getFactionUnits = async (factionId: string) => {
+const getFactionUnits = async (factionId: number) => {
     return await FetchUtils.fetchInstance(`factions/${factionId}/units`, {
         method: "GET",
     });

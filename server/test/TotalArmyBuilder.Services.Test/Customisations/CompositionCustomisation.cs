@@ -10,7 +10,7 @@ public class CompositionCustomisation : ICustomization
         fixture.Customize<Composition>(composer => composer
             .With(x => x.Id)
             .With(x => x.Name)
-            .With(x => x.BattleType, 0)
+            .With(x => x.BattleType)
             .With(x => x.FactionId)
             .With(x => x.AvatarId)
             .With(x => x.DateCreated, DateTime.Today)

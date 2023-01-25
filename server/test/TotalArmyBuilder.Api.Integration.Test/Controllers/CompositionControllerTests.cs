@@ -46,7 +46,7 @@ public class CompositionControllerTests
 
         result.Id.Should().Be(1);
         result.Name.Should().Be("composition1");
-        result.BattleType.Should().Be(1);
+        result.BattleType.Should().Be("Land Battles");
         result.FactionId.Should().Be(1);
         result.AvatarId.Should().Be(1);
         result.Wins.Should().Be(1);
@@ -89,7 +89,7 @@ public class CompositionControllerTests
     public async Task CreateAComposition_WhenCompositionDetails_ValidAndPresent_ReturnsOk()
     {
         const string name = "name999";
-        const int battleType = 1;
+        const string battleType = "Land Battles";
         const int factionId = 4;
         const int avatarId = 56;
         var dateCreated = DateTime.UtcNow;
@@ -142,7 +142,7 @@ public class CompositionControllerTests
     public async Task CreateAComposition_WhenCompositionDetails_NullParams_ThrowsException()
     {
         const string name = null;
-        const int battleType = 1;
+        const string battleType = "Land Battles";
         const int factionId = 4;
         const int avatarId = 56;
         var dateCreated = DateTime.UtcNow;
@@ -202,7 +202,7 @@ public class CompositionControllerTests
     public async Task CreateAComposition_WhenCompositionDetails_InvalidParams_ThrowsException()
     {
         const string name = "null";
-        const int battleType = 3561;
+        const string battleType = "New Battles";
         const int factionId = 4;
         const int avatarId = 56;
         var dateCreated = DateTime.UtcNow;
@@ -270,7 +270,7 @@ public class CompositionControllerTests
         UpdateCompositionViewModel composition = new UpdateCompositionViewModel
         {
             Name = newName,
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 2,
             AvatarId = 2,
             Wins = 2,
@@ -288,7 +288,7 @@ public class CompositionControllerTests
 
         result.Id.Should().Be(2);
         result.Name.Should().Be("new name");
-        result.BattleType.Should().Be(1);
+        result.BattleType.Should().Be("Land Battles");
         result.FactionId.Should().Be(2);
         result.AvatarId.Should().Be(2);
         result.Wins.Should().Be(2);
@@ -304,7 +304,7 @@ public class CompositionControllerTests
         UpdateCompositionViewModel composition = new UpdateCompositionViewModel
         {
             Name = newName,
-            BattleType = 1,
+            BattleType = "Land Battles",
             FactionId = 2,
             AvatarId = 2,
             Wins = 2,
@@ -331,7 +331,7 @@ public class CompositionControllerTests
 
         getResult.Id.Should().Be(4);
         getResult.Name.Should().Be("composition4");
-        getResult.BattleType.Should().Be(1);
+        getResult.BattleType.Should().Be("Land Battles");
         getResult.FactionId.Should().Be(4);
         getResult.AvatarId.Should().Be(4);
         getResult.Wins.Should().Be(4);
@@ -347,7 +347,7 @@ public class CompositionControllerTests
         UpdateCompositionViewModel composition = new UpdateCompositionViewModel
         {
             Name = newName,
-            BattleType = 3561,
+            BattleType = "New Battles",
             FactionId = 2,
             AvatarId = 2,
             Wins = -2,
@@ -377,7 +377,7 @@ public class CompositionControllerTests
 
         getResult.Id.Should().Be(4);
         getResult.Name.Should().Be("composition4");
-        getResult.BattleType.Should().Be(1);
+        getResult.BattleType.Should().Be("Land Battles");
         getResult.FactionId.Should().Be(4);
         getResult.AvatarId.Should().Be(4);
         getResult.Wins.Should().Be(4);
