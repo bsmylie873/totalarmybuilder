@@ -1,9 +1,6 @@
 import * as React from "react";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import ClearIcon from "@mui/icons-material/Clear";
-import AddIcon from "@mui/icons-material/Add";
-import NorthIcon from "@mui/icons-material/North";
-import ShieldIcon from "@mui/icons-material/Shield";
 import { Composition } from "../../types/composition";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Unit } from "../../types/unit";
@@ -29,6 +26,7 @@ import {
   FactionService,
   UnitsService,
 } from "../../services";
+import { Faction } from "../../types/faction";
 
 export default function PrimaryUnitList() {
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
@@ -76,6 +74,12 @@ export default function PrimaryUnitList() {
           budget: x.budget,
         };
       });
+      for (var i = 0; i < compositionMapped.length; i++) {
+        var translatedFactionName: Faction = await translateFactionIds(
+          compositionMapped[i].factionId
+        );
+        compositionMapped[i].factionId = translatedFactionName.name;
+      }
       setCompositionData(composition);
     }
   }

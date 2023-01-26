@@ -101,7 +101,10 @@ const AccountDetails = () => {
             <Button variant="contained" onClick={() => editAccountClicked()}>
               Edit Account
             </Button>
-            <Button variant="contained" onClick={() => navigate("/home")}>
+            <Button
+              variant="contained"
+              onClick={() => navigate(NavigationRoutes.Home)}
+            >
               Cancel
             </Button>
           </Stack>

@@ -3,8 +3,6 @@ import { Button } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
-  GridFilterModel,
-  GridLinkOperator,
   GridRenderCellParams,
   GridToolbarColumnsButton,
   GridToolbarContainer,
@@ -16,6 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import { CompositionService, FactionService } from "../../services";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Faction } from "../../types/faction";
 
 const columns: GridColDef[] = [
   {
@@ -53,7 +52,7 @@ const columns: GridColDef[] = [
     headerAlign: "center",
   },
   {
-    field: "faction",
+    field: "factionId",
     headerName: "Faction",
     editable: false,
     flex: 1,
@@ -104,8 +103,8 @@ export default function CompositionGrid() {
 
   async function translateFactionIds(faction: number) {
     var factionResponse = FactionService.getFaction(faction);
-    const factions = (await factionResponse).json();
-    return factions;
+    const factionName = (await factionResponse).json();
+    return factionName;
   }
 
   const getCompositionsData = async () => {
@@ -118,11 +117,17 @@ export default function CompositionGrid() {
           name: x.name,
           author: x.author,
           battleType: x.battleType,
-          faction: translateFactionIds(x.faction),
+          factionId: x.factionId,
           budget: x.budget,
         };
       });
       debugger;
+      for (var i = 0; i < compositionsMapped.length; i++) {
+        var translatedFactionName: Faction = await translateFactionIds(
+          compositionsMapped[i].factionId
+        );
+        compositionsMapped[i].factionId = translatedFactionName.name;
+      }
       setGridData(compositionsMapped);
       toast.success("Data successfully loaded!");
       console.log(compositionsMapped);

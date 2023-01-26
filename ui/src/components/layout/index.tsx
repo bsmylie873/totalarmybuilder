@@ -1,7 +1,6 @@
 import React from "react";
 import { AuthContext } from "../../contexts";
 import { LoginUtils } from "../../utils";
-import Title from "../title";
 import PrimarySearchAppBar from "../topbar";
 
 interface IProps {
@@ -14,16 +13,12 @@ function LoggedStatus() {
   if (loggedIn) {
     return <PrimarySearchAppBar />;
   }
-  return <br />;
 }
 
 const Layout = ({ children }: IProps) => {
   return (
     <>
-      <header>
-        {LoggedStatus()}
-        <Title title={"TotalArmyBuilder"} />
-      </header>
+      <header>{LoggedStatus()}</header>
       <main>{children}</main>
     </>
   );
