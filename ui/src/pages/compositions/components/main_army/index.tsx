@@ -1,12 +1,11 @@
 import * as React from "react";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Composition } from "../../types/composition";
+import { Composition } from "../../../../types/composition";
 import InputAdornment from "@mui/material/InputAdornment";
-import { Unit } from "../../types/unit";
+import { Unit } from "../../../../types/unit";
 
 import {
-  Autocomplete,
   Avatar,
   IconButton,
   List,
@@ -21,18 +20,20 @@ import {
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  CompositionService,
-  FactionService,
-  UnitsService,
-} from "../../services";
-import { Faction } from "../../types/faction";
+import { CompositionService, FactionService } from "../../../../services";
+import { Faction } from "../../../../types/faction";
+import { UnitList } from "../../../../types/unit_list";
+import toast from "react-hot-toast";
 
-export default function PrimaryUnitList() {
+export interface IUnitListProps {
+  unitList: UnitList;
+}
+
+export default function PrimaryUnitList({ unitList }: IUnitListProps) {
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
   const [unitListData, setUnitListData] = useState<Unit[]>([]);
   const [compositionData, setCompositionData] = useState();
-  const [armyList, setArmyList] = useState<Unit[]>(unitListData);
+  const [armyList, setArmyList] = useState<Unit[]>(unitList.unitList);
   const [selectedUnit, setSelectedUnit] = useState<Unit>();
   let { compositionId } = useParams();
 
@@ -43,18 +44,25 @@ export default function PrimaryUnitList() {
   }
 
   async function getUnitByFactionData() {
-    const factionUnitReponse = await FactionService.getFactionUnits(7);
-    if (factionUnitReponse.status === 200) {
-      const factionUnits = await factionUnitReponse.json();
-      const factionsUnitsMapped = factionUnits.flatMap((x: any) => {
-        return {
-          id: x.id,
-          name: x.name,
-          cost: x.cost,
-          avatarId: x.avatarId,
-        };
-      });
-      setDropDownData(factionsUnitsMapped);
+    debugger;
+    if (unitList.factionId != null) {
+      const factionUnitReponse = await FactionService.getFactionUnits(
+        unitList.factionId
+      );
+      if (factionUnitReponse.status === 200) {
+        const factionUnits = await factionUnitReponse.json();
+        const factionsUnitsMapped = factionUnits.flatMap((x: any) => {
+          return {
+            id: x.id,
+            name: x.name,
+            cost: x.cost,
+            avatarId: x.avatarId,
+          };
+        });
+        setDropDownData(factionsUnitsMapped);
+      }
+    } else {
+      toast.error("Error loading faction!");
     }
   }
 
@@ -89,7 +97,7 @@ export default function PrimaryUnitList() {
       await CompositionService.getCompositionUnits(compositionId as string);
     if (compositionUnitResponse.status === 200) {
       const compositionUnits = await compositionUnitResponse.json();
-      const compositionUnitsMapped = compositionUnits.flatMap((x: any) => {
+      const compositionUnitsMapped = compositionUnits.map((x: any) => {
         return {
           id: x.id,
           name: x.name,
@@ -126,7 +134,6 @@ export default function PrimaryUnitList() {
         bgcolor: "background.paper",
       }}
     >
-      <h1>{compositionData}</h1>
       <h4>Primary Army:</h4>
       <TextField
         id="primary-unit-selection"
@@ -163,7 +170,7 @@ export default function PrimaryUnitList() {
               </ListItemButton>
               <IconButton
                 edge="end"
-                aria-label="delete"
+                aria-label="deleteUnitByIndex"
                 onClick={() => deleteUnitByIndex(item.id)}
               >
                 <ClearIcon />

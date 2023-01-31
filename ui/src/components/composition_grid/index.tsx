@@ -121,7 +121,6 @@ export default function CompositionGrid() {
           budget: x.budget,
         };
       });
-      debugger;
       for (var i = 0; i < compositionsMapped.length; i++) {
         var translatedFactionName: Faction = await translateFactionIds(
           compositionsMapped[i].factionId

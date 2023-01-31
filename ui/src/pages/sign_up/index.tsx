@@ -5,6 +5,7 @@ import { AccountService } from "../../services";
 import { Account } from "../../types/account";
 import { TextField, Button } from "@mui/material";
 import { Container, Stack } from "@mui/system";
+import { NavigationRoutes } from "../../constants";
 
 interface NewAccount extends Account {
   confirmPassword: string;
@@ -38,7 +39,7 @@ const SignUp = () => {
   const onAddAccount = async () => {
     const response = await AccountService.createAccount(newUser);
     if (response.status === 201) {
-      navigate("/login");
+      navigate(NavigationRoutes.Login);
     }
   };
 
@@ -102,6 +103,12 @@ const SignUp = () => {
             />
             <Button variant="contained" onClick={() => onAddAccount()}>
               Create Account
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => navigate(NavigationRoutes.Login)}
+            >
+              Cancel
             </Button>
           </Stack>
         }

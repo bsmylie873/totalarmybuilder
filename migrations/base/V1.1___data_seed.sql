@@ -190,9 +190,9 @@ VALUES ('Dragon-blooded Shugengan Lord (Yin)', 2062, 1);
 INSERT INTO units(name, cost, avatar_id)
 VALUES ('Dragon-blooded Shugengan Lord (Yang)', 2062, 1);
 INSERT INTO units(name, cost, avatar_id)
-VALUES ('Zhao Ming, the Iron Dragon', 3112, 1);
+VALUES ('Zhao Ming the Iron Dragon', 3112, 1);
 INSERT INTO units(name, cost, avatar_id)
-VALUES ('Mia Ying, the Storm Dragon', 3362, 1);
+VALUES ('Miao Ying the Storm Dragon', 3362, 1);
 INSERT INTO units(name, cost, avatar_id)
 VALUES ('Alchemist', 1512, 1);
 INSERT INTO units(name, cost, avatar_id)

@@ -1,5 +1,6 @@
 import { Container, Stack, TextField, Button, Grid } from "@mui/material";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Title } from "../../components";
 import { NavigationRoutes, StorageTypes } from "../../constants";
@@ -23,7 +24,11 @@ const Login = () => {
         type: "authentication",
         ...loginResult,
       });
+      toast.success("Successfully logged in!");
       navigate(NavigationRoutes.Home);
+    } else if (response.status === 401) {
+      toast.error("Failed to logged in!");
+      navigate(NavigationRoutes.Login);
     }
   };
 

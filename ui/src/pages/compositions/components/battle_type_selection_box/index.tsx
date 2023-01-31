@@ -1,4 +1,5 @@
-import { Autocomplete, List, MenuItem, Stack, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
+import { useState } from "react";
 
 const battleTypes = [
   {
@@ -11,15 +12,23 @@ const battleTypes = [
   },
 ];
 
-export default function BattleTypeSelection() {
+export default function BattleTypeSelection(_props: any) {
+  const [battleType, setBattleType] = useState(_props.battleType);
+
+  const handleChange = (event: any) => {
+    debugger;
+    setBattleType(event.target.value);
+  };
+
   return (
     <div>
       <TextField
         id="outlined-select-battle-type"
         select
         label="Select"
-        defaultValue="Domination"
+        value={battleType}
         helperText="Please select your battle type"
+        onChange={handleChange}
       >
         {battleTypes.map((option) => (
           <MenuItem key={option.value} value={option.value}>

@@ -1,4 +1,5 @@
 import { Autocomplete, List, MenuItem, Stack, TextField } from "@mui/material";
+import { useState } from "react";
 
 const budgets = [
   {
@@ -6,20 +7,28 @@ const budgets = [
     label: "0",
   },
   {
-    value: "10000",
-    label: "10000",
+    value: "9000",
+    label: "9000",
   },
 ];
 
-export default function BudgetSelection() {
+export default function BudgetSelection(_props: any) {
+  const [budget, setBudget] = useState(_props.budget);
+
+  const handleChange = (event: any) => {
+    debugger;
+    setBudget(event.target.value);
+  };
+
   return (
     <div>
       <TextField
         id="outlined-select-budget"
         select
         label="Select"
-        defaultValue="0"
+        value={budget}
         helperText="Please select your budget"
+        onChange={handleChange}
       >
         {budgets.map((option) => (
           <MenuItem key={option.value} value={option.value}>
