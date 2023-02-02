@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS compositions_units
     REFERENCES compositions
 (
     id
-),
+)ON DELETE CASCADE,
     FOREIGN KEY
 (
     unit_id

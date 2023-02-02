@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query;
 using TotalArmyBuilder.Dal.Interfaces;
 using TotalArmyBuilder.Dal.Models;
 using TotalArmyBuilder.Dal.Specifications.Compositions;
+using TotalArmyBuilder.Dal.Specifications.CompositionUnits;
 using TotalArmyBuilder.Dal.Specifications.Units;
 using TotalArmyBuilder.Service.DTOs;
 using TotalArmyBuilder.Service.Interfaces;
@@ -70,6 +72,8 @@ public class CompositionService : ICompositionService
 
         if (currentComposition == null) throw new NotFoundException("Composition Not Found");
 
+        DeleteCompositionUnits(id);
+        
         _mapper.Map(composition, currentComposition);
 
         _database.SaveChanges();
@@ -80,10 +84,23 @@ public class CompositionService : ICompositionService
         var currentComposition = _database
             .Get<Composition>()
             .FirstOrDefault(new CompositionByIdSpec(id));
-
+        
         if (currentComposition == null) throw new NotFoundException("Composition Not Found");
-
+        
         _database.Delete(currentComposition);
+        _database.SaveChanges();
+    }
+
+    private void DeleteCompositionUnits(int id)
+    {
+        var currentCompositionUnits = _database
+            .Get<CompositionUnit>()
+            .Where(new CompositionUnitByCompositionIdSpec(id));
+
+        foreach (var compUnit in currentCompositionUnits)
+        {
+            _database.Delete(compUnit);
+        }
         _database.SaveChanges();
     }
 }

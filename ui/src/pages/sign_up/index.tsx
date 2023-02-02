@@ -79,6 +79,7 @@ const SignUp = () => {
               required
               id="outlined-required"
               label="Password"
+              type="password"
               onChange={(e) =>
                 dispatch({
                   value: e.target.value,
@@ -92,6 +93,7 @@ const SignUp = () => {
               required
               id="outlined-required"
               label="Confirm Password"
+              type="password"
               onChange={(e) =>
                 dispatch({
                   value: e.target.value,

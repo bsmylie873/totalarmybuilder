@@ -38,6 +38,7 @@ export function reducer(state: Composition, action: Action): Composition {
         case 'RESET_UNIT_LIST':
             return { ...state, units: []};
         case "REMOVE_UNIT_FROM_UNIT_LIST":
+            debugger;
             return { ...state, units: state.units.filter((unit) => unit !== action.payload.value) };   
         default:
             return state;

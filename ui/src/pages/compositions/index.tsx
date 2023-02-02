@@ -232,7 +232,6 @@ const Compositions = () => {
   }
 
   async function removeUnit(value: any, type: string) {
-    debugger;
     if (value === undefined || state.units.length <= 0) {
       return;
     }
@@ -249,7 +248,6 @@ const Compositions = () => {
 
   useEffect(() => {
     getUnitByFactionData();
-    resetUnitList();
   }, [state.factionId]);
 
   useEffect(() => {
@@ -420,6 +418,15 @@ const Compositions = () => {
           }}
         >
           Save
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => {
+            resetUnitList();
+          }}
+        >
+          Reset Unit List
         </Button>
         <Button
           variant="outlined"
