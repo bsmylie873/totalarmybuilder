@@ -40,5 +40,8 @@ public class UnitProfile : Profile
     private void ConfigureDtoToDomainModel()
     {
         CreateMap<UnitDto, Unit>();
+        CreateMap<UnitDto, CompositionUnit>() 
+            .ForMember(d => d.Id, o => o.Ignore())
+            .ForMember( d=> d.UnitId, o=> o.MapFrom(x=> x.Id));
     }
 }

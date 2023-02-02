@@ -10,6 +10,7 @@ public class UnitProfile : Profile
     public UnitProfile()
     {
         ConfigureDtoToViewModel();
+        ConfigureCreateModelToDto();
     }
 
     private void ConfigureDtoToViewModel()
@@ -20,5 +21,6 @@ public class UnitProfile : Profile
 
     private void ConfigureCreateModelToDto()
     {
+        CreateMap<UnitViewModel,UnitDto>().IgnoreAllNull();
     }
 }

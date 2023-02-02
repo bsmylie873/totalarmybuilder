@@ -2,7 +2,7 @@ import { Composition } from "../types/composition";
 import {FetchUtils} from "../utils";
 
 const createComposition = async (newComposition: Composition) => {
-    const {name, battleType, factionId, avatarId, budget, unitList} = newComposition;
+    const {name, battleType, factionId, avatarId, budget, units} = newComposition;
     return await FetchUtils.fetchInstance("compositions", {
         method: "POST",
         body: JSON.stringify({
@@ -11,13 +11,13 @@ const createComposition = async (newComposition: Composition) => {
             factionId,
             avatarId,
             budget,
-            unitList
+            units
         }),
     });
 };
 
 const updateComposition = async (updateComposition: Composition) => {
-    const {id, name, battleType, factionId, avatarId, budget, unitList} = updateComposition;
+    const {id, name, battleType, factionId, avatarId, budget, units} = updateComposition;
     return await FetchUtils.fetchInstance(`compositions/${id}`, {
         method: "PATCH",
         body: JSON.stringify({
@@ -27,7 +27,7 @@ const updateComposition = async (updateComposition: Composition) => {
             factionId,
             avatarId,
             budget,
-            unitList
+            units
         }),
     });
 };

@@ -1,4 +1,5 @@
 using FluentValidation;
+using TotalArmyBuilder.Api.ViewModels.Units;
 
 namespace TotalArmyBuilder.Api.ViewModels.Compositions;
 
@@ -11,6 +12,7 @@ public class UpdateCompositionViewModel
     public int Budget { get; set; }
     public int Wins { get; set; }
     public int Losses { get; set; }
+    public IList<UnitViewModel>? Units { get; set; }
 }
 
 public class UpdateCompositionViewModelValidator : AbstractValidator<UpdateCompositionViewModel>

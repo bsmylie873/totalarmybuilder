@@ -22,7 +22,7 @@ export const initialState: Composition = {
     dateCreated: new Date(Date.now()),
     wins: 0,
     losses: 0,
-    unitList: []
+    units: []
 };
 
 export function reducer(state: Composition, action: Action): Composition {
@@ -34,11 +34,11 @@ export function reducer(state: Composition, action: Action): Composition {
         case 'SET_COMP':
             return { ...(action.payload as Composition)};
         case 'ADD_TO_UNIT_LIST':
-            return { ...state, unitList: [...state.unitList, action.payload.value as Unit] };
+            return { ...state, units: [...state.units, action.payload.value as Unit] };
         case 'RESET_UNIT_LIST':
-            return { ...state, unitList: []};
+            return { ...state, units: []};
         case "REMOVE_UNIT_FROM_UNIT_LIST":
-            return { ...state, unitList: state.unitList.filter((unit) => unit !== action.payload.value) };   
+            return { ...state, units: state.units.filter((unit) => unit !== action.payload.value) };   
         default:
             return state;
     }

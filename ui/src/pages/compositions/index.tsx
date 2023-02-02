@@ -116,7 +116,7 @@ const Compositions = () => {
       dateCreated: state.dateCreated,
       wins: state.wins,
       losses: state.losses,
-      unitList: state.unitList,
+      units: state.units,
     };
 
     const response = await CompositionService.createComposition(newComposition);
@@ -129,7 +129,6 @@ const Compositions = () => {
   };
 
   const updateComposition = async (compositionId: string | undefined) => {
-    debugger;
     if (compositionId === undefined) {
       toast.error("Cannot update a composition that has not been created yet.");
       return;
@@ -145,9 +144,9 @@ const Compositions = () => {
       dateCreated: state.dateCreated,
       wins: state.wins,
       losses: state.losses,
-      unitList: state.unitList,
+      units: state.units,
     };
-
+    debugger;
     const response = await CompositionService.updateComposition(
       updateComposition
     );
@@ -222,7 +221,7 @@ const Compositions = () => {
   }
 
   async function addUnit(unParsedValue: any, type: string) {
-    if (unParsedValue === undefined || state.unitList.length >= 20) {
+    if (unParsedValue === undefined || state.units.length >= 20) {
       return;
     }
     let value = JSON.parse(unParsedValue) as Unit;
@@ -234,7 +233,7 @@ const Compositions = () => {
 
   async function removeUnit(value: any, type: string) {
     debugger;
-    if (value === undefined || state.unitList.length <= 0) {
+    if (value === undefined || state.units.length <= 0) {
       return;
     }
     dispatch({
@@ -254,8 +253,8 @@ const Compositions = () => {
   }, [state.factionId]);
 
   useEffect(() => {
-    console.log(state.unitList);
-  }, [state.unitList]);
+    console.log(state.units);
+  }, [state.units]);
 
   return (
     <>
@@ -369,7 +368,7 @@ const Compositions = () => {
         </Select>
         <Box sx={{ height: "100%", width: "100%", overflow: "auto" }}>
           <List dense>
-            {state.unitList?.map((unit: Unit) => (
+            {state.units?.map((unit: Unit) => (
               <ListItem
                 divider
                 key={unit.id}

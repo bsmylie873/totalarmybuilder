@@ -14,11 +14,13 @@ public class CompositionProfile : Profile
 
     private void ConfigureDomainToDtoModel()
     {
-        CreateMap<Composition, CompositionDto>();
+        CreateMap<Composition, CompositionDto>().ForMember(d=>d.Units, o=> o.MapFrom(x=> x.CompositionUnits.Select(y=> y.Unit)));
     }
 
     private void ConfigureDtoToDomainModel()
     {
-        CreateMap<CompositionDto, Composition>().ForMember(d => d.Id, o => o.Ignore());;
+        CreateMap<CompositionDto, Composition>()
+            .ForMember(d => d.Id, o => o.Ignore())
+            .ForMember(d => d.CompositionUnits, o=>o.MapFrom(x=>x.Units));
     }
 }

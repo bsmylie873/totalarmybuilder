@@ -10,5 +10,5 @@ export type Composition = {
     dateCreated: Date,
     wins: number,
     losses: number,
-    unitList: Unit[] 
+    units: Unit[] 
 };
