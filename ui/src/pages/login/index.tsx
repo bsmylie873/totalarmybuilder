@@ -26,7 +26,7 @@ const Login = () => {
       });
       toast.success("Successfully logged in!");
       navigate(NavigationRoutes.Home);
-    } else if (response.status === 401) {
+    } else {
       toast.error("Failed to logged in!");
       navigate(NavigationRoutes.Login);
     }

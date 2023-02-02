@@ -311,13 +311,13 @@ INSERT INTO accounts(username, email, password)
 VALUES('JohnDoe', 'johndoe@example.com', '$2a$11$78nO9BRsnqm6f6U0VngPLecM9yJLX02Vfqn3OO0xIGVpLwd13ZtRS');
 
 INSERT INTO compositions(name, battle_type, faction_id, avatar_id, budget, date_created, wins, losses)
-VALUES('Comp1', 'Land Battles', 1, 1, 9000, '2011-05-16 15:36:38', 0, 0 );
+VALUES('Ice Guard Box', 'Land Battles', 11, 1, 8000, '2011-05-16 15:36:38', 0, 0 );
 
 INSERT INTO compositions(name, battle_type, faction_id, avatar_id, budget, date_created, wins, losses)
-VALUES('james', 'Domination', 2, 1, 7220, '2011-06-16 18:36:38', 1, 0 );
+VALUES('Oops All Bears', 'Domination', 11, 1, 4000, '2011-06-16 18:36:38', 1, 0 );
 
 INSERT INTO compositions(name, battle_type, faction_id, avatar_id, budget, date_created, wins, losses)
-VALUES('purple', 'Domination', 2, 1, 10000, '2015-06-16 18:36:38', 1, 1 );
+VALUES('Pots And Peasants', 'Domination', 7, 1, 10000, '2015-06-16 18:36:38', 1, 1 );
 
 SET
 session_replication_role = 'origin';

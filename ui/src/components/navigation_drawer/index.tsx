@@ -16,9 +16,12 @@ import ListIcon from "@mui/icons-material/List";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { NavigationRoutes } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 export default function NavigationDrawer() {
   const [open, setState] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (open: any) => (event: any) => {
     if (
@@ -53,34 +56,36 @@ export default function NavigationDrawer() {
         <Divider sx={{ mb: 2 }} />
 
         <Box sx={{ mb: 2 }}>
-          <ListItemButton href="/home">
+          <ListItemButton onClick={() => navigate(NavigationRoutes.Home)}>
             <HomeIcon></HomeIcon>
             <ListItemText primary="Home" />
           </ListItemButton>
 
-          <ListItemButton href="/mybuilds">
+          <ListItemButton onClick={() => navigate(NavigationRoutes.MyBuilds)}>
             <ListIcon></ListIcon>
             <ListItemText primary="My Builds"></ListItemText>
           </ListItemButton>
 
-          <ListItemButton href="/composition/">
+          <ListItemButton
+            onClick={() => navigate(NavigationRoutes.CompositionNew)}
+          >
             <FestivalIcon></FestivalIcon>
             <ListItemText primary="Create a new build"></ListItemText>
           </ListItemButton>
 
-          <ListItemButton href="/search">
+          <ListItemButton onClick={() => navigate(NavigationRoutes.Search)}>
             <SearchIcon></SearchIcon>
             <ListItemText primary="Search" />
           </ListItemButton>
 
-          <ListItemButton href="/tutorial">
-            <QuestionMarkIcon></QuestionMarkIcon>
-            <ListItemText primary="Tutorial" />
-          </ListItemButton>
-
-          <ListItemButton href="/blog">
+          <ListItemButton onClick={() => navigate(NavigationRoutes.Blog)}>
             <BookIcon></BookIcon>
             <ListItemText primary="Blog/F.A.Q" />
+          </ListItemButton>
+
+          <ListItemButton onClick={() => navigate(NavigationRoutes.Tutorial)}>
+            <QuestionMarkIcon></QuestionMarkIcon>
+            <ListItemText primary="Tutorial" />
           </ListItemButton>
         </Box>
       </Drawer>

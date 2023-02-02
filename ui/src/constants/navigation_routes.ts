@@ -1,12 +1,11 @@
-import { PasswordResetRequest } from "../pages";
-
 const routes = {
     AccountDetails: "/accountdetails",
     Blog: "/blog",
     Composition: "/composition/:compositionId?",
+    CompositionNew: "/composition/",
     Home: "/",
     Login: "/login",
-    MyBuilds: "mybuilds",
+    MyBuilds: "/mybuilds",
     PasswordReset: "/passwordreset",
     PasswordResetRequest: "/passwordresetrequest",
     Search: "/search/:searchValue?",

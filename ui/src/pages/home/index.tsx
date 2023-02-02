@@ -15,6 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { Title } from "../../components";
 import { useNavigate } from "react-router-dom";
+import { NavigationRoutes } from "../../constants";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -23,36 +24,46 @@ const Home = () => {
     <>
       <Container fixed>
         {
-          <Stack spacing={8} style={{ marginTop: 100 }}>
-            <Button
-              variant="contained"
-              startIcon={<ListIcon />}
-              onClick={() => navigate("/mybuilds")}
-            >
-              My Builds
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<SearchIcon />}
-              onClick={() => navigate("/search")}
-            >
-              Search Builds
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<QuestionMarkIcon />}
-              onClick={() => navigate("/tutorial")}
-            >
-              Tutorial
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<BookIcon />}
-              onClick={() => navigate("/blog")}
-            >
-              Blog
-            </Button>
-          </Stack>
+          <>
+            <Title title={"TotalArmyBuilder"}></Title>
+            <Stack spacing={8} style={{ marginTop: 100 }}>
+              <Button
+                variant="contained"
+                startIcon={<ListIcon />}
+                onClick={() => navigate(NavigationRoutes.MyBuilds)}
+              >
+                My Builds
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<SearchIcon />}
+                onClick={() => navigate(NavigationRoutes.Search)}
+              >
+                Search Builds
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<FestivalIcon />}
+                onClick={() => navigate(NavigationRoutes.Composition)}
+              >
+                Create A New Composition
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<BookIcon />}
+                onClick={() => navigate(NavigationRoutes.Blog)}
+              >
+                Blog
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<QuestionMarkIcon />}
+                onClick={() => navigate(NavigationRoutes.Tutorial)}
+              >
+                Tutorial
+              </Button>
+            </Stack>
+          </>
         }
       </Container>
     </>

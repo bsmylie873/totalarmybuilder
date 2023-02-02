@@ -1,7 +1,7 @@
 import { Unit } from "./unit";
 
 export type Composition = {
-    id: number,
+    id?: number,
     name: string,
     battleType: string,
     factionId: number,

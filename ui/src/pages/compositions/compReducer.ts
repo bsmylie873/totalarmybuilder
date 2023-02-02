@@ -2,10 +2,15 @@ import { Composition } from "../../types/composition";
 import { Unit } from "../../types/unit";
 
 type payload = {
-   value: number | string, type: string 
+   value: number | string | Unit, type: string
 }
 
-export type Action = { type: string; payload: payload } | { type: "SET_COMP"; payload: Composition } | { type: 'CLEAR' };
+export type Action = { type: string; payload: payload } 
+| { type: 'SET_COMP'; payload: Composition } 
+| { type: 'CLEAR' } 
+| { type: 'ADD_TO_UNIT_LIST'; payload: any}
+| { type: 'RESET_UNIT_LIST'; }
+| { type: 'REMOVE_UNIT_FROM_UNIT_LIST'; payload: any }
 
 export const initialState: Composition = {
     id: 0,
@@ -13,7 +18,7 @@ export const initialState: Composition = {
     battleType: 'Land Battles',
     factionId: 1,
     avatarId: 1,
-    budget: 9000,
+    budget: 10000,
     dateCreated: new Date(Date.now()),
     wins: 0,
     losses: 0,
@@ -28,10 +33,12 @@ export function reducer(state: Composition, action: Action): Composition {
             return { ...initialState};
         case 'SET_COMP':
             return { ...(action.payload as Composition)};
+        case 'ADD_TO_UNIT_LIST':
+            return { ...state, unitList: [...state.unitList, action.payload.value as Unit] };
         case 'RESET_UNIT_LIST':
             return { ...state, unitList: []};
-        /* case 'ADD_UNIT':
-            return { ...state, unitList: [...state.unitList, action.payload.newUnit]}; */
+        case "REMOVE_UNIT_FROM_UNIT_LIST":
+            return { ...state, unitList: state.unitList.filter((unit) => unit !== action.payload.value) };   
         default:
             return state;
     }
