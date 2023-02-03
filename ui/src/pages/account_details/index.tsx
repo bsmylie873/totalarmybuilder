@@ -51,7 +51,7 @@ const AccountDetails = () => {
         avatar: "",
       };
       const response = await AccountService.updateAccount(account);
-      if (response.status == 200) {
+      if (response.status == 204) {
         setPassword("");
         toast.success("Profile updated");
         localStorage.clear();

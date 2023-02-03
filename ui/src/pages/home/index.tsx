@@ -53,14 +53,14 @@ const Home = () => {
                 startIcon={<BookIcon />}
                 onClick={() => navigate(NavigationRoutes.Blog)}
               >
-                Blog
+                Blog (W.I.P)
               </Button>
               <Button
                 variant="contained"
                 startIcon={<QuestionMarkIcon />}
                 onClick={() => navigate(NavigationRoutes.Tutorial)}
               >
-                Tutorial
+                Tutorial (W.I.P)
               </Button>
             </Stack>
           </>
