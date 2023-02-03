@@ -9,8 +9,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Router>
+    <Toaster />
     <AuthContext.AuthProvider>
-      <Toaster />
       <App />
     </AuthContext.AuthProvider>
   </Router>

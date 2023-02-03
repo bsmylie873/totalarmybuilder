@@ -21,6 +21,7 @@ public class CompositionProfile : Profile
 
     private void ConfigureCreateModelToDto()
     {
+        CreateMap<CompositionViewModel, CompositionDto>().IgnoreAllNull();
         CreateMap<CreateCompositionViewModel, CompositionDto>().IgnoreAllNull();
         CreateMap<UpdateCompositionViewModel, CompositionDto>().IgnoreAllNull();
     }

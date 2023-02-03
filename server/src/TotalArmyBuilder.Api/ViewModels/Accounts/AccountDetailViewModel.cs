@@ -1,4 +1,5 @@
 using FluentValidation;
+using TotalArmyBuilder.Api.ViewModels.Compositions;
 
 namespace TotalArmyBuilder.Api.ViewModels.Accounts;
 
@@ -7,6 +8,7 @@ public class AccountDetailViewModel
     public int Id { get; set; }
     public string Username { get; set; }
     public string Email { get; set; }
+    public IList<CompositionViewModel>? Compositions { get; set; }
 }
 
 public class AccountDetailViewModelValidator : AbstractValidator<AccountDetailViewModel>

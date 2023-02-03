@@ -22,5 +22,8 @@ public class CompositionProfile : Profile
         CreateMap<CompositionDto, Composition>()
             .ForMember(d => d.Id, o => o.Ignore())
             .ForMember(d => d.CompositionUnits, o=> o.MapFrom(x=>x.Units));
+        CreateMap<CompositionDto, AccountComposition>() 
+            .ForMember(d => d.Id, o => o.Ignore())
+            .ForMember( d=> d.CompositionId, o=> o.MapFrom(x=> x.Id));
     }
 }

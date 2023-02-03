@@ -56,7 +56,11 @@ export default function NavigationDrawer() {
         <Divider sx={{ mb: 2 }} />
 
         <Box sx={{ mb: 2 }}>
-          <ListItemButton onClick={() => navigate(NavigationRoutes.Home)}>
+          <ListItemButton
+            onClick={() => {
+              navigate(NavigationRoutes.Home);
+            }}
+          >
             <HomeIcon></HomeIcon>
             <ListItemText primary="Home" />
           </ListItemButton>
@@ -80,12 +84,12 @@ export default function NavigationDrawer() {
 
           <ListItemButton onClick={() => navigate(NavigationRoutes.Blog)}>
             <BookIcon></BookIcon>
-            <ListItemText primary="Blog/F.A.Q" />
+            <ListItemText primary="Blog/F.A.Q (W.I.P)" />
           </ListItemButton>
 
           <ListItemButton onClick={() => navigate(NavigationRoutes.Tutorial)}>
             <QuestionMarkIcon></QuestionMarkIcon>
-            <ListItemText primary="Tutorial" />
+            <ListItemText primary="Tutorial (W.I.P)" />
           </ListItemButton>
         </Box>
       </Drawer>

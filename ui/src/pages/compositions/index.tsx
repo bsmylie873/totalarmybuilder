@@ -91,6 +91,83 @@ const Compositions = () => {
 
   const navigate = useNavigate();
 
+  function conditionalButtons() {
+    if (compositionId === undefined) {
+      return (
+        <>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              createComposition();
+            }}
+          >
+            Create
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              resetUnitList();
+            }}
+          >
+            Reset Unit List
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              navigate(NavigationRoutes.Home);
+            }}
+          >
+            Cancel
+          </Button>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              updateComposition(compositionId);
+            }}
+          >
+            Save
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              resetUnitList();
+            }}
+          >
+            Reset Unit List
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              deleteComposition(compositionId);
+            }}
+          >
+            Delete
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              navigate(NavigationRoutes.Home);
+            }}
+          >
+            Cancel
+          </Button>
+        </>
+      );
+    }
+  }
+
   async function getCompositionData() {
     const compositionResponse = await CompositionService.getComposition(
       compositionId as string
@@ -122,7 +199,7 @@ const Compositions = () => {
     const response = await CompositionService.createComposition(newComposition);
     if (response.status === 201) {
       toast.success("New composition added!");
-      window.location.reload();
+      navigate(NavigationRoutes.MyBuilds);
     } else {
       toast.error("Error creating the composition.");
     }
@@ -146,7 +223,6 @@ const Compositions = () => {
       losses: state.losses,
       units: state.units,
     };
-    debugger;
     const response = await CompositionService.updateComposition(
       updateComposition
     );
@@ -401,51 +477,7 @@ const Compositions = () => {
         margin={5}
         alignSelf="center"
       >
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            createComposition();
-          }}
-        >
-          Create
-        </Button>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={() => {
-            updateComposition(compositionId);
-          }}
-        >
-          Save
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => {
-            resetUnitList();
-          }}
-        >
-          Reset Unit List
-        </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => {
-            deleteComposition(compositionId);
-          }}
-        >
-          Delete
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => {
-            navigate(NavigationRoutes.Home);
-          }}
-        >
-          Cancel
-        </Button>
+        {conditionalButtons()}
       </Box>
     </>
   );
