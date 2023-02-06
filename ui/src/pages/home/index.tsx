@@ -44,7 +44,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 startIcon={<FestivalIcon />}
-                onClick={() => navigate(NavigationRoutes.Composition)}
+                onClick={() => navigate(NavigationRoutes.CompositionNew)}
               >
                 Create A New Composition
               </Button>

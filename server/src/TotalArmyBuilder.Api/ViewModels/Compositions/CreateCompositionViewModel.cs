@@ -17,7 +17,6 @@ public class CreateCompositionViewModel
     public int Losses { get; set; }
 
     public IList<UnitViewModel>? Units { get; set; }
-    public AccountViewModel Account { get; set; }
 }
 
 public class CreateCompositionViewModelValidator : AbstractValidator<CreateCompositionViewModel>
