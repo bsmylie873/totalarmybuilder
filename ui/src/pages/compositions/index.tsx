@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   IconButton,
   List,
   ListItem,
@@ -210,6 +211,7 @@ const Compositions = () => {
       toast.error("Cannot update a composition that has not been created yet.");
       return;
     }
+    debugger;
 
     const updateComposition: Composition = {
       id: Number(compositionId),
@@ -315,6 +317,42 @@ const Compositions = () => {
       type: "REMOVE_UNIT_FROM_UNIT_LIST",
       payload: { value, type },
     });
+  }
+
+  async function addWin(value: any, type: string) {
+    dispatch({
+      type: "ADD_WIN",
+      payload: { value, type },
+    });
+  }
+
+  async function subtractWin(value: any, type: string) {
+    if (state.wins > 0) {
+      dispatch({
+        type: "REMOVE_WIN",
+        payload: { value, type },
+      });
+    } else {
+      toast.error("Cannot have a negative number of wins!");
+    }
+  }
+
+  async function addLoss(value: any, type: string) {
+    dispatch({
+      type: "ADD_LOSS",
+      payload: { value, type },
+    });
+  }
+
+  async function subtractLoss(value: any, type: string) {
+    if (state.losses > 0) {
+      dispatch({
+        type: "REMOVE_LOSS",
+        payload: { value, type },
+      });
+    } else {
+      toast.error("Cannot have a negative number of losses!");
+    }
   }
 
   useEffect(() => {
@@ -468,7 +506,55 @@ const Compositions = () => {
         </Box>
       </Stack>
       <br></br>
-      <Stack direction="row" spacing={2}></Stack>
+      <Box
+        display="flex"
+        justifyContent="space-around"
+        alignItems="flex-end"
+        width="100%"
+        margin={0}
+        alignSelf="center"
+      >
+        <h4>Wins:</h4>
+        <ButtonGroup size="small" aria-label="win counter">
+          <Button
+            key="subtractWin"
+            onClick={() => {
+              subtractWin(undefined, "wins");
+            }}
+          >
+            -
+          </Button>
+          <h4>{state.wins}</h4>
+          <Button
+            key="addWin"
+            onClick={() => {
+              addWin(undefined, "wins");
+            }}
+          >
+            +
+          </Button>
+        </ButtonGroup>
+        <h4>Losses:</h4>
+        <ButtonGroup size="small" aria-label="loss counter">
+          <Button
+            key="subtractLoss"
+            onClick={() => {
+              subtractLoss(undefined, "losses");
+            }}
+          >
+            -
+          </Button>
+          <h4>{state.losses}</h4>
+          <Button
+            key="addLoss"
+            onClick={() => {
+              addLoss(undefined, "losses");
+            }}
+          >
+            +
+          </Button>
+        </ButtonGroup>
+      </Box>
       <Box
         display="flex"
         justifyContent="space-around"

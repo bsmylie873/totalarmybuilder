@@ -37,9 +37,16 @@ export function reducer(state: Composition, action: Action): Composition {
             return { ...state, units: [...state.units, action.payload.value as Unit] };
         case 'RESET_UNIT_LIST':
             return { ...state, units: []};
-        case "REMOVE_UNIT_FROM_UNIT_LIST":
-            debugger;
-            return { ...state, units: state.units.filter((unit) => unit !== action.payload.value) };   
+        case 'REMOVE_UNIT_FROM_UNIT_LIST':
+            return { ...state, units: state.units.filter((unit) => unit !== action.payload.value) }; 
+        case 'ADD_WIN':
+            return {...state, wins: state.wins + 1};
+        case 'REMOVE_WIN':
+            return {...state, wins: state.wins - 1};
+        case 'ADD_LOSS':
+            return {...state, losses: state.losses + 1};
+        case 'REMOVE_LOSS':
+            return {...state, losses: state.losses - 1};    
         default:
             return state;
     }

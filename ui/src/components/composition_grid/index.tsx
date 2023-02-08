@@ -69,6 +69,24 @@ const columns: GridColDef[] = [
     headerAlign: "center",
   },
   {
+    field: "wins",
+    headerName: "Wins",
+    type: "number",
+    editable: false,
+    flex: 0.5,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "losses",
+    headerName: "Losses",
+    type: "number",
+    editable: false,
+    flex: 0.5,
+    align: "center",
+    headerAlign: "center",
+  },
+  {
     disableColumnMenu: true,
     flex: 1,
     align: "center",
@@ -119,6 +137,8 @@ export default function CompositionGrid() {
           battleType: x.battleType,
           factionId: x.factionId,
           budget: x.budget,
+          wins: x.wins,
+          losses: x.losses,
         };
       });
       for (var i = 0; i < compositionsMapped.length; i++) {
