@@ -11,4 +11,5 @@ export type Composition = {
     wins: number,
     losses: number,
     units: Unit[] 
+    units2: Unit[]
 };

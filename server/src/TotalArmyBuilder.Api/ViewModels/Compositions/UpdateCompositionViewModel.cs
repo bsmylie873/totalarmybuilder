@@ -13,6 +13,7 @@ public class UpdateCompositionViewModel
     public int Wins { get; set; }
     public int Losses { get; set; }
     public IList<UnitViewModel>? Units { get; set; }
+    public IList<UnitViewModel>? Units2 { get; set; }
 }
 
 public class UpdateCompositionViewModelValidator : AbstractValidator<UpdateCompositionViewModel>

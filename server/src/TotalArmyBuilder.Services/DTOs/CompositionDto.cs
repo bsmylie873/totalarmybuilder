@@ -14,4 +14,5 @@ public class CompositionDto
 
     public IList<AccountDto> Accounts { get; set; }
     public IList<UnitDto>? Units { get; set; }
+    public IList<UnitDto>? Units2 { get; set; }
 }

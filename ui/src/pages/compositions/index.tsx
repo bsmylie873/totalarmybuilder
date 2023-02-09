@@ -87,6 +87,7 @@ const Compositions = () => {
   var { compositionId } = useParams<{ compositionId: string }>();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [unit, setUnit] = useState<Unit>();
+  const [unit2, setUnit2] = useState<Unit>();
   const [factions, setFactions] = useState<Faction[]>([]);
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
 
@@ -169,6 +170,79 @@ const Compositions = () => {
     }
   }
 
+  function conditionalBattleType() {
+    if (state.battleType === "Domination") {
+      return (
+        <>
+          <h4>Secondary Army:</h4>
+          <Select
+            id="primary-unit-selection"
+            label="Select"
+            sx={{ width: "100%" }}
+            onChange={handleChange2}
+            value={unit2 || ""}
+            endAdornment=<InputAdornment position="end">
+              <IconButton
+                aria-label="addUnit2"
+                onClick={() => addUnit2(unit2, "Unit2")}
+                edge="start"
+              >
+                +
+              </IconButton>
+            </InputAdornment>
+          >
+            {dropdownData.map((option: Unit) => (
+              <MenuItem
+                style={{
+                  justifyContent: "space-between",
+                  alignItems: "flex-end",
+                }}
+                divider
+                key={option.id}
+                value={JSON.stringify({
+                  id: option.id,
+                  name: option.name,
+                  cost: option.cost,
+                  avatarId: option.avatarId,
+                })}
+              >
+                {option.name} {"Cost: " + option.cost}
+              </MenuItem>
+            ))}
+          </Select>
+          <Box sx={{ height: "100%", width: "100%", overflow: "auto" }}>
+            <List dense>
+              {state.units2?.map((unit2: Unit) => (
+                <ListItem
+                  divider
+                  key={unit2.id}
+                  secondaryAction={
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => removeUnit2(unit2, "Unit2")}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                >
+                  <ListItemButton dense>
+                    <ListItemText
+                      primary={unit2.name}
+                      secondary={"Cost: " + unit2.cost}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  }
+
   async function getCompositionData() {
     const compositionResponse = await CompositionService.getComposition(
       compositionId as string
@@ -195,6 +269,7 @@ const Compositions = () => {
       wins: state.wins,
       losses: state.losses,
       units: state.units,
+      units2: state.units2
     };
 
     const response = await CompositionService.createComposition(newComposition);
@@ -224,6 +299,7 @@ const Compositions = () => {
       wins: state.wins,
       losses: state.losses,
       units: state.units,
+      units2: state.units2
     };
     const response = await CompositionService.updateComposition(
       updateComposition
@@ -270,6 +346,13 @@ const Compositions = () => {
       target: { value },
     } = event;
     setUnit(value as Unit);
+  };
+
+  const handleChange2 = (event: SelectChangeEvent<typeof unit2>) => {
+    const {
+      target: { value },
+    } = event;
+    setUnit2(value as Unit);
   };
 
   async function getUnitByFactionData() {
@@ -319,6 +402,27 @@ const Compositions = () => {
     });
   }
 
+  async function addUnit2(unParsedValue: any, type: string) {
+    if (unParsedValue === undefined || state.units2.length >= 20) {
+      return;
+    }
+    let value = JSON.parse(unParsedValue) as Unit;
+    dispatch({
+      type: "ADD_TO_UNIT_LIST2",
+      payload: { value, type },
+    });
+  }
+
+  async function removeUnit2(value: any, type: string) {
+    if (value === undefined || state.units2.length <= 0) {
+      return;
+    }
+    dispatch({
+      type: "REMOVE_UNIT_FROM_UNIT_LIST2",
+      payload: { value, type },
+    });
+  }
+
   async function addWin(value: any, type: string) {
     dispatch({
       type: "ADD_WIN",
@@ -356,9 +460,15 @@ const Compositions = () => {
   }
 
   useEffect(() => {
+    conditionalBattleType();
     getCompositionData();
     getFactionData();
   }, []);
+
+  useEffect(() => {
+    conditionalBattleType();
+    resetUnitList();
+  }, [state.battleType]);
 
   useEffect(() => {
     getUnitByFactionData();
@@ -506,6 +616,7 @@ const Compositions = () => {
         </Box>
       </Stack>
       <br></br>
+      {conditionalBattleType()}
       <Box
         display="flex"
         justifyContent="space-around"

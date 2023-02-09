@@ -28,4 +28,6 @@ public class Composition
     public ICollection<AccountComposition> AccountCompositions { get; set; }
 
     public ICollection<CompositionUnit> CompositionUnits { get; set; }
+
+    public ICollection<CompositionUnit2> CompositionUnits2 { get; set; }
 }

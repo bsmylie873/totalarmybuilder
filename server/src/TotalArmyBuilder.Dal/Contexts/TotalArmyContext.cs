@@ -21,6 +21,7 @@ public class TotalArmyContext : BaseContext, ITotalArmyDatabase
 
     public virtual DbSet<AccountComposition> AccountCompositions { get; set; }
     public virtual DbSet<CompositionUnit> CompositionUnits { get; set; }
+    public virtual DbSet<CompositionUnit2> CompositionUnits2 { get; set; }
     public virtual DbSet<HeroUnit> HeroUnits { get; set; }
     public virtual DbSet<LordUnit> LordUnits { get; set; }
     public virtual DbSet<UnitFaction> UnitFactions { get; set; }

@@ -15,8 +15,8 @@ public class CreateCompositionViewModel
     public DateTime DateCreated { get; set; }
     public int Wins { get; set; }
     public int Losses { get; set; }
-
     public IList<UnitViewModel>? Units { get; set; }
+    public IList<UnitViewModel>? Units2 { get; set; }
 }
 
 public class CreateCompositionViewModelValidator : AbstractValidator<CreateCompositionViewModel>

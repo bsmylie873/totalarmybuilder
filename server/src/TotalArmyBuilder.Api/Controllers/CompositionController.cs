@@ -43,6 +43,13 @@ public class CompositionsController : TotalArmyBaseController
         return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
     }
 
+    [HttpGet("{id}/units2/", Name = "GetCompositionUnits2")]
+    public ActionResult<IList<UnitViewModel>> GetCompositionUnits2(int id)
+    {
+        var compositionUnits = _service.GetCompositionUnits2(id);
+        return OkOrNoContent(_mapper.Map<IList<UnitViewModel>>(compositionUnits));
+    }
+
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public ActionResult CreateComposition([FromBody] CreateCompositionViewModel compositionDetails)

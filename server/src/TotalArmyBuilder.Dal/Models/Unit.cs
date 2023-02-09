@@ -17,5 +17,7 @@ public class Unit
 
     public ICollection<CompositionUnit> CompositionUnits { get; set; }
 
+    public ICollection<CompositionUnit2> CompositionUnits2 { get; set; }
+
     public ICollection<UnitFaction> UnitFactions { get; set; }
 }
