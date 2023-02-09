@@ -10,13 +10,26 @@ import {
   PasswordResetRequest,
   Search,
   SignUp,
-  Tutorial,
+  Tutorial
 } from "./pages";
 import "./styles.css";
 import Layout from "./components/layout";
 import { NavigationRoutes } from "./constants";
 import { AuthContext } from "./contexts";
 import { LoginUtils } from "./utils";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
 
 if (process.env.NODE_ENV === "development") {
   //const { worker } = require("./services/mocks/browser");
@@ -65,12 +78,14 @@ function App() {
   const loggedIn = state.accessToken && !LoginUtils.isTokenExpired(state);
   return (
     <>
+    <ThemeProvider theme ={lightTheme}>
       <Layout>
         <Routes>
           {!loggedIn && unauthenticatedRoutes()}
           {loggedIn && authenticatedRoutes()}
         </Routes>
       </Layout>
+      </ThemeProvider>
     </>
   );
 }
