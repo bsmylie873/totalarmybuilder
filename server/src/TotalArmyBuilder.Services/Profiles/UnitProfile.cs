@@ -43,5 +43,8 @@ public class UnitProfile : Profile
         CreateMap<UnitDto, CompositionUnit>() 
             .ForMember(d => d.Id, o => o.Ignore())
             .ForMember( d=> d.UnitId, o=> o.MapFrom(x=> x.Id));
+        CreateMap<UnitDto, CompositionUnit2>() 
+            .ForMember(d => d.Id, o => o.Ignore())
+            .ForMember( d=> d.UnitId, o=> o.MapFrom(x=> x.Id));
     }
 }
