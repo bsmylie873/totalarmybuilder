@@ -122,6 +122,7 @@ public class CompositionService : ICompositionService
         {
             _database.Delete(compUnit2);
         }
+        
         _database.SaveChanges();
     }
 }
