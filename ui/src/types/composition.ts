@@ -10,6 +10,6 @@ export type Composition = {
     dateCreated: Date,
     wins: number,
     losses: number,
-    units: Unit[] 
+    units: Unit[], 
     units2: Unit[]
 };

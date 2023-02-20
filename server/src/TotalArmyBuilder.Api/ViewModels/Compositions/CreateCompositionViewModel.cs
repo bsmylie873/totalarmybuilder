@@ -31,6 +31,6 @@ public class CreateCompositionViewModelValidator : AbstractValidator<CreateCompo
         RuleFor(x => x.Budget).GreaterThanOrEqualTo(0).NotNull().WithMessage("Budget must not be negative or null.");
         RuleFor(x => x.DateCreated).NotNull().WithMessage("Date of creation should not be null.");
         RuleFor(x => x.Wins).GreaterThanOrEqualTo(0).NotNull().WithMessage("Win count must not be negative or null.");
-        RuleFor(x => x.Losses).GreaterThanOrEqualTo(0).NotNull().WithMessage("Win count must not be negative or null.");
+        RuleFor(x => x.Losses).GreaterThanOrEqualTo(0).NotNull().WithMessage("Loss count must not be negative or null.");
     }
 }
