@@ -27,7 +27,7 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-    - name: Deploy Shared Infrastructure
+    - name: Deploy Shared Infrastructure.
       uses: aws-actions/aws-cloudformation-github-deploy@v1
       with:
         name: totalarmybuilder-Infrastructure-${{ steps.extract_branch.outputs.branch }}

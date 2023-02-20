@@ -4,7 +4,7 @@ Description: AWS Cloud Template to create resources required to deploy Some Appl
 Parameters:
   DBPassword:
     Type: String
-    Description: Password for the DB admin account
+    Description: Password for the DB admin account.
     Default: Password123
 
 Resources:
