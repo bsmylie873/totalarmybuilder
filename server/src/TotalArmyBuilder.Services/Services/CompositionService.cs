@@ -97,10 +97,6 @@ public class CompositionService : ICompositionService
             .Get<CompositionUnit>()
             .Where(new CompositionUnitByCompositionIdSpec(id));
 
-        var currentCompositionUnits2 = _database
-            .Get<CompositionUnit2>()
-            .Where(new CompositionUnit2ByCompositionIdSpec(id));    
-
         foreach (var compUnit in currentCompositionUnits)
         {
             _database.Delete(compUnit);
