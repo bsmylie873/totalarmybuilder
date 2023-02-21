@@ -15,7 +15,6 @@ public class CompositionDetailViewModel
     public int Wins { get; set; }
     public int Losses { get; set; }
     public IList<UnitViewModel>? Units { get; set; }
-    public IList<UnitViewModel>? Units2 { get; set; }
 }
 
 public class CompositionDetailViewModelValidator : AbstractValidator<CompositionDetailViewModel>

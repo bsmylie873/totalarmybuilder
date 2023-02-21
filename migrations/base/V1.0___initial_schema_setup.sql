@@ -212,39 +212,6 @@ CREATE TABLE IF NOT EXISTS compositions_units
 )
     );
 
-CREATE TABLE IF NOT EXISTS compositions_units2
-(
-    id
-    serial
-    PRIMARY
-    KEY,
-    composition_id
-    INT
-    NOT
-    NULL,
-    unit_id
-    INT
-    NOT
-    NULL,
-    FOREIGN
-    KEY
-(
-    composition_id
-)
-    REFERENCES compositions
-(
-    id
-)ON DELETE CASCADE,
-    FOREIGN KEY
-(
-    unit_id
-)
-    REFERENCES units
-(
-    id
-)
-    );
-
 CREATE TABLE IF NOT EXISTS units_factions
 (
     id

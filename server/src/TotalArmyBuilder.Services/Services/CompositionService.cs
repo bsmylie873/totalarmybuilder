@@ -56,18 +56,6 @@ public class CompositionService : ICompositionService
         ;
     }
 
-    public IList<UnitDto> GetCompositionUnits2(int id)
-    {
-        var unitQuery = _database
-            .Get<Unit>()
-            .Where(new Unit2ByCompositionSpec(id));
-
-        return _mapper
-            .ProjectTo<UnitDto>(unitQuery)
-            .ToList();
-        ;
-    }
-
     public void CreateComposition(CompositionDto composition)
     {
         var newComposition = _mapper.Map<Composition>(composition);
@@ -116,11 +104,6 @@ public class CompositionService : ICompositionService
         foreach (var compUnit in currentCompositionUnits)
         {
             _database.Delete(compUnit);
-        }
-
-        foreach (var compUnit2 in currentCompositionUnits2)
-        {
-            _database.Delete(compUnit2);
         }
         
         _database.SaveChanges();
