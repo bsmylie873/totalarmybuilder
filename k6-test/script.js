@@ -14,6 +14,7 @@
 import http from "k6/http";
 import { group, check, sleep } from "k6";
 
+
 const BASE_URL = "http://localhost:5000";
 // Sleep duration between successive requests.
 // You might want to edit the value of this variable or remove calls to the sleep function on the script.
