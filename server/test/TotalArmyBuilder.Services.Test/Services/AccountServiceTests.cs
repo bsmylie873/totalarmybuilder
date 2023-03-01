@@ -42,6 +42,7 @@ public class AccountServiceTests
         {
             cfg.AddProfile<AccountProfile>();
             cfg.AddProfile<CompositionProfile>();
+            cfg.AddProfile<UnitProfile>();
         });
         return new Mapper(config);
     }

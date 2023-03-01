@@ -54,6 +54,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapControllers().AllowAnonymous();
+}
+else
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.MapControllers().RequireAuthorization();
 }
 
 app.UseCors(
@@ -62,12 +69,6 @@ app.UseCors(
         .AllowAnyHeader()
         .AllowAnyOrigin()
 );
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-app.MapControllers().RequireAuthorization();
 
 app.MapHealthChecks("/health");
 

@@ -74,6 +74,7 @@ public class FactionServiceTests
     [Fact]
     public void GetFactions_WhenFactionsExist_ReturnsFactions()
     {
+        // Arrange
         _fixture.Customize(new FactionCustomisation());
         var factionList = _fixture.CreateMany<Faction>(5);
         _database.Get<Faction>().Returns(factionList.AsQueryable());

@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using TotalArmyBuilder.Api.Integration.Test.Base;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
 using TotalArmyBuilder.Api.ViewModels.Factions;
@@ -16,14 +18,17 @@ public class UnitControllerTests
 
     public UnitControllerTests(ITestOutputHelper testOutputHelper, IntegrationClassFixture integrationFixture)
     {
+        var opt = new WebApplicationFactoryClientOptions();
+        opt.BaseAddress = new Uri("https://localhost/api/");
+
         _testOutputHelper = testOutputHelper;
-        _httpClient = integrationFixture.Host.CreateClient();
+        _httpClient = integrationFixture.Host.CreateClient(opt);
     }
 
     [Fact]
     public async Task GetAllUnits_WhenUnitsPresent_ReturnsOk()
     {
-        var response = await _httpClient.GetAsync("/units/");
+        var response = await _httpClient.GetAsync("units/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -34,7 +39,7 @@ public class UnitControllerTests
     public async Task GetAUnitById_WhenUnitPresent_ReturnsOk()
     {
         const int id = 1;
-        var response = await _httpClient.GetAsync($"/units/{id}");
+        var response = await _httpClient.GetAsync($"units/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -50,7 +55,7 @@ public class UnitControllerTests
     public async Task GetAUnitById_WhenUnitNotPresent_ThrowsException()
     {
         const int id = 612;
-        var response = await _httpClient.GetAsync($"/units/{id}");
+        var response = await _httpClient.GetAsync($"units/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
     
@@ -58,7 +63,7 @@ public class UnitControllerTests
     public async Task GetUnitFactionsById_WhenUnitFactions_Present_ReturnsOk()
     {
         const int id = 1;
-        var response = await _httpClient.GetAsync($"/units/{id}/factions/");
+        var response = await _httpClient.GetAsync($"units/{id}/factions/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -72,7 +77,7 @@ public class UnitControllerTests
     public async Task GetUnitFactionsById_WhenUnitFactions_NotPresent_ThrowsException()
     {
         const int id = 612;
-        var response = await _httpClient.GetAsync($"/units/{id}/factions/");
+        var response = await _httpClient.GetAsync($"units/{id}/factions/");
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 
@@ -80,7 +85,7 @@ public class UnitControllerTests
     public async Task GetUnitLords_WhenUnitLords_Present_ReturnsOk()
     {
         const int id = 1;
-        var response = await _httpClient.GetAsync("/units/lords/");
+        var response = await _httpClient.GetAsync("units/lords/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -96,7 +101,7 @@ public class UnitControllerTests
     public async Task GetUnitHeroes_WhenUnitHeroes_Present_ReturnsOk()
     {
         const int id = 2;
-        var response = await _httpClient.GetAsync("/units/heroes/");
+        var response = await _httpClient.GetAsync("units/heroes/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();

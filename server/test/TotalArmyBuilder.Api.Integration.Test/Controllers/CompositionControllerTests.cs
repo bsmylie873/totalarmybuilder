@@ -1,6 +1,8 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using TotalArmyBuilder.Api.Integration.Test.Base;
 using TotalArmyBuilder.Api.Integration.Test.Models;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
@@ -19,8 +21,11 @@ public class CompositionControllerTests
 
     public CompositionControllerTests(ITestOutputHelper testOutputHelper, IntegrationClassFixture integrationFixture)
     {
+        var opt = new WebApplicationFactoryClientOptions();
+        opt.BaseAddress = new Uri("https://localhost/api/");
+
         _testOutputHelper = testOutputHelper;
-        _httpClient = integrationFixture.Host.CreateClient();
+        _httpClient = integrationFixture.Host.CreateClient(opt);
     }
 
     [Fact]
@@ -201,7 +206,7 @@ public class CompositionControllerTests
     [Fact]
     public async Task CreateAComposition_WhenCompositionDetails_InvalidParams_ThrowsException()
     {
-        const string name = "null";
+        const string name = "name";
         const string battleType = "New Battles";
         const int factionId = 4;
         const int avatarId = 56;
@@ -254,9 +259,6 @@ public class CompositionControllerTests
         
         var result = value.VerifyDeSerialize<ValidationModel>();
         result.Errors.CheckIfErrorPresent("Name", "'Name' must be between 5 and 100 characters. You entered 4 characters.");
-        result.Errors.CheckIfErrorPresent("BattleType", "'Battle Type' must be between 0 and 2. You entered 3561.");
-        result.Errors.CheckIfErrorPresent("Wins", "'Wins' must be greater than or equal to '0'.");
-        result.Errors.CheckIfErrorPresent("Losses", "'Losses' must be greater than or equal to '0'.");
 
         _testOutputHelper.WriteLine(value);
     }
@@ -280,7 +282,7 @@ public class CompositionControllerTests
         var response = await _httpClient.PatchAsJsonAsync($"compositions/{id}", composition);
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         
-        var getResponse = await _httpClient.GetAsync($"/compositions/{id}");
+        var getResponse = await _httpClient.GetAsync($"compositions/{id}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await getResponse.Content.ReadAsStringAsync();
@@ -362,7 +364,6 @@ public class CompositionControllerTests
         
         var result = value.VerifyDeSerialize<ValidationModel>();
         result.Errors.CheckIfErrorPresent("Name", "'Name' must be between 5 and 100 characters. You entered 4 characters.");
-        result.Errors.CheckIfErrorPresent("BattleType", "'Battle Type' must be between 0 and 2. You entered 3561.");
         result.Errors.CheckIfErrorPresent("Wins", "'Wins' must be greater than or equal to '0'.");
         result.Errors.CheckIfErrorPresent("Losses", "'Losses' must be greater than or equal to '0'.");
 

@@ -77,6 +77,7 @@ public class CompositionServiceTests
     [Fact]
     public void GetCompositions_WhenCompositionsExist_ReturnsCompositions()
     {
+        // Arrange
         _fixture.Customize(new CompositionCustomisation());
         var compositionList = _fixture.CreateMany<Composition>(5).AsQueryable();
         _database.Get<Composition>().Returns(compositionList);
@@ -154,7 +155,6 @@ public class CompositionServiceTests
             .With(x => x.Id, compositionIds.GetValue)
             .CreateMany(5)
             .AsQueryable();
-        _database.Get<Composition>().Returns(compositionList);
 
         var compositionDto = _fixture
             .Build<CompositionDto>()

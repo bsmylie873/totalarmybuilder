@@ -1,8 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using TotalArmyBuilder.Api.Authentication;
 using TotalArmyBuilder.Dal.Contexts;
 using TotalArmyBuilder.Dal.Interfaces;
 

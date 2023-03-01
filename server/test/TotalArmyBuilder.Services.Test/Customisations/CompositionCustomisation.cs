@@ -16,8 +16,8 @@ public class CompositionCustomisation : ICustomization
             .With(x => x.DateCreated, DateTime.Today)
             .With(x => x.Wins)
             .With(x => x.Losses)
-            .Without(x => x.AccountCompositions)
-            .Without(x => x.CompositionUnits)
+            .With(x => x.AccountCompositions)
+            .With(x => x.CompositionUnits)
         );
     }
 }

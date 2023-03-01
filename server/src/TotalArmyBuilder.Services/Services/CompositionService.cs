@@ -62,8 +62,7 @@ public class CompositionService : ICompositionService
         _database.Add(newComposition);
         _database.SaveChanges();
     }
-
-
+    
     public void UpdateComposition(int id, CompositionDto composition)
     {
         var currentComposition = _database
@@ -75,7 +74,6 @@ public class CompositionService : ICompositionService
         DeleteCompositionUnits(id);
         
         _mapper.Map(composition, currentComposition);
-
         _database.SaveChanges();
     }
 
@@ -101,7 +99,5 @@ public class CompositionService : ICompositionService
         {
             _database.Delete(compUnit);
         }
-        
-        _database.SaveChanges();
     }
 }

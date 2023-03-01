@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,6 +8,7 @@ using TotalArmyBuilder.Api.Integration.Test.Models;
 using TotalArmyBuilder.Api.Integration.Test.TestUtilities;
 using TotalArmyBuilder.Api.ViewModels.Accounts;
 using TotalArmyBuilder.Api.ViewModels.Compositions;
+using TotalArmyBuilder.Service.Services;
 using Xunit.Abstractions;
 
 namespace TotalArmyBuilder.Api.Integration.Test.Controllers;
@@ -20,7 +22,7 @@ public class AccountControllerTests
     public AccountControllerTests(ITestOutputHelper testOutputHelper, IntegrationClassFixture integrationFixture)
     {
         var opt = new WebApplicationFactoryClientOptions();
-        opt.BaseAddress = new Uri("https://localhost");
+        opt.BaseAddress = new Uri("https://localhost/api/");
 
         _testOutputHelper = testOutputHelper;
         _httpClient = integrationFixture.Host.CreateClient(opt);
@@ -29,7 +31,7 @@ public class AccountControllerTests
     [Fact]
     public async Task GetAllAccounts_WhenAccountsPresent_ReturnsOk()
     {
-        var response = await _httpClient.GetAsync("/accounts/");
+        var response = await _httpClient.GetAsync("accounts/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -41,7 +43,7 @@ public class AccountControllerTests
     public async Task GetAnAccountById_WhenAccountPresent_ReturnsOk()
     {
         const int id = 2;
-        var response = await _httpClient.GetAsync($"/accounts/{id}");
+        var response = await _httpClient.GetAsync($"accounts/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -56,7 +58,7 @@ public class AccountControllerTests
     public async Task GetAnAccountById_AccountNotPresent_ThrowException()
     {
         const int id = 20;
-        var response = await _httpClient.GetAsync($"/accounts/{id}");
+        var response = await _httpClient.GetAsync($"accounts/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
@@ -64,7 +66,7 @@ public class AccountControllerTests
     public async Task GetAnAccountCompositionsById_WhenAccountCompositions_Present_ReturnsOk()
     {
         const int id = 1;
-        var response = await _httpClient.GetAsync($"/accounts/{id}/compositions/");
+        var response = await _httpClient.GetAsync($"accounts/{id}/compositions/");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await response.Content.ReadAsStringAsync();
@@ -80,7 +82,7 @@ public class AccountControllerTests
     public async Task GetAnAccountCompositionsById_WhenAccountCompositions_NotPresent_ThrowException()
     {
         const int id = 964;
-        var response = await _httpClient.GetAsync($"/accounts/{id}/compositions/");
+        var response = await _httpClient.GetAsync($"accounts/{id}/compositions/");
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 
@@ -151,7 +153,7 @@ public class AccountControllerTests
         var result = value.VerifyDeSerialize<ValidationModel>();
         result.Errors.CheckIfErrorPresent("Username", "'Username' must be between 5 and 100 characters. You entered 4 characters.");
         result.Errors.CheckIfErrorPresent("Email", "'Email' is not a valid email address.");
-        result.Errors.CheckIfErrorPresent("Password", "'Password' must be between 8 and 50 characters. You entered 4 characters.");
+        result.Errors.CheckIfErrorPresent("Password", "'Password' must be between 8 and 30 characters. You entered 4 characters.");
 
         _testOutputHelper.WriteLine(value);
     }
@@ -163,18 +165,20 @@ public class AccountControllerTests
         const int id = 2;
         const string newUsername = "newUsername";
         const string newEmail = "newEmail@newEmail.com";
+        const string newPassword = "password12345";
 
         UpdateAccountViewModel account = new UpdateAccountViewModel
         {
             Username = newUsername,
-            Email = newEmail
+            Email = newEmail,
+            Password = newPassword
         };
 
         var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
 
-        var getResponse = await _httpClient.GetAsync($"/accounts/{id}");
+        var getResponse = await _httpClient.GetAsync($"accounts/{id}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var value = await getResponse.Content.ReadAsStringAsync();
@@ -240,11 +244,13 @@ public class AccountControllerTests
         const int id = 513;
         const string newUsername = "username";
         const string newEmail = "email@email.com";
+        const string newPassword = "password12345";
 
         UpdateAccountViewModel account = new UpdateAccountViewModel
         {
             Username = newUsername,
-            Email = newEmail
+            Email = newEmail,
+            Password = newPassword
         };
 
         var response = await _httpClient.PatchAsJsonAsync($"accounts/{id}", account);

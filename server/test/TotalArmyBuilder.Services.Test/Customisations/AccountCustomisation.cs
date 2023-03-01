@@ -12,7 +12,7 @@ public class AccountCustomisation : ICustomization
             .With(x => x.Username)
             .With(x => x.Email)
             .With(x => x.Password)
-            .Without(x => x.AccountCompositions)
+            .With(x => x.AccountCompositions)
         );
     }
 }
