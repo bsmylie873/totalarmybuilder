@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using TotalArmyBuilder.Api.Authentication;
 using TotalArmyBuilder.Api.Controllers.Base;
 using TotalArmyBuilder.Api.ViewModels.AuthenticationRequest;
 using TotalArmyBuilder.Service.DTOs;
@@ -37,14 +38,29 @@ public class AuthenticationController : TotalArmyBaseController
 
         return new AuthenticationResultViewModel
         {
-            AccessToken = GenerateToken(account, 20), 
-            RefreshToken = GenerateToken(account, 18000)
+            AccessToken = GenerateToken(account, 20, TokenTypes.AccessToken), 
+            RefreshToken = GenerateToken(account, 18000, TokenTypes.RefreshToken)
         };
     }
     
-    private string GenerateToken(AccountDto account, int expirationTimeInMinutes)
+    [HttpGet]
+    public ActionResult<AuthenticationResultViewModel> Refresh([FromServices] IAuthorisedAccountProvider authorizedAccountProvider)
     {
-        var secretKey = Encoding.UTF8.GetBytes("JWTMySonTheDayYouWereBorn");
+
+        var account = authorizedAccountProvider.GetLoggedInAccount();
+        
+        if (account is null) return Unauthorized();
+        
+        return new AuthenticationResultViewModel
+        {
+            AccessToken = GenerateToken(account, 10, TokenTypes.AccessToken), 
+            RefreshToken = GenerateToken(account, 18000, TokenTypes.RefreshToken)
+        };
+    }
+    
+    private string GenerateToken(AccountDto account, int expirationTimeInMinutes, TokenTypes tokenType)
+    {
+        var secretKey = Encoding.UTF8.GetBytes(tokenType == TokenTypes.AccessToken ? "JWTMySonTheDayYouWereBorn" : "JWTForestsWhisperedYourName");
         var securityKey = new SymmetricSecurityKey(secretKey);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
         var expiryTime = DateTime.UtcNow.AddMinutes(expirationTimeInMinutes);
