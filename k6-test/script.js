@@ -23,7 +23,7 @@ const SLEEP_DURATION = 0.1;
 
 export default function() {
     group("/api/Compositions/{id}/units", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '2';
 
         // Request No. 1
         {
@@ -50,7 +50,7 @@ export default function() {
     });
 
     group("/api/Compositions/{id}", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '1';
 
         // Request No. 1
         {
@@ -67,8 +67,7 @@ export default function() {
         // Request No. 2
         {
             let url = BASE_URL + `/api/Compositions/${id}`;
-            // TODO: edit the parameters of the request body.
-            let body = {"name": "string", "battleType": "string", "factionId": "integer", "avatarId": "integer", "budget": "integer", "wins": "integer", "losses": "integer", "units": "list"};
+            let body = {"name": "Ice Guard Box", "battleType": "Land Battles", "factionId": 7, "avatarId": 1, "budget": 8000, "wins": 0, "losses": 0, "units": null};
             let params = {headers: {"Content-Type": "application/json-patch+json", "Accept": "application/json"}};
             let request = http.patch(url, JSON.stringify(body), params);
 
@@ -79,14 +78,9 @@ export default function() {
     });
 
     group("/api/Compositions", () => {
-        let battleTypeId = 'Land Battles'; // specify value as there is no example value for this parameter in OpenAPI spec
-        let name = 'Ice Guard Box'; // specify value as there is no example value for this parameter in OpenAPI spec
-        let factionId = '11'; // specify value as there is no example value for this parameter in OpenAPI spec
-        let budget = '8000'; // specify value as there is no example value for this parameter in OpenAPI spec
-
         // Request No. 1
         {
-            let url = BASE_URL + `/api/Compositions?name=${name}&battleTypeId=${battleTypeId}&factionId=${factionId}&budget=${budget}`;
+            let url = BASE_URL + `/api/Compositions/`;
             let request = http.get(url);
 
             check(request, {
@@ -99,8 +93,7 @@ export default function() {
         // Request No. 2
         {
             let url = BASE_URL + `/api/Compositions`;
-            // TODO: edit the parameters of the request body.
-            let body = {"id": "integer", "name": "string", "battleType": "string", "factionId": "integer", "avatarId": "integer", "budget": "integer", "dateCreated": "date", "wins": "integer", "losses": "integer", "units": "list"};
+            let body = {"name": "Ice Guard Box2", "battleType": "Land Battles", "factionId": 7, "avatarId": 1, "budget": 8000, "wins": 0, "losses": 0, "units": null};
             let params = {headers: {"Content-Type": "application/json-patch+json", "Accept": "application/json"}};
             let request = http.post(url, JSON.stringify(body), params);
 
@@ -111,7 +104,7 @@ export default function() {
     });
 
     group("/api/Factions/{id}", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '1';
 
         // Request No. 1
         {
@@ -125,7 +118,7 @@ export default function() {
     });
 
     group("/api/Units/{id}", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '1';
 
         // Request No. 1
         {
@@ -139,7 +132,7 @@ export default function() {
     });
 
     group("/api/Factions", () => {
-        let name = 'Beastmen'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let name = 'Beastmen';
 
         // Request No. 1
         {
@@ -157,8 +150,7 @@ export default function() {
         // Request No. 1
         {
             let url = BASE_URL + `/api/Authentication`;
-            // TODO: edit the parameters of the request body.
-            let body = {"email": "string", "password": "string"};
+            let body = {"email": "johndoe@example.com", "password": "$2a$11$78nO9BRsnqm6f6U0VngPLecM9yJLX02Vfqn3OO0xIGVpLwd13ZtRS"};
             let params = {headers: {"Content-Type": "application/json-patch+json", "Accept": "application/json"}};
             let request = http.post(url, JSON.stringify(body), params);
 
@@ -182,7 +174,7 @@ export default function() {
     });
 
     group("/api/Factions/{id}/units", () => {
-        let id = '7'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '7';
 
         // Request No. 1
         {
@@ -196,7 +188,7 @@ export default function() {
     });
 
     group("/api/Units/{id}/factions", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '1';
 
         // Request No. 1
         {
@@ -210,8 +202,8 @@ export default function() {
     });
 
     group("/api/Accounts", () => {
-        let email = 'username@example.com'; // specify value as there is no example value for this parameter in OpenAPI spec
-        let username = 'username'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let email = 'johndoe@example.com';
+        let username = null;
 
         // Request No. 1
         {
@@ -228,8 +220,7 @@ export default function() {
         // Request No. 2
         {
             let url = BASE_URL + `/api/Accounts`;
-            // TODO: edit the parameters of the request body.
-            let body = {"username": "string", "email": "string", "password": "string"};
+            let body = {"username": "JohnDoe2", "email": "johndoe2@example.com", "password": "newpassword123"};
             let params = {headers: {"Content-Type": "application/json-patch+json", "Accept": "application/json"}};
             let request = http.post(url, JSON.stringify(body), params);
 
@@ -240,7 +231,7 @@ export default function() {
     });
 
     group("/api/Accounts/{id}/compositions", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '1';
 
         // Request No. 1
         {
@@ -254,7 +245,7 @@ export default function() {
     });
 
     group("/api/Accounts/{id}", () => {
-        let id = '1'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let id = '1';
 
         // Request No. 1
         {
@@ -272,7 +263,7 @@ export default function() {
         {
             let url = BASE_URL + `/api/Accounts/${id}`;
             // TODO: edit the parameters of the request body.
-            let body = {"username": "string", "email": "string", "password": "string", "compositions": "list"};
+            let body = {"username": "JohnDoe", "email": "johndoe@example.com", "password": "Password123"};
             let params = {headers: {"Content-Type": "application/json-patch+json", "Accept": "application/json"}};
             let request = http.patch(url, JSON.stringify(body), params);
 
@@ -283,8 +274,8 @@ export default function() {
     });
 
     group("/api/Units", () => {
-        let cost = ''; // specify value as there is no example value for this parameter in OpenAPI spec
-        let name = 'Tzar Guard'; // specify value as there is no example value for this parameter in OpenAPI spec
+        let cost = 1000;
+        let name = null;
 
         // Request No. 1
         {

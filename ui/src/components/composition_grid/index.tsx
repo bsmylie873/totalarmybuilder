@@ -157,7 +157,7 @@ export default function CompositionGrid() {
 
   useEffect(() => {
     getCompositionsData();
-  }, []);
+  });
 
   return (
     <div
