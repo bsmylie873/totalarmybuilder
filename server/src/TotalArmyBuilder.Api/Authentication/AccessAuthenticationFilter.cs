@@ -47,6 +47,5 @@ public class AccessAuthenticationFilter: AuthenticationHandler<AuthenticationSch
             return Task.FromResult(AuthenticateResult.Fail("Authentication Failed"));
             
         }
-
     }
 }
