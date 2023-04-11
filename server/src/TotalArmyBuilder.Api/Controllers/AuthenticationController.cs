@@ -43,7 +43,7 @@ public class AuthenticationController : TotalArmyBaseController
         };
     }
     
-    [HttpGet]
+    [HttpGet("refresh")]
     public ActionResult<AuthenticationResultViewModel> Refresh([FromServices] IAuthorisedAccountProvider authorizedAccountProvider)
     {
 

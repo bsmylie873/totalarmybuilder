@@ -87,7 +87,6 @@ const Compositions = () => {
   var { compositionId } = useParams<{ compositionId: string }>();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [unit, setUnit] = useState<Unit>();
-  const [unit2, setUnit2] = useState<Unit>();
   const [factions, setFactions] = useState<Faction[]>([]);
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
 
@@ -196,7 +195,7 @@ const Compositions = () => {
       wins: state.wins,
       losses: state.losses,
       units: state.units,
-      units2: state.units2
+      units2: state.units2,
     };
 
     const response = await CompositionService.createComposition(newComposition);
@@ -226,7 +225,7 @@ const Compositions = () => {
       wins: state.wins,
       losses: state.losses,
       units: state.units,
-      units2: state.units2
+      units2: state.units2,
     };
     const response = await CompositionService.updateComposition(
       updateComposition

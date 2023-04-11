@@ -10,9 +10,9 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import type {} from "@mui/x-data-grid/themeAugmentation";
-import { Link, useParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { CompositionService, FactionService } from "../../services";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Faction } from "../../types/faction";
 
@@ -117,7 +117,10 @@ function CustomToolbar() {
 
 export default function CompositionGrid() {
   const [gridData, setGridData] = useState([]);
-  const { searchValue } = useParams();
+  const [searchParams] = useSearchParams();
+  searchParams.get("query");
+  var searchStr = searchParams.toString();
+  searchStr = searchStr.replace("query=", "");
 
   async function translateFactionIds(faction: number) {
     var factionResponse = FactionService.getFaction(faction);
@@ -125,7 +128,7 @@ export default function CompositionGrid() {
     return factionName;
   }
 
-  const getCompositionsData = async () => {
+  const getCompositionsData = useCallback(async () => {
     const compositionsResponse = await CompositionService.getCompositions();
     if (compositionsResponse.status === 200) {
       const compositions = await compositionsResponse.json();
@@ -153,11 +156,11 @@ export default function CompositionGrid() {
     } else {
       toast.error("No data found!");
     }
-  };
+  }, []);
 
   useEffect(() => {
     getCompositionsData();
-  });
+  }, [getCompositionsData, searchParams]);
 
   return (
     <div
@@ -189,7 +192,7 @@ export default function CompositionGrid() {
                   {
                     columnField: "name",
                     operatorValue: "contains",
-                    value: searchValue,
+                    value: searchStr,
                   },
                 ],
               },

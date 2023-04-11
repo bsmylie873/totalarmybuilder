@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
-import { StorageService } from "../services";
-import { StorageTypes } from "../constants";
+import { StorageService } from "../../services";
+import { StorageTypes } from "../../constants";
 
 interface AuthContextProps {
   state: {
@@ -47,4 +47,5 @@ function useLogin() {
   return context;
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { AuthProvider, useLogin };

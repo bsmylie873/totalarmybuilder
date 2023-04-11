@@ -10,26 +10,18 @@ import {
   PasswordResetRequest,
   Search,
   SignUp,
-  Tutorial
+  Tutorial,
 } from "./pages";
 import "./styles.css";
 import Layout from "./components/layout";
 import { NavigationRoutes } from "./constants";
 import { AuthContext } from "./contexts";
 import { LoginUtils } from "./utils";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
-
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
+import { createTheme, ThemeProvider } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { ThemeContext } from "@mui/styled-engine";
+import { useContext, useMemo } from "react";
+import { themes } from "./contexts/theme";
 
 if (process.env.NODE_ENV === "development") {
   //const { worker } = require("./services/mocks/browser");
@@ -74,17 +66,29 @@ const unauthenticatedRoutes = () => {
 };
 
 function App() {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const themeChange = useContext(ThemeContext);
   const { state } = AuthContext.useLogin();
   const loggedIn = state.accessToken && !LoginUtils.isTokenExpired(state);
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode, themeChange]
+  );
+
   return (
     <>
-    <ThemeProvider theme ={lightTheme}>
-      <Layout>
-        <Routes>
-          {!loggedIn && unauthenticatedRoutes()}
-          {loggedIn && authenticatedRoutes()}
-        </Routes>
-      </Layout>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <Routes>
+            {!loggedIn && unauthenticatedRoutes()}
+            {loggedIn && authenticatedRoutes()}
+          </Routes>
+        </Layout>
       </ThemeProvider>
     </>
   );

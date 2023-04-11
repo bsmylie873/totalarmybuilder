@@ -12,11 +12,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NavigationDrawer from "../navigation_drawer";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
-import { NavigationRoutes, StorageTypes } from "../../constants";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import { NavigationRoutes } from "../../constants";
 import { AuthContext } from "../../contexts";
-import { useState } from "react";
-import { Composition } from "../../types/composition";
+import { useContext, useState } from "react";
+import { useTheme } from "@emotion/react";
+import { ThemeContext } from "../../contexts/theme";
 
 const Search = styled("div")(({ theme }) => ({
   padding: 1,
@@ -38,21 +40,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const [searched, setSearched] = useState<string>("");
-  const [rows, setRows] = useState<Composition[]>();
-
-  let requestSearch = (searchedVal: string) => {
-    var lowerCase = searchedVal.toLowerCase();
-    setSearched(lowerCase);
-  };
-
-  const cancelSearch = () => {
-    setSearched("");
-    requestSearch(searched);
-  };
 
   const { dispatch } = AuthContext.useLogin();
 
   const navigate = useNavigate();
+
+  var theme = useTheme();
+  const colorMode = useContext(ThemeContext);
+
+  const handleThemeChange = () => {
+    if (theme === "lightTheme") {
+      theme = "darkTheme";
+    } else {
+      theme = "lightTheme";
+    }
+    colorMode.setColorMode();
+  };
+
+  const handleSearch = () => {
+    navigate({
+      pathname: NavigationRoutes.Search,
+      search: createSearchParams({ query: searched }).toString(),
+    });
+  };
 
   const handleAccountDetails = () => {
     navigate(NavigationRoutes.AccountDetails);
@@ -82,10 +92,15 @@ export default function PrimarySearchAppBar() {
               fullWidth={true}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              defaultValue=""
+              onChange={(event) => setSearched(event.target.value)}
             />
           </Search>
-          <IconButton type="submit" aria-label="search">
+          <IconButton type="submit" aria-label="search" onClick={handleSearch}>
             <SearchIcon style={{ fill: "white" }} />
+          </IconButton>
+          <IconButton onClick={handleThemeChange}>
+            <Brightness4Icon />
           </IconButton>
           <Stack direction="row">
             <IconButton
