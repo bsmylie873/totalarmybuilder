@@ -15,10 +15,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { NavigationRoutes } from "../../constants";
-import { AuthContext } from "../../contexts";
+import { AuthContext, ThemeContext } from "../../contexts";
 import { useContext, useState } from "react";
-import { useTheme } from "@emotion/react";
-import { ThemeContext } from "../../contexts/theme";
 
 const Search = styled("div")(({ theme }) => ({
   padding: 1,
@@ -40,22 +38,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const [searched, setSearched] = useState<string>("");
-
+  const themeSelection = useContext(ThemeContext);
   const { dispatch } = AuthContext.useLogin();
 
   const navigate = useNavigate();
-
-  var theme = useTheme();
-  const colorMode = useContext(ThemeContext);
-
-  const handleThemeChange = () => {
-    if (theme === "lightTheme") {
-      theme = "darkTheme";
-    } else {
-      theme = "lightTheme";
-    }
-    colorMode.setColorMode();
-  };
 
   const handleSearch = () => {
     navigate({
@@ -99,8 +85,12 @@ export default function PrimarySearchAppBar() {
           <IconButton type="submit" aria-label="search" onClick={handleSearch}>
             <SearchIcon style={{ fill: "white" }} />
           </IconButton>
-          <IconButton onClick={handleThemeChange}>
-            <Brightness4Icon />
+
+          <IconButton>
+            <Brightness4Icon
+              style={{ fill: "white" }}
+              onClick={themeSelection.setColorMode}
+            />
           </IconButton>
           <Stack direction="row">
             <IconButton

@@ -1,15 +1,7 @@
-import { createTheme } from "@mui/system";
 import { createContext } from "react";
+import { createTheme } from "@mui/system";
 
 export const themes = [
-  {
-    name: "darkTheme",
-    theme: createTheme({
-      palette: {
-        mode: "dark",
-      },
-    }),
-  },
   {
     name: "lightTheme",
     theme: createTheme({
@@ -18,8 +10,18 @@ export const themes = [
       },
     }),
   },
+  {
+    name: "darkTheme",
+    theme: createTheme({
+      palette: {
+        mode: "dark",
+      },
+    }),
+  },
 ];
 
 export const ThemeContext = createContext({
   setColorMode: () => {},
 });
+
+export default ThemeContext;

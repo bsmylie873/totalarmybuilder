@@ -15,12 +15,11 @@ import {
 import "./styles.css";
 import Layout from "./components/layout";
 import { NavigationRoutes } from "./constants";
-import { AuthContext } from "./contexts";
+import { AuthContext, ThemeContext } from "./contexts";
 import { LoginUtils } from "./utils";
 import { createTheme, ThemeProvider } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ThemeContext } from "@mui/styled-engine";
-import { useContext, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { themes } from "./contexts/theme";
 
 if (process.env.NODE_ENV === "development") {
@@ -67,29 +66,41 @@ const unauthenticatedRoutes = () => {
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const themeChange = useContext(ThemeContext);
   const { state } = AuthContext.useLogin();
   const loggedIn = state.accessToken && !LoginUtils.isTokenExpired(state);
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? "dark" : "light",
-        },
-      }),
-    [prefersDarkMode, themeChange]
+  const [mode, setMode] = useState(themes[0].theme);
+
+  const colorMode = useMemo(
+    () => ({
+      setColorMode: () => {
+        setMode((prevMode) =>
+          prevMode === themes[0].theme ? themes[1].theme : themes[0].theme
+        );
+      },
+    }),
+    []
   );
+
+  const theme = useMemo(() => createTheme({ palette: mode.palette }), [mode]);
+
+  useEffect(() => {
+    if (prefersDarkMode) {
+      setMode((prevMode) => (prevMode = themes[1].theme));
+    }
+  }, [prefersDarkMode]);
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Layout>
-          <Routes>
-            {!loggedIn && unauthenticatedRoutes()}
-            {loggedIn && authenticatedRoutes()}
-          </Routes>
-        </Layout>
-      </ThemeProvider>
+      <ThemeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <Layout>
+            <Routes>
+              {!loggedIn && unauthenticatedRoutes()}
+              {loggedIn && authenticatedRoutes()}
+            </Routes>
+          </Layout>
+        </ThemeProvider>
+      </ThemeContext.Provider>
     </>
   );
 }
