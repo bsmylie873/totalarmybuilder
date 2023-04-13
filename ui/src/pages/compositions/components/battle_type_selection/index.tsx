@@ -1,7 +1,5 @@
 import { MenuItem, TextField } from "@mui/material";
-import { useReducer } from "react";
-import { reducer } from "../../compReducer";
-import IProps from "../compInterface";
+import { CompContext } from "../../../../contexts";
 
 const battleTypes = [
   {
@@ -14,8 +12,8 @@ const battleTypes = [
   },
 ];
 
-const BattleTypeSelection: React.FC<IProps> = ({ composition }) => {
-  const [state, dispatch] = useReducer(reducer, composition);
+function BattleTypeSelection() {
+  const { state, dispatch } = CompContext.useCurrentComposition();
 
   function setStateValue(value: any, type: string) {
     debugger;
@@ -40,6 +38,34 @@ const BattleTypeSelection: React.FC<IProps> = ({ composition }) => {
       </TextField>
     </div>
   );
-};
+}
 
 export default BattleTypeSelection;
+
+/* export default function BattleTypeSelection(_props: any) {
+  const value = useContext(Com)
+
+  const handleChange = (event: any) => {
+    debugger;
+    setBattleType(event.target.value);
+  };
+
+  return (
+    <div>
+      <TextField
+        id="outlined-select-battle-type"
+        select
+        label="Select"
+        value={battleType}
+        helperText="Please select your battle type"
+        onChange={handleChange}
+      >
+        {battleTypes.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+    </div>
+  );
+} */

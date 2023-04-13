@@ -17,19 +17,23 @@ import { Box } from "@mui/system";
 import { useState, useEffect, useReducer } from "react";
 import { CompositionService, FactionService } from "../../services";
 import { NavigationRoutes } from "../../constants";
-import { initialState, reducer } from "./compReducer";
+import { compReducer, initialState } from "../../contexts/composition";
 import { Faction } from "../../types/faction";
 import InputAdornment from "@mui/material/InputAdornment";
 import toast from "react-hot-toast";
 import { Unit } from "../../types/unit";
 import { Composition } from "../../types/composition";
 import DeleteIcon from "@mui/icons-material/Delete";
-import BattleTypeSelection from "./components/battle_type_selection_box";
-import BudgetSelection from "./components/budget_selection";
+import {
+  BattleTypeSelection,
+  BudgetSelection,
+  FactionSelection,
+} from "./components";
+import { CompContext } from "../../contexts";
 
 const Compositions = () => {
   var { compositionId } = useParams<{ compositionId: string }>();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, dispatch } = CompContext.useCurrentComposition();
   const [unit, setUnit] = useState<Unit>();
   const [factions, setFactions] = useState<Faction[]>([]);
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
@@ -139,7 +143,6 @@ const Compositions = () => {
       wins: state.wins,
       losses: state.losses,
       units: state.units,
-      units2: state.units2,
     };
 
     const response = await CompositionService.createComposition(newComposition);
@@ -169,7 +172,6 @@ const Compositions = () => {
       wins: state.wins,
       losses: state.losses,
       units: state.units,
-      units2: state.units2,
     };
     const response = await CompositionService.updateComposition(
       updateComposition
@@ -335,24 +337,9 @@ const Compositions = () => {
           style={{ width: "60%" }}
           onChange={(e) => setStateValue(e.target.value, "name")}
         />
-        <BattleTypeSelection composition={state} />
-        <div>
-          <TextField
-            id="outlined-select-faction"
-            select
-            label="Faction"
-            value={state.factionId}
-            helperText="Please select the faction..."
-            onChange={(e) => setStateValue(e.target.value, "factionId")}
-          >
-            {factions.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </div>
-        <BudgetSelection composition={state} />
+        <BattleTypeSelection />
+        <FactionSelection />
+        <BudgetSelection />
       </Stack>
       <Stack
         sx={{

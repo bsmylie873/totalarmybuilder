@@ -16,11 +16,13 @@ import "./styles.css";
 import Layout from "./components/layout";
 import { NavigationRoutes } from "./constants";
 import { AuthContext, ThemeContext } from "./contexts";
+import CompProvider from "./contexts/composition";
 import { LoginUtils } from "./utils";
 import { createTheme, ThemeProvider } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useMemo, useState } from "react";
 import { themes } from "./contexts/theme";
+import { CompContext } from "./contexts";
 
 if (process.env.NODE_ENV === "development") {
   //const { worker } = require("./services/mocks/browser");
@@ -93,12 +95,14 @@ function App() {
     <>
       <ThemeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-          <Layout>
-            <Routes>
-              {!loggedIn && unauthenticatedRoutes()}
-              {loggedIn && authenticatedRoutes()}
-            </Routes>
-          </Layout>
+          <CompContext.CompProvider>
+            <Layout>
+              <Routes>
+                {!loggedIn && unauthenticatedRoutes()}
+                {loggedIn && authenticatedRoutes()}
+              </Routes>
+            </Layout>
+          </CompContext.CompProvider>
         </ThemeProvider>
       </ThemeContext.Provider>
     </>

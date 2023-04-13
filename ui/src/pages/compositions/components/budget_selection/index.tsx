@@ -1,7 +1,5 @@
 import { MenuItem, TextField } from "@mui/material";
-import { useReducer } from "react";
-import { reducer } from "../../compReducer";
-import IProps from "../compInterface";
+import { CompContext } from "../../../../contexts";
 
 const budgets = [
   {
@@ -50,10 +48,11 @@ const budgets = [
   },
 ];
 
-const BudgetSelection: React.FC<IProps> = ({ composition }) => {
-  const [state, dispatch] = useReducer(reducer, composition);
+function BudgetSelection() {
+  const { state, dispatch } = CompContext.useCurrentComposition();
 
   function setStateValue(value: any, type: string) {
+    debugger;
     dispatch({ type: "SET_VALUE", payload: { value, type } });
   }
 
@@ -62,7 +61,7 @@ const BudgetSelection: React.FC<IProps> = ({ composition }) => {
       <TextField
         id="outlined-select-budget"
         select
-        label="Select"
+        label="Budget"
         value={state.budget}
         helperText="Please select your budget"
         onChange={(e) => setStateValue(e.target.value, "budget")}
@@ -75,6 +74,6 @@ const BudgetSelection: React.FC<IProps> = ({ composition }) => {
       </TextField>
     </div>
   );
-};
+}
 
 export default BudgetSelection;

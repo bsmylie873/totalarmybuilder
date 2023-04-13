@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import { StorageService } from "../../services";
 import { StorageTypes } from "../../constants";
 
@@ -39,7 +39,7 @@ function AuthProvider({ children }: any) {
 }
 
 function useLogin() {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (context === undefined) {
     console.log(context);
     throw new Error("useLogin must be used within a AuthProvider");
