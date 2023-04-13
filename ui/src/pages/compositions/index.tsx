@@ -24,64 +24,8 @@ import toast from "react-hot-toast";
 import { Unit } from "../../types/unit";
 import { Composition } from "../../types/composition";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-const battleTypes = [
-  {
-    value: "Domination",
-    label: "Domination",
-  },
-  {
-    value: "Land Battles",
-    label: "Land Battles",
-  },
-];
-
-const budgets = [
-  {
-    value: 0,
-    label: "0",
-  },
-  {
-    value: 2000,
-    label: "2000",
-  },
-  {
-    value: 4000,
-    label: "4000",
-  },
-  {
-    value: 6000,
-    label: "6000",
-  },
-  {
-    value: 8000,
-    label: "8000",
-  },
-  {
-    value: 10000,
-    label: "10000",
-  },
-  {
-    value: 12000,
-    label: "12000",
-  },
-  {
-    value: 14000,
-    label: "14000",
-  },
-  {
-    value: 16000,
-    label: "16000",
-  },
-  {
-    value: 18000,
-    label: "18000",
-  },
-  {
-    value: 20000,
-    label: "20000",
-  },
-];
+import BattleTypeSelection from "./components/battle_type_selection_box";
+import BudgetSelection from "./components/budget_selection";
 
 const Compositions = () => {
   var { compositionId } = useParams<{ compositionId: string }>();
@@ -391,22 +335,7 @@ const Compositions = () => {
           style={{ width: "60%" }}
           onChange={(e) => setStateValue(e.target.value, "name")}
         />
-        <div>
-          <TextField
-            id="outlined-select-battle-type"
-            select
-            label="Battle Type"
-            value={state.battleType}
-            helperText="Please select the battle type..."
-            onChange={(e) => setStateValue(e.target.value, "battleType")}
-          >
-            {battleTypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </div>
+        <BattleTypeSelection composition={state} />
         <div>
           <TextField
             id="outlined-select-faction"
@@ -423,22 +352,7 @@ const Compositions = () => {
             ))}
           </TextField>
         </div>
-        <div>
-          <TextField
-            id="outlined-select-budget"
-            select
-            label="Budget"
-            value={state.budget}
-            helperText="Please select the budget..."
-            onChange={(e) => setStateValue(e.target.value, "budget")}
-          >
-            {budgets.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </div>
+        <BudgetSelection composition={state} />
       </Stack>
       <Stack
         sx={{

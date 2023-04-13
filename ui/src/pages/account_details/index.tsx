@@ -65,7 +65,7 @@ const AccountDetails = () => {
 
   useEffect(() => {
     getAccountData(accountId);
-  }, []);
+  }, [accountId]);
 
   return (
     <>
