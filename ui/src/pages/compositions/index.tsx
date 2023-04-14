@@ -1,40 +1,26 @@
-import {
-  Button,
-  ButtonGroup,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box } from "@mui/system";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect } from "react";
 import { CompositionService, FactionService } from "../../services";
 import { NavigationRoutes } from "../../constants";
-import { compReducer, initialState } from "../../contexts/composition";
 import { Faction } from "../../types/faction";
-import InputAdornment from "@mui/material/InputAdornment";
 import toast from "react-hot-toast";
 import { Unit } from "../../types/unit";
 import { Composition } from "../../types/composition";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   BattleTypeSelection,
   BudgetSelection,
   FactionSelection,
 } from "./components";
 import { CompContext } from "../../contexts";
+import CompositionsList from "./components/compositions_list";
+import WinCounter from "./components/win_counter";
+import LossCounter from "./components/loss_counter";
 
 const Compositions = () => {
   var { compositionId } = useParams<{ compositionId: string }>();
   const { state, dispatch } = CompContext.useCurrentComposition();
-  const [unit, setUnit] = useState<Unit>();
   const [factions, setFactions] = useState<Faction[]>([]);
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
 
@@ -213,13 +199,6 @@ const Compositions = () => {
     dispatch({ type: "RESET_UNIT_LIST" });
   }
 
-  const handleChange = (event: SelectChangeEvent<typeof unit>) => {
-    const {
-      target: { value },
-    } = event;
-    setUnit(value as Unit);
-  };
-
   async function getUnitByFactionData() {
     if (state.factionId != null) {
       const factionUnitReponse = await FactionService.getFactionUnits(
@@ -244,63 +223,6 @@ const Compositions = () => {
 
   function setStateValue(value: any, type: string) {
     dispatch({ type: "SET_VALUE", payload: { value, type } });
-  }
-
-  async function addUnit(unParsedValue: any, type: string) {
-    if (unParsedValue === undefined || state.units.length >= 20) {
-      return;
-    }
-    let value = JSON.parse(unParsedValue) as Unit;
-    dispatch({
-      type: "ADD_TO_UNIT_LIST",
-      payload: { value, type },
-    });
-  }
-
-  async function removeUnit(value: any, type: string) {
-    if (value === undefined || state.units.length <= 0) {
-      return;
-    }
-    dispatch({
-      type: "REMOVE_UNIT_FROM_UNIT_LIST",
-      payload: { value, type },
-    });
-  }
-
-  async function addWin(value: any, type: string) {
-    dispatch({
-      type: "ADD_WIN",
-      payload: { value, type },
-    });
-  }
-
-  async function subtractWin(value: any, type: string) {
-    if (state.wins > 0) {
-      dispatch({
-        type: "REMOVE_WIN",
-        payload: { value, type },
-      });
-    } else {
-      toast.error("Cannot have a negative number of wins!");
-    }
-  }
-
-  async function addLoss(value: any, type: string) {
-    dispatch({
-      type: "ADD_LOSS",
-      payload: { value, type },
-    });
-  }
-
-  async function subtractLoss(value: any, type: string) {
-    if (state.losses > 0) {
-      dispatch({
-        type: "REMOVE_LOSS",
-        payload: { value, type },
-      });
-    } else {
-      toast.error("Cannot have a negative number of losses!");
-    }
   }
 
   useEffect(() => {
@@ -334,7 +256,7 @@ const Compositions = () => {
           type="text"
           helperText="Please enter the name..."
           value={state.name}
-          style={{ width: "60%" }}
+          style={{ width: "65%" }}
           onChange={(e) => setStateValue(e.target.value, "name")}
         />
         <BattleTypeSelection />
@@ -350,67 +272,7 @@ const Compositions = () => {
         }}
       >
         <h4>Primary Army:</h4>
-        <Select
-          id="primary-unit-selection"
-          label="Select"
-          sx={{ width: "100%" }}
-          onChange={handleChange}
-          value={unit || ""}
-          endAdornment=<InputAdornment position="end">
-            <IconButton
-              aria-label="addUnit"
-              onClick={() => addUnit(unit, "Unit")}
-              edge="start"
-            >
-              +
-            </IconButton>
-          </InputAdornment>
-        >
-          {dropdownData.map((option: Unit) => (
-            <MenuItem
-              style={{
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-              }}
-              divider
-              key={option.id}
-              value={JSON.stringify({
-                id: option.id,
-                name: option.name,
-                cost: option.cost,
-                avatarId: option.avatarId,
-              })}
-            >
-              {option.name} {"Cost: " + option.cost}
-            </MenuItem>
-          ))}
-        </Select>
-        <Box sx={{ height: "100%", width: "100%", overflow: "auto" }}>
-          <List dense>
-            {state.units?.map((unit: Unit) => (
-              <ListItem
-                divider
-                key={unit.id}
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => removeUnit(unit, "Unit")}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                }
-              >
-                <ListItemButton dense>
-                  <ListItemText
-                    primary={unit.name}
-                    secondary={"Cost: " + unit.cost}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+        <CompositionsList factionUnits={dropdownData} />
       </Stack>
       <br></br>
       <Box
@@ -422,45 +284,9 @@ const Compositions = () => {
         alignSelf="center"
       >
         <h4>Wins:</h4>
-        <ButtonGroup size="small" aria-label="win counter">
-          <Button
-            key="subtractWin"
-            onClick={() => {
-              subtractWin(undefined, "wins");
-            }}
-          >
-            -
-          </Button>
-          <h4>{state.wins}</h4>
-          <Button
-            key="addWin"
-            onClick={() => {
-              addWin(undefined, "wins");
-            }}
-          >
-            +
-          </Button>
-        </ButtonGroup>
+        <WinCounter />
         <h4>Losses:</h4>
-        <ButtonGroup size="small" aria-label="loss counter">
-          <Button
-            key="subtractLoss"
-            onClick={() => {
-              subtractLoss(undefined, "losses");
-            }}
-          >
-            -
-          </Button>
-          <h4>{state.losses}</h4>
-          <Button
-            key="addLoss"
-            onClick={() => {
-              addLoss(undefined, "losses");
-            }}
-          >
-            +
-          </Button>
-        </ButtonGroup>
+        <LossCounter />
       </Box>
       <Box
         display="flex"
