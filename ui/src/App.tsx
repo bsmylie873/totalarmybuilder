@@ -16,7 +16,6 @@ import "./styles.css";
 import Layout from "./components/layout";
 import { NavigationRoutes } from "./constants";
 import { AuthContext, ThemeContext } from "./contexts";
-import CompProvider from "./contexts/composition";
 import { LoginUtils } from "./utils";
 import { createTheme, ThemeProvider } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";

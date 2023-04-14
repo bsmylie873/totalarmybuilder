@@ -30,11 +30,6 @@ function CompositionsList({ factionUnits }: IProps) {
     setUnit(value as Unit);
   };
 
-  function setStateValue(value: any, type: string) {
-    debugger;
-    dispatch({ type: "SET_VALUE", payload: { value, type } });
-  }
-
   async function addUnit(unParsedValue: any, type: string) {
     if (unParsedValue === undefined || state.units.length >= 20) {
       return;

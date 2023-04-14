@@ -1,27 +1,26 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box } from "@mui/system";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CompositionService, FactionService } from "../../services";
 import { NavigationRoutes } from "../../constants";
-import { Faction } from "../../types/faction";
 import toast from "react-hot-toast";
 import { Unit } from "../../types/unit";
 import { Composition } from "../../types/composition";
 import {
   BattleTypeSelection,
   BudgetSelection,
+  CompositionsList,
   FactionSelection,
+  LossCounter,
+  WinCounter,
 } from "./components";
 import { CompContext } from "../../contexts";
-import CompositionsList from "./components/compositions_list";
-import WinCounter from "./components/win_counter";
-import LossCounter from "./components/loss_counter";
 
 const Compositions = () => {
   var { compositionId } = useParams<{ compositionId: string }>();
   const { state, dispatch } = CompContext.useCurrentComposition();
-  const [factions, setFactions] = useState<Faction[]>([]);
+
   const [dropdownData, setDropDownData] = useState<Unit[]>([]);
 
   const navigate = useNavigate();
@@ -103,7 +102,7 @@ const Compositions = () => {
     }
   }
 
-  async function getCompositionData() {
+  const getCompositionData = useCallback(async () => {
     const compositionResponse = await CompositionService.getComposition(
       compositionId as string
     );
@@ -111,7 +110,7 @@ const Compositions = () => {
       const composition = await compositionResponse.json();
       dispatch({ type: "SET_COMP", payload: composition });
     }
-  }
+  }, [compositionId, dispatch]);
 
   const createComposition = async () => {
     if (compositionId !== undefined) {
@@ -185,21 +184,11 @@ const Compositions = () => {
     }
   };
 
-  async function getFactionData() {
-    const factionResponse = await FactionService.getFactions();
-    if (factionResponse.status === 200) {
-      const factionJSON = await factionResponse.json();
-      setFactions(factionJSON);
-    } else {
-      toast.error("Error loading factions!");
-    }
-  }
-
-  async function resetUnitList() {
+  const resetUnitList = useCallback(async () => {
     dispatch({ type: "RESET_UNIT_LIST" });
-  }
+  }, [dispatch]);
 
-  async function getUnitByFactionData() {
+  const getUnitByFactionData = useCallback(async () => {
     if (state.factionId != null) {
       const factionUnitReponse = await FactionService.getFactionUnits(
         state.factionId
@@ -219,7 +208,7 @@ const Compositions = () => {
     } else {
       toast.error("Error loading units!");
     }
-  }
+  }, [state.factionId]);
 
   function setStateValue(value: any, type: string) {
     dispatch({ type: "SET_VALUE", payload: { value, type } });
@@ -227,16 +216,15 @@ const Compositions = () => {
 
   useEffect(() => {
     getCompositionData();
-    getFactionData();
-  }, []);
+  }, [getCompositionData]);
 
   useEffect(() => {
     resetUnitList();
-  }, [state.battleType]);
+  }, [resetUnitList, state.battleType]);
 
   useEffect(() => {
     getUnitByFactionData();
-  }, [state.factionId]);
+  }, [getUnitByFactionData, state.factionId]);
 
   useEffect(() => {
     console.log(state.units);
