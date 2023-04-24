@@ -30,6 +30,7 @@ function LossCounter() {
         onClick={() => {
           subtractLoss(undefined, "wins");
         }}
+        style={{ margin: "15%" }}
       >
         -
       </Button>
@@ -39,6 +40,7 @@ function LossCounter() {
         onClick={() => {
           addLoss(undefined, "wins");
         }}
+        style={{ margin: "15%" }}
       >
         +
       </Button>

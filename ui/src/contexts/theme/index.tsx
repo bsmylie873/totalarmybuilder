@@ -6,7 +6,19 @@ export const themes = [
     name: "lightTheme",
     theme: createTheme({
       palette: {
-        mode: "light",
+        type: "light",
+        primary: {
+          main: "#a60000",
+        },
+        secondary: {
+          main: "#4a4a4a",
+        },
+        error: {
+          main: "#8d36f4",
+        },
+        background: {
+          default: "#d4d4d4",
+        },
       },
     }),
   },
@@ -14,7 +26,19 @@ export const themes = [
     name: "darkTheme",
     theme: createTheme({
       palette: {
-        mode: "dark",
+        type: "dark",
+        primary: {
+          main: "#a60000",
+        },
+        secondary: {
+          main: "#4a4a4a",
+        },
+        error: {
+          main: "#8d36f4",
+        },
+        background: {
+          default: "#2d2d2d",
+        },
       },
     }),
   },

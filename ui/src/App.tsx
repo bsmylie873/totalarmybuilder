@@ -17,7 +17,7 @@ import Layout from "./components/layout";
 import { NavigationRoutes } from "./constants";
 import { AuthContext, ThemeContext } from "./contexts";
 import { LoginUtils } from "./utils";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useMemo, useState } from "react";
 import { themes } from "./contexts/theme";
@@ -94,6 +94,7 @@ function App() {
     <>
       <ThemeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <CompContext.CompProvider>
             <Layout>
               <Routes>

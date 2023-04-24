@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Grid, Stack, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box } from "@mui/system";
 import { useState, useEffect, useCallback } from "react";
@@ -263,19 +263,26 @@ const Compositions = () => {
         <CompositionsList factionUnits={dropdownData} />
       </Stack>
       <br></br>
-      <Box
-        display="flex"
+      <Grid
+        container
+        direction="row"
         justifyContent="space-around"
-        alignItems="flex-end"
-        width="100%"
-        margin={0}
-        alignSelf="center"
+        alignItems="center"
+        spacing={0}
       >
-        <h4>Wins:</h4>
-        <WinCounter />
-        <h4>Losses:</h4>
-        <LossCounter />
-      </Box>
+        <Grid item xs={3}>
+          <h4>Wins:</h4>
+        </Grid>
+        <Grid item xs={3}>
+          <WinCounter />
+        </Grid>
+        <Grid item xs={3}>
+          <h4>Losses:</h4>
+        </Grid>
+        <Grid item xs={3}>
+          <LossCounter />
+        </Grid>
+      </Grid>
       <Box
         display="flex"
         justifyContent="space-around"

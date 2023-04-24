@@ -24,25 +24,30 @@ function WinCounter() {
   }
 
   return (
-    <ButtonGroup size="small" aria-label="win counter">
-      <Button
-        key="subtractWin"
-        onClick={() => {
-          subtractWin(undefined, "wins");
-        }}
-      >
-        -
-      </Button>
-      <h4>{state.wins}</h4>
-      <Button
-        key="addWin"
-        onClick={() => {
-          addWin(undefined, "wins");
-        }}
-      >
-        +
-      </Button>
-    </ButtonGroup>
+    <>
+      <ButtonGroup size="small" aria-label="win counter" color="info">
+        <Button
+          key="subtractWin"
+          onClick={() => {
+            subtractWin(undefined, "wins");
+          }}
+          style={{ margin: "15%" }}
+        >
+          -
+        </Button>
+
+        <h4>{state.wins}</h4>
+        <Button
+          key="addWin"
+          onClick={() => {
+            addWin(undefined, "wins");
+          }}
+          style={{ margin: "15%" }}
+        >
+          +
+        </Button>
+      </ButtonGroup>
+    </>
   );
 }
 
