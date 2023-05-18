@@ -91,6 +91,7 @@ Outputs:
   WebsiteURL:
     Value: !GetAtt
       - S3Bucket
+      - RootDomainName
     Description: URL for website hosted on S3
   S3BucketSecureURL:
     Value: !Join
@@ -98,5 +99,5 @@ Outputs:
       - - "https://"
         - !GetAtt
           - S3Bucket
-          - DomainName
+          - RootDomainName
     Description: Name of S3 bucket to hold website content.
