@@ -64,10 +64,10 @@ Resources:
     Properties:
       BucketName: !Ref RootDomainName
       PublicAccessBlockConfiguration:
-          BlockPublicAcls: false
-        OwnershipControls:
-          Rules:
-            - ObjectOwnership: ObjectWriter
+        BlockPublicAcls: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: ObjectWriter
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: index.html
@@ -79,10 +79,10 @@ Resources:
         - www.${Domain}
         - Domain: !Ref RootDomainName
       PublicAccessBlockConfiguration:
-          BlockPublicAcls: false
-        OwnershipControls:
-          Rules:
-            - ObjectOwnership: ObjectWriter
+        BlockPublicAcls: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: ObjectWriter
       WebsiteConfiguration:
         RedirectAllRequestsTo:
           HostName: !Ref RootBucket
