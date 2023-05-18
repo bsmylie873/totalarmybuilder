@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: AWS Cloud Template to create resources required to deploy Some Application. For our small db application we will be needing AWS Lightsail container, S3 and RDS DB Services.
 
 Parameters:
@@ -16,7 +16,7 @@ Resources:
       AllocatedStorage: 20
       PubliclyAccessible: true
       Engine: postgres
-      EngineVersion: '12.9'
+      EngineVersion: "12.9"
       MasterUsername: postgres
       MasterUserPassword: !Ref DBPassword
 
@@ -27,3 +27,31 @@ Resources:
       Power: micro
       Scale: 1
       ServiceName: totalarmybuilder-api-container
+
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref RootDomainName
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+    DeletionPolicy: Retain
+
+  BucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
