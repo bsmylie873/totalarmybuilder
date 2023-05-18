@@ -87,7 +87,7 @@ Resources:
   #               - /*
   #     Bucket: !Ref S3Bucket
 
-   RootBucket:
+  RootBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref RootDomainName
@@ -96,37 +96,37 @@ Resources:
         IndexDocument: index.html
         ErrorDocument: index.html
 
-  WWWBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub
-        - www.${Domain}
-        - Domain: !Ref RootDomainName
-      AccessControl: BucketOwnerFullControl
-      WebsiteConfiguration:
-        RedirectAllRequestsTo:
-          HostName: !Ref RootBucket
-  myDNS:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneName: !Sub
-        - ${Domain}.
-        - Domain: !Ref RootDomainName
-      Comment: Zone apex alias.
-      RecordSets:
-        - Name: !Ref RootDomainName
-          Type: A
-          AliasTarget:
-            HostedZoneId:
-              !FindInMap [RegionMap, !Ref "AWS::Region", S3hostedzoneID]
-            DNSName: !FindInMap [RegionMap, !Ref "AWS::Region", websiteendpoint]
-        - Name: !Sub
-            - www.${Domain}
-            - Domain: !Ref RootDomainName
-          Type: CNAME
-          TTL: 900
-          ResourceRecords:
-            - !GetAtt WWWBucket.DomainName
+WWWBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: !Sub
+      - www.${Domain}
+      - Domain: !Ref RootDomainName
+    AccessControl: BucketOwnerFullControl
+    WebsiteConfiguration:
+      RedirectAllRequestsTo:
+        HostName: !Ref RootBucket
+myDNS:
+  Type: AWS::Route53::RecordSetGroup
+  Properties:
+    HostedZoneName: !Sub
+      - ${Domain}.
+      - Domain: !Ref RootDomainName
+    Comment: Zone apex alias.
+    RecordSets:
+      - Name: !Ref RootDomainName
+        Type: A
+        AliasTarget:
+          HostedZoneId:
+            !FindInMap [RegionMap, !Ref "AWS::Region", S3hostedzoneID]
+          DNSName: !FindInMap [RegionMap, !Ref "AWS::Region", websiteendpoint]
+      - Name: !Sub
+          - www.${Domain}
+          - Domain: !Ref RootDomainName
+        Type: CNAME
+        TTL: 900
+        ResourceRecords:
+          - !GetAtt WWWBucket.DomainName
 
 Outputs:
   WebsiteURL:
