@@ -59,33 +59,33 @@ Resources:
       Scale: 1
       ServiceName: totalarmybuilder-api-container
 
-  S3Bucket:
-    Type: "AWS::S3::Bucket"
-    Properties:
-      BucketName: !Ref RootDomainName
-      AccessControl: PublicRead
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: index.html
-    DeletionPolicy: Retain
+  # S3Bucket:
+  #   Type: "AWS::S3::Bucket"
+  #   Properties:
+  #     BucketName: !Ref RootDomainName
+  #     AccessControl: PublicRead
+  #     WebsiteConfiguration:
+  #       IndexDocument: index.html
+  #       ErrorDocument: index.html
+  #   DeletionPolicy: Retain
 
-  BucketPolicy:
-    Type: "AWS::S3::BucketPolicy"
-    Properties:
-      PolicyDocument:
-        Id: MyPolicy
-        Version: 2012-10-17
-        Statement:
-          - Sid: PublicReadForGetBucketObjects
-            Effect: Allow
-            Principal: "*"
-            Action: "s3:GetObject"
-            Resource: !Join
-              - ""
-              - - "arn:aws:s3:::"
-                - !Ref S3Bucket
-                - /*
-      Bucket: !Ref S3Bucket
+  # BucketPolicy:
+  #   Type: "AWS::S3::BucketPolicy"
+  #   Properties:
+  #     PolicyDocument:
+  #       Id: MyPolicy
+  #       Version: 2012-10-17
+  #       Statement:
+  #         - Sid: PublicReadForGetBucketObjects
+  #           Effect: Allow
+  #           Principal: "*"
+  #           Action: "s3:GetObject"
+  #           Resource: !Join
+  #             - ""
+  #             - - "arn:aws:s3:::"
+  #               - !Ref S3Bucket
+  #               - /*
+  #     Bucket: !Ref S3Bucket
 
    RootBucket:
     Type: AWS::S3::Bucket
