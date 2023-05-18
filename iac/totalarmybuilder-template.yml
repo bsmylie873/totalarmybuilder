@@ -87,7 +87,7 @@ Resources:
                 - /*
       Bucket: !Ref S3Bucket
 
-  RootBucket:
+   RootBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref RootDomainName
@@ -106,7 +106,6 @@ Resources:
       WebsiteConfiguration:
         RedirectAllRequestsTo:
           HostName: !Ref RootBucket
-
   myDNS:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -128,3 +127,8 @@ Resources:
           TTL: 900
           ResourceRecords:
             - !GetAtt WWWBucket.DomainName
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt RootBucket.WebsiteURL
+    Description: URL for website hosted on S3
