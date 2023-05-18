@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-jammy AS build
 ARG NETENV=Release
 WORKDIR /src
 COPY ./ ./
@@ -6,7 +6,7 @@ RUN dotnet restore src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj
 RUN dotnet publish src/TotalArmyBuilder.Api/TotalArmyBuilder.Api.csproj -c $NETENV -o /app --no-restore
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy
 WORKDIR /app
 COPY --from=build /app ./
 
